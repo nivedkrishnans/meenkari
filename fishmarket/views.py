@@ -34,7 +34,7 @@ def start(request):
     return render(request, 'fishmarket/start.html', {'form': f})
 
 def g(request):
-    this_game = Game.objects.filter(game_id=12)[0]
+    this_game = Game.objects.order_by('-create_time')[0]
     #this_game = get_object_or_404(Game, game_id=url_id)
     this_game_details = json.dumps(game_details_generator(this_game))
     this_game_status = json.dumps(game_status_generator(this_game))
