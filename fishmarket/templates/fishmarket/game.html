@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Game</title>
+  </head>
+  <body>
+    {% if user.is_authenticated %}
+      <p> Hi {{user}}! </p>
+        {% if messages %}
+          <div class="messages">
+            <ul>
+              {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      <p>Game Details: <br> {{game_details}}</p>
+      <p>Game Status: <br> {{game_status}}</p>
+    {% else %}
+      <p>Please login, my sweet summer child</p>
+    {% endif %}
+  </body>
+</html>
