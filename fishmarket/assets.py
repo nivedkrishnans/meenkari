@@ -4,7 +4,7 @@ import string
 import random
 
 newdeck = [
-    "la02", "la03", "la04", "la05", "la06", "la07", "joa8", "ha09", "ha10", "ha_j", "ha_q", "ha_k", "ha_a",
+    "ls02", "ls03", "ls04", "ls05", "ls06", "ls07", "jos8", "hs09", "hs10", "hs_j", "hs_q", "hs_k", "hs_a",
     "lc02", "lc03", "lc04", "lc05", "lc06", "lc07", "joc8", "hc09", "hc10", "hc_j", "hc_q", "hc_k", "hc_a",
     "lh02", "lh03", "lh04", "lh05", "lh06", "lh07", "joh8", "hh09", "hh10", "hh_j", "hh_q", "hh_k", "hh_a",
     "ld02", "ld03", "ld04", "ld05", "ld06", "ld07", "jod8", "hd09", "hd10", "hd_j", "hd_q", "hd_k", "hd_a",
@@ -23,7 +23,7 @@ def shuffle_cards(thisgame): #the argument is a game instance
     thisgame.player_23_hand =  delimiter.join(shuffleddeck[45:54])
     thisgame.save();
 
-#alternate function, incomplete
+#alternate function, ignore this
 def shuffle_cards1():
     shuffling = random.sample(newdeck)
     shuffleddeck = (

@@ -5,3 +5,4 @@ __pycache__
 db.sqlite3
 meenkari/settings.py
 requirements.txt
+static

@@ -1,0 +1,47 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Communication Test</title>
+  </head>
+  <body>
+    {% if user.is_authenticated %}
+      <p> Hi {{user}}! </p>
+        {% if messages %}
+          <div class="messages">
+            <ul>
+              {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      <p>p11_hand: <br> {{p11_hand}}</p>
+      <p><button id='clicker'>Click</button></p>
+      <p id="recieved">Recieved:<br></p>
+    {% else %}
+      <p>Please login, my sweet summer child</p>
+    {% endif %}
+  </body>
+  <script type="text/javascript" src='{% static "js/jquery-3.5.1.min.js" %}'></script>
+  <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
+  <script>
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var chatsock  = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/chat" + window.location.pathname);
+    $('#clicker').on('click', function(event) {
+      var d = new Date();
+      var n = d.getTime();
+      var message = {
+        time: n.toString(),
+      }
+      chat_socket.send(JSON.stringify(message));
+      return false;
+    });
+    chatsock.onmessage = function(message) {
+      var data = JSON.parse(message.data);
+      $('#recieved').append('<br>'+ data.timestamp + "\t" + data.message );
+    };
+  </script>
+</html>
