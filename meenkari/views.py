@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.contrib import messages
 import json
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 
 game_id_size = 32
 
@@ -34,12 +35,12 @@ def start(request):
         f = StartGameForm()
     return render(request, 'meenkari/start.html', {'form': f})
 
-def game(request):
-    this_game = Game.objects.order_by('-create_time')[0] #until i figure out how to do the selection based on game_id right
-    #this_game = get_object_or_404(Game, game_id=url_id)
+def game(request,url_id=1):
+    #this_game = Game.objects.order_by('-create_time')[0] #until i figure out how to do the selection based on game_id right
+    this_game = get_object_or_404(Game, game_id=url_id)
     this_game_details = json.dumps(game_details_generator(this_game))
     this_current_status = json.dumps(current_status_generator(this_game))
-    return render(request, 'meenkari/game.html',{'game_details':this_game_details,'current_status':this_current_status})
+    return render(request, 'meenkari/game.html',{'test_id':url_id,'game_details':this_game_details,'current_status':this_current_status})
 
 
 def communication_test(request):
@@ -55,4 +56,8 @@ def communication_test2(request):
 
 def communication_test2_trigger(request):
     this_game = Game.objects.order_by('-create_time')[0] #until i figure out how to do the selection based on game_id right
-    broadcast_live(current_status_generator(this_game))
+    this_game_id = "randomegameid"
+    this_username = "denied"
+    if request.user.is_authenticated:
+        this_username = request.user.username
+    broadcast_live(current_status_generator(this_game),this_game_id,this_username)

@@ -35,14 +35,12 @@
     var live_url = prefix + window.location.host + '/ws/live/';
     var liveSocket = new ReconnectingWebSocket(live_url);
     liveSocket.onmessage = function(event) {
-        var data = JSON.parse(event.data);
+        //var data = JSON.parse(event.data);
+        var data = event.data;
         $("#test1").text(data.toString());
         console.log('data', data);
         // do whatever required with received data ...
     };
 
-    var x = setInterval(function(){
-      $("#test1").text(live_url.toString());
-    },10000);
   </script>
 </html>

@@ -4,10 +4,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    url('admin/', admin.site.urls),
-    url(r'^start/$', views.start, name="start"),
-    url(r'^game$', views.game, name="game"),
-    url(r'^communication_test$', views.communication_test, name="communication_test"),
-    url(r'^communication_test2$', views.communication_test2, name="communication_test2"),
-    url(r'^communication_test2_trigger$', views.communication_test2_trigger, name="communication_test2_trigger"),
+    path('admin/', admin.site.urls),
+    path('^start/', views.start, name="start"),
+    path('game/<str:url_id>', views.game, name="game"),
+    path('communication_test', views.communication_test, name="communication_test"),
+    path('communication_test2', views.communication_test2, name="communication_test2"),
+    path('communication_test2_trigger', views.communication_test2_trigger, name="communication_test2_trigger"),
 ]

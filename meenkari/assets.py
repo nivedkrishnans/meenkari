@@ -82,10 +82,11 @@ def current_status_generator(thisgame): #returns the game status as json, which 
 
 
 
-def broadcast_live(current_status):
+def broadcast_live(info_json,game_id,username):
+    this_group_name = game_id + '-' + username
     channel_layer = channels.layers.get_channel_layer()
     async_to_sync(channel_layer.group_send)(
-        settings.LIVE_GROUP_NAME, {
+        this_group_name, {
             "type": 'game_update',
-            "content": json.dumps(current_status),
+            "content": json.dumps(info_json),
         })
