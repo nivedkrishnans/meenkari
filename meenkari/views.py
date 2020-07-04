@@ -29,20 +29,30 @@ def start(request):
             newgame.create_time = timezone.now()
             newgame.save()
             messages.add_message(request, messages.INFO, 'You have succesfully started the game ' + (newgame.game_name) + ' at ' + (newgame.game_id))
-            return render(request, 'fishmarket/start.html', {'form': f})
+            return render(request, 'meenkari/start.html', {'form': f})
     else:
         f = StartGameForm()
-    return render(request, 'fishmarket/start.html', {'form': f})
+    return render(request, 'meenkari/start.html', {'form': f})
 
 def game(request):
     this_game = Game.objects.order_by('-create_time')[0] #until i figure out how to do the selection based on game_id right
     #this_game = get_object_or_404(Game, game_id=url_id)
     this_game_details = json.dumps(game_details_generator(this_game))
-    this_game_status = json.dumps(game_status_generator(this_game))
-    return render(request, 'fishmarket/game.html',{'game_details':this_game_details,'game_status':this_game_status})
+    this_current_status = json.dumps(current_status_generator(this_game))
+    return render(request, 'meenkari/game.html',{'game_details':this_game_details,'current_status':this_current_status})
 
 
 def communication_test(request):
     this_game = Game.objects.order_by('-create_time')[0] #until i figure out how to do the selection based on game_id right
     p11_hand = this_game.player_11_hand
-    return render(request, 'fishmarket/communication_test.html',{'p11_hand':p11_hand})
+    return render(request, 'meenkari/communication_test.html',{'p11_hand':p11_hand})
+
+
+def communication_test2(request):
+    this_game = Game.objects.order_by('-create_time')[0] #until i figure out how to do the selection based on game_id right
+    p11_hand = this_game.player_11_hand
+    return render(request, 'meenkari/communication_test2.html',{'p11_hand':p11_hand})
+
+def communication_test2_trigger(request):
+    this_game = Game.objects.order_by('-create_time')[0] #until i figure out how to do the selection based on game_id right
+    broadcast_live(current_status_generator(this_game))
