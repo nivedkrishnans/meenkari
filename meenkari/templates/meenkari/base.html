@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    {% block head %}
+    {% endblock %}
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="{%url 'home'%}">Home</a></li>
+
+          {% if user.is_authenticated %}
+            <li><a href="#">{{user}}'s page (to be added)</a></li>
+            <li><a href="{%url 'password_change'%}">Change password</a></li>
+            <li><a href="{%url 'logout'%}">Log Out</a></li>
+          {% else %}
+            <li><a href="{%url 'login'%}">Log In</a></li>
+            <li><a href="{%url 'django_registration_register'%}">Sign Up</a></li>
+            <li><a href="{%url 'password_reset'%}">Reset password</a></li>
+          {% endif %}
+
+          <li><a href="{%url 'host'%}">Host</a></li>
+          <li><a href="{%url 'join'%}">Join</a></li>
+        </ul>
+      </nav>
+    </header>
+    {% block body %}
+    {% endblock %}
+  </body>
+</html>

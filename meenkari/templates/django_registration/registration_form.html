@@ -1,0 +1,44 @@
+{% extends 'meenkari/base.html' %}
+{% load static %}
+
+{% block head %}
+<title>Register</title>
+{% endblock %}
+
+{% block body %}
+  {% if user.is_authenticated %}
+    Hi! You are already a registered user!
+  {% else %}
+    <p>Welcome!</p>
+    <p>Already have an account? <a href="{% url 'login'%}"> Log in </a></p>
+    {% if form.errors %}
+      <div>
+        <p>Please fix the following errors</p>
+          <ul>
+            {% for field in form %}
+              {% if field.errors %}
+                {% for error in field.errors %}
+                  <li>{{ error|escape }}</li>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          </ul>
+          {% if form.non_field_errors %}
+            {{ form.non_field_errors }}
+          {% endif %}
+      </div>
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div>
+          {{ field.errors }}
+          {{ field.label_tag }}
+          {{ field }}
+        </div>
+      {% endfor %}
+      <button type="submit">Sign up</button>
+    </form>
+  {% endif %}
+
+{% endblock %}

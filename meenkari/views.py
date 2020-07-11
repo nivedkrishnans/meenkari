@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import *
 from .models import *
 from .assets import *
@@ -11,6 +11,42 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
 game_id_size = 32
+
+
+def home(request):
+    return render(request, 'meenkari/home.html',)
+
+def host(request):
+    if request.user.is_authenticated:
+        return render(request, 'meenkari/host.html',)
+    else:
+        return redirect('login')
+
+def join(request):
+    if request.user.is_authenticated:
+        return render(request, 'meenkari/join.html',)
+    else:
+        return redirect('login')
+
+def unite(request,url_id=1):
+    return render(request, 'meenkari/unite.html',)
+
+def play(request,url_id=1):
+    return render(request, 'meenkari/play.html',)
+
+def sorry(request):
+    return render(request, 'meenkari/sorry.html',)
+
+
+
+
+
+
+
+
+
+
+#test and trail functions below:
 
 # Create your views here.
 def start(request):

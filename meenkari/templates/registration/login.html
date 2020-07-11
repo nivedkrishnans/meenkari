@@ -1,0 +1,69 @@
+{% extends 'meenkari/base.html' %}
+{% load static %}
+
+{% block head %}
+<title>Log in</title>
+{% endblock %}
+
+{% block body %}
+
+  {% if user.is_authenticated %}
+    <p> Hi {{ user }}! You are logged in!</p>
+    <a href="{% url 'logout' %}">Log Out</a>
+    <a href="{% url 'password_change' %}">Change Password</a>
+
+  {% else %}
+    <p>You can log in only after you click on the confirmation link sent to your mail during sign up.</p>
+    <a href="{% url 'django_registration_register' %}">Sign Up</a>
+    <a href="{% url 'password_reset' %}">Reset Password</a>
+    {% if form.errors %}
+      <div>
+        <p>Please fix the following errors</p>
+        <ul>
+          {% for field in form %}
+            {% if field.errors %}
+              {% for error in field.errors %}
+                <li><a href="#id_{{ field.name }}">{{ error|escape }}</a></li>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </ul>
+        {% if form.non_field_errors %}
+          {{ form.non_field_errors }}
+        {% endif %}
+      </div>
+    {% endif %}
+    {% if messages %}
+      <div>
+        <ul>
+          {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div>
+          {% if field.errors %}
+            <div>
+              <ul>
+                {% for error in field.errors %}
+                  <li>{{ error|escape }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+
+          {{ field.label_tag }}
+          {{ field }}
+        </div>
+      {% endfor %}
+      <button type="submit">Log In</button>
+    </form>
+  {% endif %}
+
+
+{% endblock %}
