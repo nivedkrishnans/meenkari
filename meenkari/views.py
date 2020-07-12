@@ -9,8 +9,7 @@ from django.contrib import messages
 import json
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-
-game_id_size = 32
+from django.contrib import messages
 
 
 def home(request):
@@ -18,9 +17,25 @@ def home(request):
 
 def host(request):
     if request.user.is_authenticated:
-        return render(request, 'meenkari/host.html',)
+        if request.method == "POST":
+            f = HostForm(request.POST)
+            if f.is_valid():
+                newgame = f.save(commit=False)
+                assign_id(newgame)
+                shuffle_cards(newgame)
+                newgame.player_11 = request.user
+                newgame.game_status = "empty"
+                newgame.lastmodify_time = timezone.now()
+                newgame.save()
+                messages.add_message(request, messages.INFO, 'You have succesfully started the game ' + (newgame.game_name) + '. You can unite with your teammembers at unite/' + (newgame.unite_id))
+                return render(request, 'meenkari/host.html', {'form': f})
+        else:
+            f = HostForm()
+        return render(request, 'meenkari/host.html', {'form': f})
     else:
+        messages.add_message(request, messages.INFO, 'Please log in in order to host games')
         return redirect('login')
+
 
 def join(request):
     if request.user.is_authenticated:

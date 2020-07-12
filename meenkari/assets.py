@@ -7,6 +7,9 @@ from asgiref.sync import async_to_sync
 import channels.layers
 from django.conf import settings
 
+delimiter = ","
+game_id_size = 32
+unite_id_size = 32
 
 newdeck = [
     #the 9 half-suits and their 6 cards
@@ -30,7 +33,6 @@ newdeck_alternative = [
     "jo_b", "jo_w",
 ]
 
-delimiter = ","
 
 
 def shuffle_cards(thisgame): #the argument is a game instance
@@ -43,18 +45,30 @@ def shuffle_cards(thisgame): #the argument is a game instance
     thisgame.player_23_hand =  delimiter.join(shuffleddeck[45:54]) + delimiter
     thisgame.save();
 
-#alternate function, ignore this
-def shuffle_cards1():
-    shuffling = random.sample(newdeck)
-    shuffleddeck = (
-            delimiter.join(shuffling[0:9]),
-            delimiter.join(shuffling[9:18]),
-            delimiter.join(shuffling[18:27]),
-            delimiter.join(shuffling[27:36]),
-            delimiter.join(shuffling[36:45]),
-            delimiter.join(shuffling[45:54]),
-    )
-    return shuffleddeck
+
+def random_string_generator(size):
+    return "".join(random.choices(string.ascii_lowercase + string.digits, k = size))
+
+def assign_id(thisgame):    #the argument is a game instance
+    all_game_ids = Game.objects.all().values('game_id')
+    all_unite_ids = Game.objects.all().values('unite_id')
+
+    #choosing game_id
+    random_id_chosen = False
+    while not random_id_chosen:
+      random_id = random_string_generator(game_id_size)
+      if (random_id not in all_game_ids):
+        random_id_chosen = True
+        thisgame.game_id = random_id
+
+    #choosing unite_id
+    random_id_chosen = False
+    while not random_id_chosen:
+      random_id = random_string_generator(unite_id_size)
+      if (random_id not in all_unite_ids):
+        random_id_chosen = True
+        thisgame.unite_id = random_id
+
 
 def game_details_generator(thisgame): #returns the game details as json, which is needed only once during the game
     game_details = {'game_name':thisgame.game_name,'game_id':thisgame.game_id,'game_status':thisgame.game_status,
@@ -90,3 +104,23 @@ def broadcast_live(info_json,game_id,username):
             "type": 'game_update',
             "content": json.dumps(info_json),
         })
+
+
+
+
+
+
+
+#test and trial functions
+#alternate function, ignore this
+def shuffle_cards1():
+    shuffling = random.sample(newdeck)
+    shuffleddeck = (
+            delimiter.join(shuffling[0:9]),
+            delimiter.join(shuffling[9:18]),
+            delimiter.join(shuffling[18:27]),
+            delimiter.join(shuffling[27:36]),
+            delimiter.join(shuffling[36:45]),
+            delimiter.join(shuffling[45:54]),
+    )
+    return shuffleddeck
