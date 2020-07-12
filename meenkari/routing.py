@@ -7,6 +7,7 @@ application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(
         URLRouter([
             path("ws/live/", consumers.LiveConsumer),
+            path("ws/unite/<str:url_id>", consumers.HostConsumer),
         ])
     ),
 })

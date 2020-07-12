@@ -10,3 +10,4 @@ class GameResource(admin.ModelAdmin):
 
 
 admin.site.register(Game,GameResource)
+admin.site.register(UniteQueue)

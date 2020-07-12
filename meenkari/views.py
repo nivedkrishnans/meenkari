@@ -10,7 +10,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
-
+from django.db.models import Q
 
 def home(request):
     return render(request, 'meenkari/home.html',)
@@ -27,6 +27,8 @@ def host(request):
                 newgame.game_status = "empty"
                 newgame.lastmodify_time = timezone.now()
                 newgame.save()
+                newUniteQueue = UniteQueue(game=newgame)
+                newUniteQueue.save()
                 messages.add_message(request, messages.INFO, 'You have succesfully started the game ' + (newgame.game_name) + '. You can unite with your teammembers at unite/' + (newgame.unite_id))
                 return render(request, 'meenkari/host.html', {'form': f})
         else:
@@ -39,18 +41,51 @@ def host(request):
 
 def join(request):
     if request.user.is_authenticated:
-        return render(request, 'meenkari/join.html',)
+        #list all public games that are not over or stopped, latest first
+        game_list = list(Game.objects.filter(Q(game_privacy='public') & ~Q(game_status='over') & ~Q(game_status='stopped') ).order_by('-create_time'))
+        #game_list = list(Game.objects.all().order_by('-create_time'))
+        return render(request, 'meenkari/join.html',{'game_list':game_list})
     else:
+        messages.add_message(request, messages.INFO, 'Please log in in order to join games')
         return redirect('login')
 
 def unite(request,url_id=1):
-    return render(request, 'meenkari/unite.html',)
+    if request.user.is_authenticated:
+        this_game = get_object_or_404(Game, unite_id=url_id)
+        this_user = request.user
+        if this_game.game_status == 'empty':
+            if is_host(this_user,this_game):
+                return render(request, 'meenkari/unite_host.html',)
+            else:
+                this_game.unite_queue.players.add(this_user)
+                host_queue_update(this_game)
+                print('blublubblublubblublub')
+                return render(request, 'meenkari/unite_player.html',)
+        else:
+            if is_player(this_user,this_game):
+                if this_game.game_status in ['over','stopped']:
+                    return render(request, 'meenkari/gameover.html',)
+                elif this_game.game_status in ['united','started']:
+                    return redirect('play', url_id=url_id)
+                else:
+                    return render(request, 'meenkari/error.html',)
+            else:
+                return render(request, 'meenkari/sorry.html',)
+    else:
+        messages.add_message(request, messages.INFO, 'Please log in in order to play')
+        return redirect('login')
 
 def play(request,url_id=1):
     return render(request, 'meenkari/play.html',)
 
 def sorry(request):
     return render(request, 'meenkari/sorry.html',)
+
+def gameover(request):
+    return render(request, 'meenkari/gameover.html',)
+
+def error(request):
+    return render(request, 'meenkari/error.html',)
 
 
 

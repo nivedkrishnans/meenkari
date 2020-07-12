@@ -2,9 +2,17 @@
 {% load static %}
 
 {% block head %}
-<title>Join</title>
+  <title>Join</title>
 {% endblock %}
 
 {% block body %}
-<p>Game list</p>
+  <p>Game list</p>
+  <table>
+    <tr> <th>Game Name</th> <th>Host</th> <th>Create time</th> <th>Unite Link</th></tr>
+    {% for game in game_list %}
+      <tr> <th>{{ game.game_name }}</th> <th>{{ game.player_11 }}</th> <th>{{ game.create_time }}</th> <th><a target="_blank" href="{% url 'unite' game.unite_id %}"><button>Join</button></a></th> </tr>
+    {% endfor %}
+  </table>
+
+
 {% endblock %}

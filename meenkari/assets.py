@@ -69,6 +69,60 @@ def assign_id(thisgame):    #the argument is a game instance
         random_id_chosen = True
         thisgame.unite_id = random_id
 
+def is_player(thisuser,thisgame):
+    player_list = {
+        thisgame.player_11,
+        thisgame.player_12,
+        thisgame.player_13,
+        thisgame.player_21,
+        thisgame.player_22,
+        thisgame.player_23,
+    }
+    if thisuser in player_list:
+        return True
+    else:
+        return False
+
+
+def is_host(thisuser,thisgame):
+    return (thisuser == thisgame.player_11)
+
+
+def host_queue_update(thisgame):
+    #this function updates the host about the players in the queue
+    this_group_name = "unite-" + thisgame.unite_id + "-host"
+    print('asset ' + this_group_name)
+    this_queue = str(list(thisgame.unite_queue.players.all()))
+    this_host_queue_update = {
+        "type": 'queue_update',
+        'time': str(timezone.now()),
+        'unite_id': thisgame.unite_id,
+        'queue': this_queue,
+    }
+    channel_layer = channels.layers.get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        this_group_name, {
+            "type": 'queue_update',
+            "content": json.dumps(this_host_queue_update),
+        })
+
+def unite_queue_update(thisgame):
+    #this function updates the non-host that the players have been chosen. they players will be asked to reload the page
+    this_group_name = "unite-" + thisgame.unite_id + "-" + 'queue'
+    unite_queue_update = {
+        "type": 'queue_update',
+        'time': str(timezone.now()),
+        'unite_id': thisgame.unite_id,
+    }
+    channel_layer = channels.layers.get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        this_group_name, {
+            "type": 'queue_update',
+            "content": json.dumps(unite_queue_update),
+        })
+
+
+
 
 def game_details_generator(thisgame): #returns the game details as json, which is needed only once during the game
     game_details = {'game_name':thisgame.game_name,'game_id':thisgame.game_id,'game_status':thisgame.game_status,

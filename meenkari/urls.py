@@ -10,6 +10,8 @@ urlpatterns = [
     path('host/', views.host, name="host"),
     path('join/', views.join, name="join"),
     path('sorry/', views.sorry, name="sorry"),
+    path('gameover/', views.gameover, name="gameover"),
+    path('error/', views.error, name="error"),
     path('unite/<str:url_id>', views.unite, name="unite"),
     path('play/<str:url_id>', views.play, name="play"),
     path('accounts/', include('django_registration.backends.activation.urls')),

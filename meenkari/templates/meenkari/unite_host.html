@@ -6,5 +6,26 @@
 {% endblock %}
 
 {% block body %}
-<p>Here you shall choose your players</p>
+  <p>Here you shall choose your players</p>
+  <p id="user_queue"></p>
+
+  <script type="text/javascript" src='{% static "js/jquery-3.5.1.min.js" %}'></script>
+  <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
+  <script type="text/javascript" src='{% static "js/main.js" %}'></script>
+  <script language="javascript">
+    live_url=generate_live_url()
+    console.log("test " + live_url);
+    var liveSocket = new ReconnectingWebSocket(live_url);
+    liveSocket.onmessage = function(event) {
+        //var data = JSON.parse(event.data);
+        var data = event.data;
+        $("#user_queue").text(data.toString());
+        console.log('data', data);
+        // do whatever required with received data ...
+    };
+
+
+  </script>
+
+
 {% endblock %}
