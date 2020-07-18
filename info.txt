@@ -1,6 +1,5 @@
 pip install django
 pip install channels
-# pip install asgi_redis
 pip install channels-redis
 install redis for the device and run redis-server
 pip install django-registration
