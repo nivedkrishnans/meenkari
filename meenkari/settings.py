@@ -25,7 +25,7 @@ SECRET_KEY = '&)$_7*ao!ae$cewhvjd7at8%q$7typb9gqyozhrnic$6hd@f(1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1',]
+ALLOWED_HOSTS = ['127.0.0.1','meenkari.herokuapp.com']
 
 
 # Application definition
