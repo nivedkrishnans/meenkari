@@ -3,7 +3,7 @@
 menv
 __pycache__
 db.sqlite3
-meenkari/settings.py
+
 
 static
 sent_emails
