@@ -2,43 +2,78 @@
 {% load static %}
 
 {% block head %}
-<title>Register</title>
+<title>Sign Up - Fish ON</title>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/signup.css' %}">
 {% endblock %}
 
 {% block content %}
-  {% if user.is_authenticated %}
-    Hi! You are already a registered user!
-  {% else %}
-    <p>Welcome!</p>
-    <p>Already have an account? <a href="{% url 'login'%}"> Log in </a></p>
-    {% if form.errors %}
-      <div>
-        <p>Please fix the following errors</p>
-          <ul>
-            {% for field in form %}
-              {% if field.errors %}
-                {% for error in field.errors %}
-                  <li>{{ error|escape }}</li>
-                {% endfor %}
-              {% endif %}
-            {% endfor %}
-          </ul>
-          {% if form.non_field_errors %}
-            {{ form.non_field_errors }}
-          {% endif %}
-      </div>
-    {% endif %}
-    <form method="post">
-      {% csrf_token %}
-      {% for field in form %}
-        <div>
-          {{ field.errors }}
-          {{ field.label_tag }}
-          {{ field }}
-        </div>
-      {% endfor %}
-      <button type="submit">Sign up</button>
-    </form>
-  {% endif %}
+
+<div class="box">
+        <h1>Sign up</h1>
+        <form method="POST">
+            <div class="form-container">
+                {% csrf_token %}
+
+                    <!-- prints out the form field by field -->
+                    {% for field in form %}
+                        <div class="field-item">
+                            <div class="field-label">
+                                {{field.label}}
+                                <!-- print an asterix for required fields -->
+                                {% if not field.required %}<span>*</span>{% endif %}
+                            </div>
+
+                            <!-- adds an "is-invalid" class to the div if the field had an error in it, so that it can be given error styling-->
+                            <div class="field  {% if field.errors %}is-invalid{% endif %}">
+                                {{field}}
+                            </div>
+
+                            <!-- prints out any errors that occured in the field due to invalid inputs -->
+                            <div class="errors">
+                                {{field.errors}}
+                            </div>
+                        </div>
+                    {% endfor %}
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
 
 {% endblock %}
+
+<!-- The old content has been commented out...it can be removed later -->
+<!-- {% if user.is_authenticated %}
+  Hi! You are already a registered user!
+{% else %}
+  <p>Welcome!</p>
+  <p>Already have an account? <a href="{% url 'login'%}"> Log in </a></p>
+  {% if form.errors %}
+    <div>
+      <p>Please fix the following errors</p>
+        <ul>
+          {% for field in form %}
+            {% if field.errors %}
+              {% for error in field.errors %}
+                <li>{{ error|escape }}</li>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </ul>
+        {% if form.non_field_errors %}
+          {{ form.non_field_errors }}
+        {% endif %}
+    </div>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <div>
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {{ field }}
+      </div>
+    {% endfor %}
+    <button type="submit">Sign up</button>
+  </form>
+{% endif %} -->
