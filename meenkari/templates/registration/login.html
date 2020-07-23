@@ -2,68 +2,46 @@
 {% load static %}
 
 {% block head %}
-<title>Log in</title>
+<title>Log in - Fish ON</title>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/signup.css' %}">
 {% endblock %}
 
 {% block content %}
 
-  {% if user.is_authenticated %}
-    <p> Hi {{ user }}! You are logged in!</p>
-    <a href="{% url 'logout' %}">Log Out</a>
-    <a href="{% url 'password_change' %}">Change Password</a>
+  <div class="box" id="signin">
+          <h1>Sign in</h1>
+          <form method="POST">
+              <div class="form-container">
+                  {% csrf_token %}
+                      <!-- prints out the form field by field -->
+                      {% for field in form %}
+                          <div class="field-item">
+                              <div class="field-label">
+                                  {{field.label}}
+                              </div>
 
-  {% else %}
-    <p>You can log in only after you click on the confirmation link sent to your mail during sign up.</p>
-    <a href="{% url 'django_registration_register' %}">Sign Up</a>
-    <a href="{% url 'password_reset' %}">Reset Password</a>
-    {% if form.errors %}
-      <div>
-        <p>Please fix the following errors</p>
-        <ul>
-          {% for field in form %}
-            {% if field.errors %}
-              {% for error in field.errors %}
-                <li><a href="#id_{{ field.name }}">{{ error|escape }}</a></li>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-        </ul>
-        {% if form.non_field_errors %}
-          {{ form.non_field_errors }}
-        {% endif %}
+                              <!-- adds an "is-invalid" class to the div if a non field error occurs, so that it can be given error styling-->
+                              <div class="field  {% if form.non_field_errors %}is-invalid{% endif %}">
+                                  {{field}}
+                              </div>
+                          </div>
+                      {% endfor %}
+                      {% if form.non_field_errors %}
+                      <!-- Non existant username or password are not particular to any field and show up in non field errors. -->
+                          <div class="errors">
+                              {{form.non_field_errors}}
+                          </div>
+                      {% endif %}
+              </div>
+              <button type="submit">Log in</button>
+              <div class="redirect-text">
+                  Don't have an account? <a href="{% url 'django_registration_register' %}">Sign Up</a>
+              </div>
+              <div class="redirect-text">
+                  Forgot your password? <a href="{% url 'password_reset' %}">Reset password</a>
+              </div>
+          </form>
       </div>
-    {% endif %}
-    {% if messages %}
-      <div>
-        <ul>
-          {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
-
-    <form method="post">
-      {% csrf_token %}
-      {% for field in form %}
-        <div>
-          {% if field.errors %}
-            <div>
-              <ul>
-                {% for error in field.errors %}
-                  <li>{{ error|escape }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-          {% endif %}
-
-          {{ field.label_tag }}
-          {{ field }}
-        </div>
-      {% endfor %}
-      <button type="submit">Log In</button>
-    </form>
-  {% endif %}
 
 
 {% endblock %}
