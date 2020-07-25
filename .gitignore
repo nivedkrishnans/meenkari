@@ -6,6 +6,4 @@ db.sqlite3
 meenkari/settings.py
 static
 sent_emails
-*.pyc
-meenkari/__pycache__/__init__.cpython-38.pyc
-meenkari/__pycache__/settings.cpython-38.pyc
+
