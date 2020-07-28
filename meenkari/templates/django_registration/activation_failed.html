@@ -2,10 +2,16 @@
 {% load static %}
 
 {% block head %}
-<title>Activation failed</title>
+<title>Activation failed - Fish ON</title>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/signup.css' %}">
 {% endblock %}
 
 {% block content %}
-<p>Activation failed. Please figure out how to show the message. https://django-registration.readthedocs.io/en/3.1/exceptions.html#django_registration.exceptions.ActivationError</p>
-{{activation_error}}
+
+    <div class="box" id="signin">
+        <h1>Activation failed </h1>
+        <p>Please figure out how to show the message. https://django-registration.readthedocs.io/en/3.1/exceptions.html#django_registration.exceptions.ActivationError</p>
+    </div>
+      
+
 {% endblock %}

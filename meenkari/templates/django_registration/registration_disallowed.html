@@ -2,9 +2,16 @@
 {% load static %}
 
 {% block head %}
-<title>Registration Disallowed</title>
+<title>Registration Disallowed - Fish ON</title>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/signup.css' %}">
 {% endblock %}
 
 {% block content %}
-<p>We are not allowing any new registrations. Please confirm your email if you have already registered. (Ignore if already confirmed)</p>
+
+    <div class="box" id="signin">
+        <h1>Registration Disallowed</h1>
+        <p>We are not allowing any new registrations. Please confirm your email if you have already registered. (Ignore if already confirmed)</p>
+    </div>
+      
+
 {% endblock %}

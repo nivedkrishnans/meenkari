@@ -2,9 +2,16 @@
 {% load static %}
 
 {% block head %}
-<title>Logged out</title>
+<title>Logged out - Fish ON</title>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/signup.css' %}">
 {% endblock %}
 
 {% block content %}
-<p>You have been logged out</p>
+
+    <div class="box" id="signin">
+        <h1>Logged out</h1>
+        <p>You have been logged out</p>
+    </div>
+      
+
 {% endblock %}

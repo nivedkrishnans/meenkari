@@ -3,6 +3,6 @@
 menv
 __pycache__
 db.sqlite3
-static
+./static
 sent_emails
-meenkari/secret_settings.py
+./meenkari/secret_settings.py

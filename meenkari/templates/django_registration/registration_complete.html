@@ -2,9 +2,16 @@
 {% load static %}
 
 {% block head %}
-<title>Confirm Password</title>
+<title>Confirm Password - Fish ON</title>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/signup.css' %}">
 {% endblock %}
 
 {% block content %}
-<p>Your account has been created successfully. Please confirm your email to continue.</p>
+
+    <div class="box" id="signin">
+        <h1>Confirm Password</h1>
+        <p>Your account has been created successfully. Please confirm your email to continue.</p>
+    </div>
+      
+
 {% endblock %}

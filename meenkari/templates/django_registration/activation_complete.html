@@ -2,9 +2,16 @@
 {% load static %}
 
 {% block head %}
-<title>Activation complete</title>
+<title>Activation complete - Fish ON</title>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/signup.css' %}">
 {% endblock %}
 
 {% block content %}
-<p>Activation complete. You can now log in.</p>
+
+    <div class="box" id="signin">
+        <h1>Activation complete </h1>
+        <p>You can now log in.</p>
+    </div>
+      
+
 {% endblock %}
