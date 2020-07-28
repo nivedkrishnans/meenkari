@@ -1,7 +1,7 @@
 /* cusotm font where password masking characters have been replaced with spade glyphs, for the password field*/
 @font-face{
     font-family: 'Password Mask';
-    src: url('../meenkari/fonts/password-font.ttf')
+    src: url('../fonts/password-font.ttf')
 }
 
 /* ToDo: Have to implement it so that aspect ratio remains constant on resizing window*/
