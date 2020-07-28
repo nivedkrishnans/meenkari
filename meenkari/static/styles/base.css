@@ -1,0 +1,282 @@
+html{
+    height: 100%;
+}
+
+body{
+    height: 100%;
+    margin:0px;
+    padding:0px;
+}
+
+.container{
+    height:100%;
+    width:100%;
+    overflow: hidden;
+    background-color:black;
+}
+
+img{
+    max-width: 100%;
+    max-height: auto;
+    overflow: hidden;
+}
+
+.top-bar{
+    height:10%;
+    width:100%;
+    position:fixed;
+    display:flex;
+    z-index: 1000;
+}
+
+.top-bar a{
+    padding: 1em 2em;
+    text-decoration:none;
+}
+
+.button{
+    box-sizing: border-box;
+    height: 100%;
+    width : 10%;
+    text-align: center;
+    color:#484854;
+    margin: 0px 10px;
+    padding-top: 1.5%;
+    font-size: 30px;
+    font-family: 'Saira Extra Condensed',sans-serif;
+}
+
+.button:hover{
+    cursor: pointer;
+    color:white;
+    font-size: 32px;
+}
+
+.leftbutton{
+    display:block;
+    text-align: center;
+    box-sizing: border-box;
+    color: white;
+    background-color: black;
+    position: absolute;
+    right:0;
+    width: min-content;
+    border-radius: 30px;
+    border: 1px solid white;
+    background-clip: padding-box;
+    height: min-content;
+    margin-right: 1em;
+    padding: 0.1em 0.3em 0.1em 0.3em;
+    font-size: 1.3em;
+    font-family: 'Helvetica',sans-serif;
+}
+
+.leftbutton:hover, .currentlb{
+    cursor: pointer;
+    background-color: white;
+    color: black;
+}
+
+.leftbutton2{
+    right: 6em;
+}
+
+.nametag{
+    box-sizing: border-box;
+    height: 100%;
+    width : 10%;
+    text-align: center;
+    color:white;
+    opacity:40%;
+    font-size: 1.5em;
+    font-family: 'Saira Extra Condensed',sans-serif;
+    /* background-color: green; */
+    position: absolute;
+    right:0;
+}
+
+.dp{
+    margin-top:0.6em;
+    display:inline-block;
+    width:25%;
+    /* padding:100%; */
+    border-radius:50%;
+    background-image:url('./images/person.jfif');
+    background-size:contain;
+    background-repeat: no-repeat;
+    /* background-color:red; */
+    color:transparent;
+}
+
+.nametag:hover{
+    opacity:90%;
+}
+
+.nametag:hover .dropdown-content{
+    display:block;
+}
+
+.dropdown-content{
+    box-sizing: border-box;
+    margin-top:0.5em;
+    display:none;
+    font-size:0.7em;
+    font-family:'Helvetica',sans-serif;
+    padding:4% 0%;
+    /* light color prototype */
+    background-color:#e8e8e8;
+    /* dark color prototype */
+    /* background-color: #454545; */
+    opacity:100%;
+    height:auto;
+    width:auto;
+    white-space: nowrap;
+    text-decoration: none;
+    color:white;
+    border-radius:0.5em;
+    /* light color prototype */
+    border:1px solid white;
+    /* dark color prototype */
+    /* border:1px solid #595959; */
+    /* box-shadow: 3px 3px 3px white; */
+}
+
+.dropdown-content a{
+    box-sizing: border-box;
+    text-align: left;
+    height:10%;
+    width:100%;
+    /*light color*/
+    color:#a3a3a3;
+    /*dark color*/
+    /* color:#969696; */
+    text-shadow: 1px 1px #a8a7b5;
+}
+
+.elt{
+    width:100%;
+    padding:0.6em 0em;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.dropdown-content a:hover{
+    font-size:1.1em;
+    color:white;
+    text-shadow: 1px 1px 2px #7d7d7d;
+}
+
+.elt:hover{
+    border-bottom: 1px solid white;
+}
+
+
+.username{
+    display: inline-block;
+    height: auto;
+    margin-top:0.6em;
+    /* background-color:blue; */
+    text-align: center;
+}
+/* flash message box pops up at bottom right corner of page*/
+.message{
+    position: absolute;
+    top: 80%;
+    left: 85%;
+    transform: translateX(-50%);
+    color: #c3ffbf;
+    width: 400px;
+    height: 80px;
+    vertical-align: middle;
+    border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 25px rgba(0, 0, 0, .2);
+    z-index: 100
+}
+
+.message-success{
+    background-color: rgba(110, 250, 102,0.2);
+    border: solid 1px #0c8c00;
+}
+
+
+/* Used for debugging purposes. not part of final styles */
+/* .message-error{
+    display: none;
+    background-color: rgba(199, 24, 30,0.2);
+} */
+
+.message-text{
+    font-family: 'Helvetica', sans-serif;
+    color:#c3ffbf;
+    padding: 5%;
+    text-align: center;
+}
+
+/* Used for debugging purposes. not part of final styles */
+/* .error-messages{
+    font-size:12;
+    color:red;
+} */
+
+/* for mobile devices*/
+@media only screen and (max-width: 600px) {
+
+    .button{
+        font-size:16px;
+    }
+
+    .button:hover{
+        font-size: 18px;
+    }
+
+    img{
+        max-width: 200%;
+        transform: translate(-25%,25%);
+    }
+
+}
+
+/* for 1440p or similar resolution monitors*/
+@media only screen and (min-width: 2000px){
+  img{
+      width:100vw;
+      max-width: none;
+      max-height: none;
+      overflow: hidden;
+  }
+
+  .button{
+      font-size:50px;
+  }
+
+  .button:hover{
+      font-size: 60px;
+  }
+
+  .leftbutton{
+      font-size:2em;
+  }
+}
+
+/* for 4k or similar resolution monitors*/
+@media only screen and (min-width: 3000px){
+  img{
+      width:100vw;
+      max-width: none;
+      max-height: none;
+      overflow: hidden;
+  }
+
+  .button{
+      font-size:90px;
+  }
+
+  .button:hover{
+      font-size: 100px;
+  }
+
+  .leftbutton{
+      font-size:4em;
+      border-radius:2em;
+  }
+}

@@ -10,7 +10,7 @@ SECRET_KEY = ";+h!7qsT<;n%<yTI/~N9c\g?cpBH{tJ9ui,V5mVzkMf-W?BlxQnvO"
 DEBUG = True
 
 #add your respective hostname(s) to the ALLOWED_HOSTS list
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','meenkari.herokuapp.com']
 
 #this is the defult sqlite databse. make appropriate changes
 DATABASES = {
