@@ -14,9 +14,11 @@ ALLOWED_HOSTS = ['127.0.0.1','meenkari.herokuapp.com']
 
 #if the DATABSE_URL variable is found like in heroku, it uses that, otherwise uses the default sqlite database
 import dj_database_url
-#if the DATABSE_URL variable is found like in heroku, it uses that, otherwise uses the default sqlite database
-import dj_database_url
-DATABASES = dj_database_url.config(conn_max_age=600, ssl_require=True) if (os.environ.get('DATABASE_URL')) else {'default':{'ENGINE': 'django.db.backends.sqlite3','NAME': os.path.join(BASE_DIR, 'db.sqlite3'),}}
+DB_temp = {
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True) if (os.environ.get('DATABASE_URL')) else DB_temp
 
 
 #for gmail, use the following
