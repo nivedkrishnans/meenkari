@@ -2,9 +2,12 @@
 {% load static %}
 
 {% block head %}
-<title>Home</title>
+<title>Fish On - Home</title>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/home.css' %}">
 {% endblock %}
 
-{% block body %}
-<p>This is the home page</p>
+{% block content %}
+  <div class="hero_text">
+    FISH ON!
+  </div>
 {% endblock %}

@@ -3,5 +3,3 @@ pip install channels
 pip install channels-redis
 install redis for the device and run redis-server
 pip install django-registration
-pip install psycopg2-binary
-pip3 install dj-database-url

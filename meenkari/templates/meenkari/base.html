@@ -3,44 +3,93 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/base.css' %}">
     {% block head %}
     {% endblock %}
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Francois+One&family=Fredoka+One&family=Saira+Extra+Condensed:wght@500&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
   </head>
   <body>
-    <header>
-      <style>
-        header a{
-          color:white !important; 
-          }
-        header{
-          background-color:rgb(8,8,8);
-          margin: 0;
-        }
-        html,body{
-          padding: 0 !important;
-          margin: 0 !important;
-        }
-      </style
-      <nav>
-        <ul>
-          <li><a href="{%url 'home'%}">Home</a></li>
-
-          {% if user.is_authenticated %}
-            <li><a href="#">{{user}}'s page (to be added)</a></li>
-            <li><a href="{%url 'password_change'%}">Change password</a></li>
-            <li><a href="{%url 'logout'%}">Log Out</a></li>
-          {% else %}
-            <li><a href="{%url 'login'%}">Log In</a></li>
-            <li><a href="{%url 'django_registration_register'%}">Sign Up</a></li>
-            <li><a href="{%url 'password_reset'%}">Reset password</a></li>
+      <div class = "top-bar">
+              <a href='{% url 'home' %}'>
+                  <div class = "button">Home</div>
+              </a>
+              <a href='{%url 'host'%}'>
+                  <div class = "button">Host</div>
+              </a>
+              <a href='{%url 'join'%}'>
+                  <div class = "button">Join</div>
+              </a>
+              <!-- only show login and signup pages if the user isn't already logged in -->
+              {% if user.is_authenticated %}
+              <div class="nametag">
+                  <div class="dp">
+                      image
+                  </div>
+                  <div class="username">
+                      {{user}}
+                  </div>
+                  <div class="dropdown-content">
+                      <div class='elt'><a href="#">Profile(to be added)</a></div>
+                      <div class='elt'><a href="{%url 'password_change'%}">Change Password</a></div>
+                      <div class='elt'><a href="{%url 'logout'%}">Sign out</a></div>
+                  </div>
+              </div>
+              {% else %}
+              <a href='{%url 'django_registration_register'%}'>
+                  <div class="leftbutton">&nbsp&nbspSign&nbspUp&nbsp&nbsp</div>
+              </a>
+              <a href='{%url 'login'%}'>
+                  <div class="leftbutton leftbutton2">&nbsp&nbspSign&nbspIn&nbsp&nbsp</div>
+              </a>
+              {% endif %}
+          </div>
+          {% if messages %}
+              {% for message in messages%}
+                  <div class="message message-{{message.tags}}">
+                      <div class="message-text">
+                          {{message}}
+                      </div>
+                  </div>
+              {% endfor %}
           {% endif %}
+          {% block content %}{% endblock %}
+          <div class="container">
+            <ul id="scene">
+                <li class="layer" data-depth="0.04" >
+                    <img src={% static 'meenkari/images/card_09.png'%}>
+                </li>
+                <li class="layer" data-depth="0.04" >
+                    <img src={% static 'meenkari/images/card_08.png'%}>
+                </li>
+                <li class="layer" data-depth="0.06" >
+                    <img src={% static 'meenkari/images/card_07.png'%}>
+                </li>
+                <li class="layer" data-depth="0.08" >
+                    <img src={% static 'meenkari/images/card_06.png'%}>
+                </li>
+                <li class="layer" data-depth="0.1" >
+                    <img src={% static 'meenkari/images/card_05.png'%}>
+                </li>
+                <li class="layer" data-depth="0.15" >
+                    <img src={% static 'meenkari/images/card_04.png'%}>
+                </li>
+                <li class="layer" data-depth="0.2" >
+                    <img src={% static 'meenkari/images/card_03.png'%}>
+                </li>
+                <li class="layer" data-depth="0.3">
+                    <img src={% static 'meenkari/images/card_02.png'%}>
+                </li>
+                <li class="layer" data-depth="0.5" >
+                    <img src={% static 'meenkari/images/card_01.png'%}>
+                </li>
+            </ul>
+          </div>
 
-          <li><a href="{%url 'host'%}">Host</a></li>
-          <li><a href="{%url 'join'%}">Join</a></li>
-        </ul>
-      </nav>
-    </header>
-    {% block body %}
-    {% endblock %}
+          <script>
+              var scene= document.getElementById("scene");
+              var parallax = new Parallax(scene);
+          </script>
   </body>
 </html>
