@@ -14,4 +14,4 @@ from django.core.asgi import get_asgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'meenkari.settings')
 
 application = get_asgi_application()
-channel_layer = channels.layers.get_channel_layer()
+channel_layer = get_channel_layer()
