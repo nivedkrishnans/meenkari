@@ -2,17 +2,26 @@
 {% load static %}
 
 {% block head %}
-  <title>Join</title>
+<title>Join Game - Fish ON</title>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/signup.css' %}">
 {% endblock %}
 
 {% block content %}
-  <p>Game list</p>
-  <table>
-    <tr> <th>Game Name</th> <th>Host</th> <th>Create time</th> <th>Unite Link</th></tr>
-    {% for game in game_list %}
-      <tr> <th>{{ game.game_name }}</th> <th>{{ game.player_11 }}</th> <th>{{ game.create_time }}</th> <th><a target="_blank" href="{% url 'unite' game.unite_id %}"><button>Join</button></a></th> </tr>
-    {% endfor %}
-  </table>
 
+    <div class="box" id="signin">
+        <h1>Game List</h1>
+        <table >
+            <style>
+                table *{
+                    font-size: 10px !important;
+                }
+            </style>
+            <tr> <th>Game Name</th> <th>Host</th> <th>Create time</th> <th>Unite Link</th></tr>
+            {% for game in game_list %}
+                <tr> <td>{{ game.game_name }}</td> <td>{{ game.player_11 }}</td> <td>{{ game.create_time }}</td> <td><a target="_blank" href="{% url 'unite' game.unite_id %}"><button>Join</button></a></td> </tr>
+            {% endfor %}
+        </table>
+    </div>
+      
 
 {% endblock %}

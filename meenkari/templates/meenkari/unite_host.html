@@ -2,48 +2,45 @@
 {% load static %}
 
 {% block head %}
-<title>Unite</title>
+<title>Unite - Fish ON</title>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/signup.css' %}">
 {% endblock %}
 
 {% block content %}
-  <p>Here you shall choose your players</p>
-  <p id="user_queue"> {{unite_queue}}</p>
-  <p>Team 1 Player 1 is the host, {{user}}</p>
-  {% if form.errors %}
-    <div class="errors">
-      <p>Please fix the following errors</p>
 
-      {% if form.non_field_errors %}
-        {{ form.non_field_errors }}
-      {% endif %}
+    <div class="box" id="signin">
+        <h1>Unite</h1>
+                <p style="font-size:10px;">Here you shall choose your players</p>
+                <p style="font-size:10px;" id="user_queue"> {{unite_queue}}</p>
+                <p style="font-size:10px;">Team 1 Player 1 is the host, {{user}}</p>
+                <form method="POST">
+                    <div class="form-container">
+                        {% csrf_token %}
+                        <!-- prints out the form field by field -->
+                        {% for field in form %}
+                            <div class="field-item">
+                                <div class="field-label">
+                                    {{field.label}}
+                                </div>
+
+                                <!-- adds an "is-invalid" class to the div if a non field error occurs, so that it can be given error styling-->
+                                <div class="field  {% if form.non_field_errors %}is-invalid{% endif %}">
+                                    {{field}}
+                                </div>
+                            </div>
+                      {% endfor %}
+                      {% if form.non_field_errors %}
+                        <!-- Non existant username or password are not particular to any field and show up in non field errors. -->
+                        <div class="errors">
+                            {{form.non_field_errors}}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+               
     </div>
-  {% endif %}
-  {% if messages %}
-    <div class="messages">
-      <ul>
-        {% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-      </ul>
-    </div>
-  {% endif %}
-
-
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% for field in form %}
-      <div class="field-space">
-        {{ field.errors }}
-        {{ field.label_tag }}
-        {{ field }}
-      </div>
-    {% endfor %}
-    <div class="buttonCollection">
-      <button type="submit" name="submit" value="submit">Submit</button>
-    </div>
-  </form>
-
-
+ 
 
   <script type="text/javascript" src='{% static "js/jquery-3.5.1.min.js" %}'></script>
   <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
@@ -60,7 +57,9 @@
     };
 
 
-  </script>
-
+  </script> 
 
 {% endblock %}
+
+
+
