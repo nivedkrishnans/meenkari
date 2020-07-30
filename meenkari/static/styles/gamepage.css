@@ -1,0 +1,246 @@
+@font-face{
+    font-family: 'Consolas';
+    src: url('../fonts/Consolas.ttf')
+}
+
+body{
+    margin:0px;
+    padding:0px;
+    overflow: hidden;
+}
+
+.container{
+    height:90%;
+    width:100%;
+    background-color:black;
+}
+
+.heading{
+    height: 10%;
+    width: 100%;
+    background-color: black;
+    color: white;
+    font-size: 3em;
+    text-align: center;
+}
+
+.gamecircle{
+    background-color: transparent;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    border-radius: 50%;
+    width: 500px;
+    height: 500px;
+}
+
+.playerbox{
+    box-sizing: border-box;
+    height: 20%;
+    width: 35%;
+    color: black;
+    background-color: transparent;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+}.player4{
+    transform: translate(-50%, -250%);
+}
+
+.player5{
+    transform: translate(75%, -175%);
+}
+
+.player6{
+    transform: translate(75%, -20%);
+}
+
+.player1{
+    width: 60%;
+    height: 38%;
+    transform: translate(-50%, 50%);
+}
+
+.player2{
+    transform: translate(-175%, -20%);
+}
+
+.player3{
+    transform: translate(-175%, -175%);
+}
+
+.playerboxh{
+    width: 100%;
+    height: 25%;
+    background-color: transparent;
+    text-align: center;
+    color: white;
+}
+
+.cardbox{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    max-width: 100%;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+
+}
+
+.cardWrapper{
+        box-sizing: border-box;
+        max-height: 100%;
+        max-width: 6%;
+        overflow: hidden;
+        background-color: white;
+        transition: opacity 4000ms;
+        will-change: opacity;
+}
+
+.cardWrapper.fadedut{
+    opacity: 0;
+}
+
+.firstcard{
+    background-color: transparent;
+}
+
+.lastcard{
+    overflow: visible;
+}
+
+img{
+    box-sizing: border-box;
+    height: 100%;
+}
+
+@-moz-document url-prefix() {
+img{
+    max-width: 450%;
+}
+}
+
+.cardh{
+    box-sizing: border-box;
+    height: 100%;
+}
+
+@-moz-document url-prefix() {
+.cardh{
+    max-width: 450%;
+}
+}
+
+.statbox{
+    box-sizing: border-box;
+    border-radius: 15px;
+    border:  2px dotted grey;
+    width: 20%;
+    height: 12%;
+    position: absolute;
+    bottom: 5%;
+    right: 2%;
+    font-family: "Consolas", sans-serif;
+    font-size: 0.8em;
+    color: grey;
+    padding: 1%;
+}
+
+.scorebox{
+    box-sizing: border-box;
+    width: 20%;
+    height: auto;
+    position: absolute;
+    bottom: 5%;
+    left: 3%;
+    border-radius: 15px;
+    border: 2px dotted grey;
+    font-family: "Consolas", sans-serif;
+    color: grey;
+}
+
+.scoreboxh{
+    font-size: 1.2em;
+    box-sizing: border-box;
+    width: 100%;
+    height: 15%;
+    text-align: center;
+    border-bottom: 2px dotted grey;
+}
+
+.scoreteams{
+    padding: 0.5em;
+}
+
+.declbutton{
+    box-sizing: border-box;
+    width: 90px;
+    height: 40px;
+    padding: 10px;
+    position: absolute;
+    bottom: 5%;
+    left: 36%;
+    font-family: 'Helvetica',sans-serif;
+    font-size: 1.2em;
+    background-color: grey;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    border-radius: 10px;
+}
+
+.declbutton:hover{
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+.askbutton{
+    box-sizing: border-box;
+    width: 90px;
+    height: 40px;
+    padding: 10px;
+    position: absolute;
+    bottom: 5%;
+    right: 30%;
+    font-family: 'Helvetica',sans-serif;
+    font-size: 1.2em;
+    background-color: grey;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    border-radius: 10px;
+}
+
+.askbutton:hover{
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+.askbox{
+    box-sizing: border-box;
+    height: 60%;
+    width: 90%;
+    background-color: rgba(205,204,218,0.96);
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 10;
+    border-radius: 15px;
+}
+
+.askboxh{
+    width: 100%;
+    height: 10%;
+    background-color: transparent;
+    text-align: center;
+    color: black;
+
+}

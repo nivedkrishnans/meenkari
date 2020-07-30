@@ -1,10 +1,235 @@
-{% extends 'meenkari/base.html' %}
+<DOCTYPE!>
+
 {% load static %}
 
-{% block head %}
-<title>Play</title>
-{% endblock %}
 
-{% block content %}
-<p>You'll play here</p>
-{% endblock %}
+
+<html>
+    <head>
+        <title>Game - FISH ON</title>
+        <link rel="stylesheet" href="{% static 'styles/gamepage.css' %}">
+        <script type="text/javascript" src="{% static 'js/gamepage.js' %}"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+    <body>
+
+        <div class="heading">
+            Host's game
+        </div>
+        <div class="container">
+            <div class="gamecircle" id="gamecircle">
+                <div class="playerbox player4">
+                    <div class="playerboxh">
+                        player11
+                    </div>
+                    <div class="cardbox">
+                        <div class="cardWrapper firstcard">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper lastcard">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                    </div>
+                </div>
+                <div class="playerbox player5">
+                    <div class="playerboxh">
+                        player21
+                    </div>
+                    <div class="cardbox">
+                        <div class="cardWrapper firstcard">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper lastcard">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                    </div>
+                </div>
+                <div class="playerbox player6">
+                    <div class="playerboxh">
+                        player12
+                    </div>
+                    <div class="cardbox">
+                        <div class="cardWrapper firstcard">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper lastcard">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                    </div>
+                </div>
+                <div class="playerbox player1">
+                    <div class="playerboxh">
+                        player22
+                    </div>
+                    <div class="cardbox">
+                        <div class="cardWrapper firstcard" id="33">
+                            <img src="{% static 'images/cards/33.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper" id="46">
+                            <img src="{% static 'images/cards/46.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper" id="25">
+                            <img src="{% static 'images/cards/25.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper" id="96">
+                            <img src="{% static 'images/cards/96.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper lastcard" id="45">
+                            <img src="{% static 'images/cards/45.png' %}" alt=" " class="card">
+                        </div>
+                    </div>
+                </div>
+                <div class="playerbox player2">
+                    <div class="playerboxh">
+                        player13
+                    </div>
+                    <div class="cardbox">
+                        <div class="cardWrapper firstcard">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                        <div class="cardWrapper lastcard">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                    </div>
+                </div>
+                <div class="playerbox player3">
+                    <div class="playerboxh">
+                        player23
+                    </div>
+                    <div class="cardbox">
+                        <div class="cardWrapper lastcard firstcard">
+                            <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
+                        </div>
+                    </div>
+                </div>
+                <div class="askbox">
+                    <div class="askboxh">
+                        Ask
+                    </div>
+                    <div class="formbox">
+
+                    </div>
+                </div>
+            </div>
+            <div class="statbox">
+                Connection status : <br><br>
+                Last updated : <br><br>
+            </div>
+            <div class="scorebox">
+                <div class="scoreboxh">
+                    Declarations
+                </div>
+                <div class="scoreteams">
+                    Team 1<br>
+                    <ol>
+                        <li>Suit 1</li>
+                        <li>Suit 2</li>
+                        <li>Suit 3</li>
+                        <li>Suit 4</li>
+                    </ol>
+                    Team 2<br>
+                    <ol>
+                        <li>Suit 1</li>
+                        <li>Suit 2</li>
+                        <li>Suit 3</li>
+                        <li>Suit 4</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="declbutton">
+                Declare
+            </div>
+            <div class="askbutton">
+                Ask
+            </div>
+        </div>
+
+
+
+        <script type="text/javascript">
+            function gamecircle(){
+
+                var gamecircle = document.getElementById("gamecircle");
+                var height = gamecircle.parentElement.clientHeight;
+                var width = gamecircle.parentElement.clientWidth;
+
+
+                if (height < width) {
+                    gamecircle.style.height = String(height*0.8)+"px";
+                    gamecircle.style.width = gamecircle.style.height;
+                } else {
+                    gamecircle.style.width = String(width*0.8)+"px";
+                    gamecircle.style.height = gamecircle.style.width;
+                }
+            }
+            gamecircle()
+            window.addEventListener('resize', gamecircle);
+
+            var askbutton = document.getElementsByClassName("askbutton")[0];
+            askbutton.addEventListener("click", ask)
+        </script>
+    </body>
+
+</html>
