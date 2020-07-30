@@ -1,4 +1,5 @@
 from django.utils import timezone
+#from datetime import datetime
 from .models import *
 import string
 import random
@@ -42,7 +43,9 @@ def shuffle_cards(thisgame): #the argument is a game instance
 
 
 
-def assign_id(thisgame):    #the argument is a game instance
+def assign_id(thisgame):
+    #this function assigns random strings as game_id and unite_id for the game instance passed as argument.
+    #the length of the random strings is defined by game_id_size and unite_id_size declared globally
     all_game_ids = Game.objects.all().values('game_id')
     all_unite_ids = Game.objects.all().values('unite_id')
 
@@ -123,78 +126,49 @@ def unite_queue_update(thisgame):
             "content": json.dumps(unite_queue_update),
         })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#test and trial functions
-
-def game_details_generator(thisgame): #returns the game details as json, which is needed only once during the game
-    game_details = {'game_name':thisgame.game_name,'game_id':thisgame.game_id,'game_status':thisgame.game_status,
-                    'p11':{'id':thisgame.p1,'img':thisgame.p1_image,},
-                    'p12':{'id':thisgame.p2,'img':thisgame.p2_image,},
-                    'p13':{'id':thisgame.p3,'img':thisgame.p3_image,},
-                    'p21':{'id':thisgame.p4,'img':thisgame.p4_image,},
-                    'p22':{'id':thisgame.p5,'img':thisgame.p5_image,},
-                    'p23':{'id':thisgame.p6,'img':thisgame.p6_image,},
+def game_status_json(thisuser,thisgame,message):
+    #arguments are a user instance and a game instance, and a string/integer which carries some message to the client
+    hand_lengths = [
+        int(len(thisgame.p1_hand)/3),
+        int(len(thisgame.p2_hand)/3),
+        int(len(thisgame.p3_hand)/3),
+        int(len(thisgame.p4_hand)/3),
+        int(len(thisgame.p5_hand)/3),
+        int(len(thisgame.p6_hand)/3),
+    ]
+    game_status_json = {
+        "ts": str(timezone.now()),
+        "hl": hand_lengths,
+        "my": player_status_finder(thisuser,thisgame),
+        "te": [thisgame.team_1_status,thisgame.team_2_status],
+        "p0": str(thisgame.p1),
+        "me": message,
     }
-    return game_details
+    return json.dumps(game_status_json)
 
-def current_status_generator(thisgame): #returns the game status as json, which is needed for every move in the game
-    current_status ={'time': str(timezone.now()),
-                    'p11hand':thisgame.p1_hand,
-                    'p12hand':thisgame.p2_hand,
-                    'p13hand':thisgame.p3_hand,
-                    'p21hand':thisgame.p6_hand,
-                    'p22hand':thisgame.p5_hand,
-                    'p23hand':thisgame.p6_hand,
-                    't1':thisgame.team_1_status,
-                    't2':thisgame.team_2_status,
-                }
-    return current_status
+def game_info_json(thisgame):
+    game_info = {
+        "pl":[str(thisgame.p1), str(thisgame.p2), str(thisgame.p3), str(thisgame.p4), str(thisgame.p5), str(thisgame.p6),],
+        "na": thisgame.game_name,
+        "pr": thisgame.game_privacy,
+        "ts": str(thisgame.create_time),
+    }
+    return json.dumps(game_info)
 
-
-
-def broadcast_live(info_json,game_id,username):
-    this_group_name = game_id + '-' + username
-    channel_layer = channels.layers.get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        this_group_name, {
-            "type": 'game_update',
-            "content": json.dumps(info_json),
-        })
-
-
-
-
-
-
-
-
-#alternate function, ignore this
-def shuffle_cards1():
-    shuffling = random.sample(newdeck)
-    shuffleddeck = (
-            delimiter.join(shuffling[0:9]),
-            delimiter.join(shuffling[9:18]),
-            delimiter.join(shuffling[18:27]),
-            delimiter.join(shuffling[27:36]),
-            delimiter.join(shuffling[36:45]),
-            delimiter.join(shuffling[45:54]),
-    )
-    return shuffleddeck
+def player_status_finder(thisuser,thisgame):
+    #finds the number (1-6) and the hand of a user in a game
+    if thisgame.p1 == thisuser:
+        return [1, thisgame.p1_hand]
+    elif thisgame.p2 == thisuser:
+        return [2, thisgame.p2_hand]
+    elif thisgame.p3 == thisuser:
+        return [3, thisgame.p3_hand]
+    elif thisgame.p4 == thisuser:
+        return [4, thisgame.p4_hand]
+    elif thisgame.p5 == thisuser:
+        return [5, thisgame.p5_hand]
+    elif thisgame.p6 == thisuser:
+        return [6, thisgame.p6_hand]
+    else:
+        #zero means the player isn't a part of the game
+        return [0, "error"]

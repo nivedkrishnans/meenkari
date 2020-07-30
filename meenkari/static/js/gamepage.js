@@ -1,4 +1,7 @@
 function update(json){
+    // this function takes data in the format '{"player1" : [64,24,84,46,22,15,25], "player2" : 2,"player3" : 6,"player4" : 8,"player5" : 15,"player6" : 3}'
+    // it updates the cards on the screen, without considering the actul player numbers, but their positions  on the screen
+    // the positions are 1 for the current player, and 2 to 6 are the players clockwise from the current player
     var updatedata=JSON.parse(json);
 
     var cardnumber_old = [];
@@ -77,4 +80,24 @@ function update(json){
 
 function ask() {
     document.getElementsByClassName("askbox")[0].style.display = "block";
+}
+
+
+
+function refresh_cards(){
+  //this function takes the value of game_status_json and updates the cards using the update()
+  //prior to calling the update() function, it arranges it into the format required
+  //this function converts cards information from the back-end player numbering system to the front-end numbering
+  var my = game_status_json["my"];
+  var temp = {"player1" : my[1] , "player2" : 9,"player3" : 9,"player4" : 9,"player5" : 9,"player6" : 9}
+  if(my[1].length != 0){
+      temp["player1"] = my[1].substring(0,(my[1].length-1))
+  }
+  for(var i=2; i<7; i++){
+    temp["player" + i] = game_status_json["hl"][(i+my[0]-2)%6]
+  }
+  temp= JSON.stringify(temp);
+  console.log("update text = " +temp);
+  //update(temp);
+  return temp;
 }

@@ -18,10 +18,10 @@
             </style>
             <tr> <th>Game Name</th> <th>Host</th> <th>Create time</th> <th>Unite Link</th></tr>
             {% for game in game_list %}
-                <tr> <td>{{ game.game_name }}</td> <td>{{ game.player_11 }}</td> <td>{{ game.create_time }}</td> <td><a target="_blank" href="{% url 'unite' game.unite_id %}"><button>Join</button></a></td> </tr>
+                <tr> <td>{{ game.game_name }}</td> <td>{{ game.p1 }}</td> <td>{{ game.create_time }}</td> <td><a target="_blank" href="{% url 'unite' game.unite_id %}"><button>Join</button></a></td> </tr>
             {% endfor %}
         </table>
     </div>
-      
+
 
 {% endblock %}

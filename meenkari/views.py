@@ -104,7 +104,24 @@ def unite(request,url_id=1):
         return redirect('login')
 
 def play(request,url_id=1):
-    return render(request, 'meenkari/play.html',)
+    if request.user.is_authenticated:
+        this_user = request.user
+        this_game = get_object_or_404(Game, game_id=url_id)
+        if is_player(this_user,this_game):
+            if this_game.game_status in ['over','stopped']:
+                return render(request, 'meenkari/gameover.html',)
+            elif this_game.game_status in ['united','started']:
+                game_status = game_status_json(this_user,this_game,"0")
+                game_info = game_info_json(this_game)
+                return render(request, 'meenkari/play.html',{'game_info_json':game_info,"game_status_json":game_status})
+            else:
+                return render(request, 'meenkari/error.html',)
+        else:
+            return render(request, 'meenkari/sorry.html',)
+
+    else:
+        messages.add_message(request, messages.INFO, 'Please log in in order to play')
+        return redirect('login')
 
 def sorry(request):
     return render(request, 'meenkari/sorry.html',)

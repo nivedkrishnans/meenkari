@@ -1,9 +1,5 @@
-<DOCTYPE!>
-
 {% load static %}
-
-
-
+<DOCTYPE!>
 <html>
     <head>
         <title>Game - FISH ON</title>
@@ -13,9 +9,14 @@
     </head>
 
     <body>
+        <p style="display:none;">
+          game_info_json = {{game_info_json}} <br>
+          game_status_json = {{game_status_json}}
+        </p>
+
 
         <div class="heading">
-            Host's game
+            Loading
         </div>
         <div class="container">
             <div class="gamecircle" id="gamecircle">
@@ -229,6 +230,14 @@
 
             var askbutton = document.getElementsByClassName("askbutton")[0];
             askbutton.addEventListener("click", ask)
+
+
+          // initial page data
+          var game_status_json = {{game_status_json|safe}};
+          var game_info_json = {{game_info_json|safe}};
+
+          
+          //window.addEventListener('load', refresh_cards());
         </script>
     </body>
 
