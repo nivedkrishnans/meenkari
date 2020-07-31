@@ -20,7 +20,7 @@
                 newdiv.setAttribute("class", "cardWrapper")
                 playercards.appendChild(newdiv);
                 var imgdiv = document.createElement("img");
-                imgdiv.setAttribute("src", "{% static 'images/gray_back.png' %}");
+                imgdiv.setAttribute("src", "../static/images/gray_back.png");
                 imgdiv.setAttribute("alt", " ");
                 imgdiv.setAttribute("class", "card");
                 playercards.getElementsByClassName("cardWrapper")[playercards.getElementsByClassName("cardWrapper").length-1].appendChild(imgdiv);
@@ -63,7 +63,7 @@
             newdiv.id = String(mycards_new[i]);
             mycardbox.appendChild(newdiv);
             var imgdiv = document.createElement("img");
-            imgdiv.setAttribute("src", "{% static 'images/cards/"+String(mycards_new[i])+".png' %}");
+            imgdiv.setAttribute("src", "../static/images/cards/"+String(mycards_new[i])+".png");
             imgdiv.setAttribute("alt", " ");
             imgdiv.setAttribute("class", "card");
             mycardbox.getElementsByClassName("cardWrapper")[mycardbox.getElementsByClassName("cardWrapper").length-1].appendChild(imgdiv);
