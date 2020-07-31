@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 class Game(models.Model):
     #game takes place here
     game_id = models.CharField(max_length=127, null=False, blank=True)
-    #players unite here
-    unite_id = models.CharField(max_length=127, null=False, blank=True)
+    #players lobby here
+    lobby_id = models.CharField(max_length=127, null=False, blank=True)
     game_name = models.CharField(default="Unnamed Game", max_length=32, null=False, blank=False)
     #determines whether or not the game appears in the join page
     game_privacy = models.CharField(default="public", max_length=10, choices=(("public","Public"),("private","Private"),))
@@ -36,10 +36,10 @@ class Game(models.Model):
     def __str__(self):
         return self.game_name
 
-class UniteQueue(models.Model):
-    game = models.OneToOneField(Game, on_delete=models.SET_NULL, related_name='unite_queue', null=True, blank=True)
+class Lobby(models.Model):
+    game = models.OneToOneField(Game, on_delete=models.SET_NULL, related_name='lobby', null=True, blank=True)
     create_time = models.DateTimeField(auto_now=False, auto_now_add=True)
-    players = models.ManyToManyField(User, related_name='unite_queue_history',  blank=True)
+    players = models.ManyToManyField(User, related_name='lobby_history',  blank=True)
 
     def __str__(self):
         return str(self.game)

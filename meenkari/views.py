@@ -28,10 +28,10 @@ def host(request):
                 newgame.game_status = "empty"
                 newgame.lastmodify_time = timezone.now()
                 newgame.save()
-                newUniteQueue = UniteQueue(game=newgame)
-                newUniteQueue.save()
-                messages.add_message(request, messages.INFO, 'You have succesfully hosted the game ' + (newgame.game_name) + '. You can unite with your teammembers at unite/' + (newgame.unite_id))
-                return render(request, 'meenkari/host.html', {'form': f})
+                newLobby = Lobby(game=newgame)
+                newLobby.save()
+                messages.add_message(request, messages.INFO, 'You have succesfully hosted the game ' + (newgame.game_name) + '. You can lobby with your teammembers at lobby/' + (newgame.lobby_id))
+                return redirect('lobby', url_id=(newgame.lobby_id))
             else:
                 return redirect('error')
         else:
@@ -52,23 +52,16 @@ def join(request):
         messages.add_message(request, messages.INFO, 'Please log in in order to join games')
         return redirect('login')
 
-def unite(request,url_id=1):
+def lobby(request,url_id=1):
     if request.user.is_authenticated:
-        this_game = get_object_or_404(Game, unite_id=url_id)
+        this_game = get_object_or_404(Game, lobby_id=url_id)
         this_user = request.user
         if this_game.game_status == 'empty':
             if is_host(this_user,this_game):
                 if request.method == "POST":
                     print("POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOST")
-                    f = HostUniteForm(request.POST)
+                    f = HostLobbyForm(request.POST)
                     if f.is_valid():
-                        #new_data = f.save(commit=False)
-                        #this_game.p2 = new_data.p2
-                        #this_game.p3 = new_data.p3
-                        #this_game.p4 = new_data.p4
-                        #this_game.p5 = new_data.p5
-                        #this_game.p6 = new_data.p6
-
                         this_game.p2 = User.objects.get(username=f.cleaned_data['p2'])
                         this_game.p3 = User.objects.get(username=f.cleaned_data['p3'])
                         this_game.p4 = User.objects.get(username=f.cleaned_data['p4'])
@@ -78,23 +71,23 @@ def unite(request,url_id=1):
                         this_game.lastmodify_time = timezone.now()
                         this_game.save()
                         messages.add_message(request, messages.INFO, 'You have succesfully started the game ' + (this_game.game_name) + '. You can play with your teammembers at play/' + (this_game.game_id))
-                        return render(request, 'meenkari/unite_host.html', {'form': f,'unite_queue':unite_queue_json(this_game)})
+                        return render(request, 'meenkari/lobby_host.html', {'form': f,'lobby':lobby_json(this_game)})
                     else:
-                        return render(request, 'meenkari/unite_host.html', {'form': f,'unite_queue':unite_queue_json(this_game)})
+                        return render(request, 'meenkari/lobby_host.html', {'form': f,'lobby':lobby_json(this_game)})
                 else:
-                    f = HostUniteForm(initial={'p1':this_game.p1.username})
-                    return render(request, 'meenkari/unite_host.html', {'form': f,'unite_queue':unite_queue_json(this_game)})
+                    f = HostLobbyForm(initial={'p1':this_game.p1.username})
+                    return render(request, 'meenkari/lobby_host.html', {'form': f,'lobby':lobby_json(this_game)})
 
             else:
-                this_game.unite_queue.players.add(this_user)
+                this_game.lobby.players.add(this_user)
                 host_queue_update(this_game)
-                return render(request, 'meenkari/unite_player.html',)
+                return render(request, 'meenkari/lobby_player.html',)
         else:
             if is_player(this_user,this_game):
                 if this_game.game_status in ['over','stopped']:
                     return render(request, 'meenkari/gameover.html',)
                 elif this_game.game_status in ['united','started']:
-                    return redirect('play', url_id=url_id)
+                    return redirect('play', url_id=(this_game.game_id))
                 else:
                     return render(request, 'meenkari/error.html',)
             else:

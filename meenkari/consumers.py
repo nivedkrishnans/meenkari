@@ -9,7 +9,7 @@ game_id="randomegameid"
 
 
 
-class HostConsumer(SyncConsumer):
+class LobbyConsumer(SyncConsumer):
 
     def websocket_connect(self, event):
         this_user_group = "denied"
@@ -18,12 +18,12 @@ class HostConsumer(SyncConsumer):
         print("wuhahahhahaha" + url_id)
         #url_id = self.scope["url_id"]
         if current_user.is_authenticated:
-            this_game = Game.objects.get(unite_id=url_id)
+            this_game = Game.objects.get(lobby_id=url_id)
             if is_host(current_user,this_game):
-                this_user_group = "unite-" + url_id + "-host"
+                this_user_group = "lobby-" + url_id + "-host"
                 print('consumer ' + this_user_group)
             else:
-                this_user_group = "unite-" + url_id + "-queue"
+                this_user_group = "lobby-" + url_id + "-queue"
             self.send({
                 'type': 'websocket.accept'
             })
@@ -38,11 +38,11 @@ class HostConsumer(SyncConsumer):
         current_user = self.scope["user"]
         url_id =  self.scope["url_route"]["kwargs"]["url_id"]
         if current_user.is_authenticated:
-            this_game = Game.objects.get(unite_id=url_id)
+            this_game = Game.objects.get(lobby_id=url_id)
             if is_host(current_user,this_game):
-                this_user_group = "unite-" + url_id + "-host"
+                this_user_group = "lobby-" + url_id + "-host"
             else:
-                this_user_group = "unite-" + url_id + "-queue"
+                this_user_group = "lobby-" + url_id + "-queue"
             self.send({
                 'type': 'websocket.accept'
             })
@@ -52,7 +52,7 @@ class HostConsumer(SyncConsumer):
             self.channel_name
         )
 
-    def queue_update(self, event):
+    def lobby_update(self, event):
         self.send({
             'type': 'websocket.send',
             'text': str(event['content']),

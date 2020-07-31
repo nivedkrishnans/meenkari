@@ -17,7 +17,7 @@ class HostForm(forms.ModelForm):
 
 
 
-class HostUniteForm(forms.Form):
+class HostLobbyForm(forms.Form):
     #p1 value has to be passed directly into it from the view inorder to do the rest of the validation
     #specifically making p1 readonly
     p1 = forms.CharField(label="Team 1 Player 1", max_length=32, widget=forms.TextInput(attrs={'readonly':True}))
@@ -30,42 +30,42 @@ class HostUniteForm(forms.Form):
 
     #custom Validation . see https://www.geeksforgeeks.org/python-form-validation-using-django/
     def clean_p1(self):
-        super(HostUniteForm, self).clean()
+        super(HostLobbyForm, self).clean()
         p1 = self.cleaned_data['p1']
         users = User.objects.filter(username=p1)
         if not users:
             raise  ValidationError(_("Invalid user"))
         return p1
     def clean_p2(self):
-        super(HostUniteForm, self).clean()
+        super(HostLobbyForm, self).clean()
         p2 = self.cleaned_data['p2']
         users = User.objects.filter(username=p2)
         if not users:
             raise  ValidationError(_("Invalid user"))
         return p2
     def clean_p3(self):
-        super(HostUniteForm, self).clean()
+        super(HostLobbyForm, self).clean()
         p3 = self.cleaned_data['p3']
         users = User.objects.filter(username=p3)
         if not users:
             raise  ValidationError(_("Invalid user"))
         return p3
     def clean_p4(self):
-        super(HostUniteForm, self).clean()
+        super(HostLobbyForm, self).clean()
         p4 = self.cleaned_data['p4']
         users = User.objects.filter(username=p4)
         if not users:
             raise  ValidationError(_("Invalid user"))
         return p4
     def clean_p5(self):
-        super(HostUniteForm, self).clean()
+        super(HostLobbyForm, self).clean()
         p5 = self.cleaned_data['p5']
         users = User.objects.filter(username=p5)
         if not users:
             raise  ValidationError(_("Invalid user"))
         return p5
     def clean_p6(self):
-        super(HostUniteForm, self).clean()
+        super(HostLobbyForm, self).clean()
         p6 = self.cleaned_data['p6']
         users = User.objects.filter(username=p6)
         if not users:
@@ -112,7 +112,7 @@ class HostUniteForm(forms.Form):
 #below are test and trial forms.
 
 
-#class HostUniteFormOld(forms.ModelForm):
+#class HostLobbyFormOld(forms.ModelForm):
 #    class Meta:
 #        model = Game
 #        fields = ('p1','p2','p3','p4','p5','p6',)

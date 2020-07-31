@@ -10,7 +10,7 @@ from django.conf import settings
 
 delimiter = ","
 game_id_size = 32
-unite_id_size = 32
+lobby_id_size = 32
 
 def random_string_generator(size):
     return "".join(random.choices(string.ascii_lowercase + string.digits, k = size))
@@ -44,10 +44,10 @@ def shuffle_cards(thisgame): #the argument is a game instance
 
 
 def assign_id(thisgame):
-    #this function assigns random strings as game_id and unite_id for the game instance passed as argument.
-    #the length of the random strings is defined by game_id_size and unite_id_size declared globally
+    #this function assigns random strings as game_id and lobby_id for the game instance passed as argument.
+    #the length of the random strings is defined by game_id_size and lobby_id_size declared globally
     all_game_ids = Game.objects.all().values('game_id')
-    all_unite_ids = Game.objects.all().values('unite_id')
+    all_lobby_ids = Game.objects.all().values('lobby_id')
 
     #choosing game_id
     random_id_chosen = False
@@ -57,13 +57,13 @@ def assign_id(thisgame):
         random_id_chosen = True
         thisgame.game_id = random_id
 
-    #choosing unite_id
+    #choosing lobby_id
     random_id_chosen = False
     while not random_id_chosen:
-      random_id = random_string_generator(unite_id_size)
-      if (random_id not in all_unite_ids):
+      random_id = random_string_generator(lobby_id_size)
+      if (random_id not in all_lobby_ids):
         random_id_chosen = True
-        thisgame.unite_id = random_id
+        thisgame.lobby_id = random_id
 
 
 
@@ -88,43 +88,43 @@ def is_host(thisuser,thisgame):
 
 
 
-def host_queue_update(thisgame):
+def host_lobby_update(thisgame):
     #this function updates the host about the players in the queue
-    this_group_name = "unite-" + thisgame.unite_id + "-host"
+    this_group_name = "lobby-" + thisgame.lobby_id + "-host"
     channel_layer = channels.layers.get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         this_group_name, {
-            "type": 'queue_update',
-            "content": json.dumps(unite_queue_json(thisgame)),
+            "type": 'lobby_update',
+            "content": json.dumps(lobby_json(thisgame)),
         })
 
 
-def unite_queue_json(thisgame):
+def lobby_json(thisgame):
     #this function generates the present player queue inorder to show the host
-    this_queue = list(thisgame.unite_queue.players.all().values_list('username', flat=True))
+    this_queue = list(thisgame.lobby.players.all().values_list('username', flat=True))
     this_queue_json = {
-        "type": 'queue_update',
+        "type": 'lobby_update',
         'time': str(timezone.now()),
-        'unite_id': thisgame.unite_id,
+        'lobby_id': thisgame.lobby_id,
         'queue': this_queue,
     }
     return this_queue_json
 
 
-def unite_queue_update(thisgame):
+def lobby_update(thisgame):
     #this function updates the non-host that the players have been chosen. they players will be asked to reload the page
-    this_group_name = "unite-" + thisgame.unite_id + "-" + 'queue'
-    unite_queue_update = {
-        "type": 'queue_update',
-        'time': str(timezone.now()),
-        'unite_id': thisgame.unite_id,
+    this_group_name = "lobby-" + thisgame.lobby_id + "-" + 'queue'
+    lobby_update = {
+        "type": 'lobby_update',
     }
     channel_layer = channels.layers.get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         this_group_name, {
-            "type": 'queue_update',
-            "content": json.dumps(unite_queue_update),
+            "type": 'lobby_update',
+            "content": json.dumps(lobby_update),
         })
+
+
 
 def game_status_json(thisuser,thisgame,message):
     #arguments are a user instance and a game instance, and a string/integer which carries some message to the client
@@ -146,6 +146,8 @@ def game_status_json(thisuser,thisgame,message):
     }
     return json.dumps(game_status_json)
 
+
+
 def game_info_json(thisgame):
     game_info = {
         "pl":[str(thisgame.p1), str(thisgame.p2), str(thisgame.p3), str(thisgame.p4), str(thisgame.p5), str(thisgame.p6),],
@@ -154,6 +156,8 @@ def game_info_json(thisgame):
         "ts": str(thisgame.create_time),
     }
     return json.dumps(game_info)
+
+
 
 def player_status_finder(thisuser,thisgame):
     #finds the number (1-6) and the hand of a user in a game

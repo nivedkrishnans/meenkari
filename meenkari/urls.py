@@ -13,7 +13,7 @@ urlpatterns = [
     path('sorry/', views.sorry, name="sorry"),
     path('gameover/', views.gameover, name="gameover"),
     path('error/', views.error, name="error"),
-    path('unite/<str:url_id>', views.unite, name="unite"),
+    path('lobby/<str:url_id>', views.lobby, name="lobby"),
     path('play/<str:url_id>', views.play, name="play"),
     
     path('accounts/register/', RegistrationView.as_view(success_url='/'),name='django_registration_register'), #remove this to get 2-step registration with email
