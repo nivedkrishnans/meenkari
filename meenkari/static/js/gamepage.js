@@ -55,7 +55,7 @@
             document.getElementById(String(mycards_old[i])).remove();
         }
     }
-images/cards/"+String(mycards_new[i])+".png
+
     for (i=0; i < mycards_new.length; i++){
         if (!(mycards_old.includes(mycards_new[i]))){
             var newdiv = document.createElement("div");
