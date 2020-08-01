@@ -97,11 +97,14 @@ function refresh_cards(){
   var temp = {"player1" : my_cards,}
    
   for(var i=1; i<7; i++){
+    j = (i+my[0]-2)%6;
     if(i>1){
-        temp["player" + i] = game_status["hl"][(i+my[0]-2)%6];
+        temp["player" + i] = game_status["hl"][j];
     }
-    temp["player" + i + "name"] = game_info["pl"][(i+my[0]-2)%6];
+    document.querySelector(".player" + (i) + " .playercardno").innerHTML = game_status["hl"][j];
+    document.querySelector(".player" + (i) + " .playerboxh").innerHTML = game_info["pl"][j];
   }
+  
   temp= JSON.stringify(temp);
   console.log("update text = " +temp);
   update(temp);
