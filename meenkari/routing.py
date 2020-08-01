@@ -6,8 +6,8 @@ from channels.auth import AuthMiddlewareStack
 application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(
         URLRouter([
-            path("ws/live/", consumers.LiveConsumer),
             path("ws/lobby/<str:url_id>", consumers.LobbyConsumer),
+            path("ws/play/<str:url_id>", consumers.GameConsumer),
         ])
     ),
 })

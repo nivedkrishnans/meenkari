@@ -4,8 +4,11 @@ from django.core.exceptions import ValidationError
 from .models import *
 from django.utils.translation import gettext_lazy as _
 
-
-
+class TesterForm(forms.Form):
+    group = forms.CharField(label="Group", max_length=1000, widget=forms.TextInput(),)
+    message = forms.CharField(label="Message", max_length=1000, widget=forms.TextInput(),)
+    
+    
 class HostForm(forms.ModelForm):
     class Meta:
         model = Game

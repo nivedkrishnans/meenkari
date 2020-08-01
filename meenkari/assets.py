@@ -8,6 +8,13 @@ from asgiref.sync import async_to_sync
 import channels.layers
 from django.conf import settings
 
+
+
+
+
+#IMPORTANT: For all jsons to be sent to the client, use double quotes inside and single quotes at the very outside
+
+
 delimiter = ","
 game_id_size = 32
 lobby_id_size = 32
@@ -111,7 +118,7 @@ def lobby_json(thisgame):
     return this_queue_json
 
 
-def lobby_update(thisgame):
+def player_lobby_update(thisgame):
     #this function updates the non-host that the players have been chosen. they players will be asked to reload the page
     this_group_name = "lobby-" + thisgame.lobby_id + "-" + 'queue'
     lobby_update = {
@@ -137,6 +144,7 @@ def game_status_json(thisuser,thisgame,message):
         int(len(thisgame.p6_hand)/3),
     ]
     game_status_json = {
+        "ty":"gsj",
         "ts": str(timezone.now()),
         "hl": hand_lengths,
         "my": player_status_finder(thisuser,thisgame),
@@ -176,3 +184,24 @@ def player_status_finder(thisuser,thisgame):
     else:
         #zero means the player isn't a part of the game
         return [0, "error"]
+
+def game_status_update(thisuser,thisgame,message):
+    #this function sends the game_status_json to the players on the game page in an active game
+    this_group_name = "game-" + thisgame.game_id + "-" + str(thisuser)
+    channel_layer = channels.layers.get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        this_group_name, {
+            "type": 'game_update',
+            "content": json.dumps(game_status_json(thisuser,thisgame,message)),
+        })
+
+
+
+def tester_sender(group,message):
+    #this function sends the message from the tester to the given group
+    channel_layer = channels.layers.get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        group, {
+            "type": 'game_update',
+            "content": json.dumps(message),
+        })

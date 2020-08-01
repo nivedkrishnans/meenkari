@@ -2,17 +2,14 @@
 {% load static %}
 
 {% block head %}
-<title>Unite - Fish ON</title>
+<title>Tester - Fish ON</title>
 <link rel="stylesheet" type="text/css" href="{% static 'styles/signup.css' %}">
 {% endblock %}
 
 {% block content %}
 
     <div class="box" id="signin">
-        <h1>Unite</h1>
-                <p style="font-size:10px;">Here you shall choose your players</p>
-                <p style="font-size:10px;" id="user_queue"> {{lobby}}</p>
-                <p style="font-size:10px;">Team 1 Player 1 is the host, {{user}}</p>
+        <h1>Tester</h1>
                 <form method="POST">
                     <div class="form-container">
                         {% csrf_token %}
@@ -40,24 +37,6 @@
                 </form>
                
     </div>
- 
-
-  <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
-  <script type="text/javascript" src='{% static "js/main.js" %}'></script>
-  <script language="javascript">
-
-    var liveSocket = new ReconnectingWebSocket(generate_live_url());
-    liveSocket.onmessage = function(event) {
-        var data = event.data;
-        document.getElementById("user_queue").innerHTML=data.toString();
-        console.log('data', data);
-        // do whatever required with received data ...
-    };
-
-
-  </script> 
+      
 
 {% endblock %}
-
-
-

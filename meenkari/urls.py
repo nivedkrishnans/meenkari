@@ -21,6 +21,12 @@ urlpatterns = [
     
     path('accounts/', include('django_registration.backends.activation.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    
+    path('tester/', views.tester, name="tester"),
+    
+    #test page for gsu
+    path('gsu/<str:url_id>', views.gsu, name="gsu"),
+    
     #trial and test pages below
 
     path('start/', views.start, name="start"),

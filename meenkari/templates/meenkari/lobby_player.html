@@ -10,21 +10,21 @@
 
     <div class="box" id="signin">
         <h1>Awaiting response</h1>
-        <p>Please wait for the response from the host</p>
-        <p id="host_response"></p>
+        <p ><span id="host_response">Please wait for the response from the host</span><span id="host_response_countdown" style="font-weight:bold; color:rgb(200,0,0);"></span></p>
     </div>
 
-  <script type="text/javascript" src='{% static "js/jquery-3.5.1.min.js" %}'></script>
   <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
   <script type="text/javascript" src='{% static "js/main.js" %}'></script>
   <script language="javascript">
 
     var liveSocket = new ReconnectingWebSocket(generate_live_url());
     liveSocket.onmessage = function(event) {
-        //var data = JSON.parse(event.data);
         var data = event.data;
-        $("#host_response").text(data.toString());
-        console.log('data', data);
+        data = JSON.parse(data);
+        console.log(data);
+        if(data["type"]=="lobby_update"){
+            lobby_finalized();
+        }
         // do whatever required with received data ...
     };
 

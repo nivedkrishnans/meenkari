@@ -45,7 +45,7 @@ def host(request):
 def join(request):
     if request.user.is_authenticated:
         #list all public games that are not over or stopped, latest first
-        game_list = list(Game.objects.filter(Q(game_privacy='public') & ~Q(game_status='over') & ~Q(game_status='stopped') ).order_by('-create_time'))
+        game_list = list(Game.objects.filter(Q(game_privacy='public') & ~Q(game_status='over') & ~Q(game_status='stopped') ).order_by('-create_time'))[:10]
         #game_list = list(Game.objects.all().order_by('-create_time'))
         return render(request, 'meenkari/join.html',{'game_list':game_list})
     else:
@@ -71,16 +71,18 @@ def lobby(request,url_id=1):
                         this_game.lastmodify_time = timezone.now()
                         this_game.save()
                         messages.add_message(request, messages.INFO, 'You have succesfully started the game ' + (this_game.game_name) + '. You can play with your teammembers at play/' + (this_game.game_id))
-                        return render(request, 'meenkari/lobby_host.html', {'form': f,'lobby':lobby_json(this_game)})
+                        player_lobby_update(this_game)
+                        return redirect('play', url_id=(this_game.game_id))
                     else:
                         return render(request, 'meenkari/lobby_host.html', {'form': f,'lobby':lobby_json(this_game)})
                 else:
-                    f = HostLobbyForm(initial={'p1':this_game.p1.username})
+                    f = HostLobbyForm(initial={'p1':this_game.p1.username,})
+                    #f = HostLobbyForm(initial={'p1':this_game.p1.username,'p2':this_game.p2.username,'p3':this_game.p3.username,'p4':this_game.p4.username,'p5':this_game.p5.username,'p6':this_game.p6.username})
                     return render(request, 'meenkari/lobby_host.html', {'form': f,'lobby':lobby_json(this_game)})
 
             else:
                 this_game.lobby.players.add(this_user)
-                host_queue_update(this_game)
+                host_lobby_update(this_game)
                 return render(request, 'meenkari/lobby_player.html',)
         else:
             if is_player(this_user,this_game):
@@ -125,7 +127,33 @@ def gameover(request):
 def error(request):
     return render(request, 'meenkari/error.html',)
 
+def gsu(request,url_id=1):
+    if request.user.is_authenticated:
+        this_user = request.user
+        this_game = get_object_or_404(Game, game_id=url_id)
+        game_status_update(this_user,this_game,"gsu")
+    
+    return render(request, 'meenkari/error.html',)
 
+
+
+def tester(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            f = TesterForm(request.POST)
+            if f.is_valid():
+                tester_sender(f.cleaned_data['group'], f.cleaned_data['message'])
+                messages.add_message(request, messages.INFO, 'Success')
+                return render(request, 'meenkari/tester.html', {'form': f})
+            else:
+                messages.add_message(request, messages.INFO, 'Error')
+                return render(request, 'meenkari/tester.html', {'form': f})
+        else:
+            f = TesterForm()
+        return render(request, 'meenkari/tester.html', {'form': f})
+    else:
+        messages.add_message(request, messages.INFO, 'Please log in in order to use tester')
+        return redirect('login')
 
 
 

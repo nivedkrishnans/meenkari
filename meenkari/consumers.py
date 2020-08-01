@@ -59,33 +59,37 @@ class LobbyConsumer(SyncConsumer):
         })
 
 
-
-
-
-#test and trials
-class LiveConsumer(SyncConsumer):
+class GameConsumer(SyncConsumer):
 
     def websocket_connect(self, event):
+        print("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPp")
         this_user_group = "denied"
         current_user = self.scope["user"]
+        url_id =  self.scope["url_route"]["kwargs"]["url_id"]
         if current_user.is_authenticated:
-            this_user_group = game_id + '-' + current_user.username
-
-        self.send({
-            'type': 'websocket.accept'
-        })
-
-        # Join ticks group
-        async_to_sync(self.channel_layer.group_add)(
-            this_user_group,
-            self.channel_name
-        )
+            this_game = Game.objects.get(game_id=url_id)
+            if is_player(current_user,this_game):
+                this_user_group = "game-" + url_id + "-" + str(current_user)
+            self.send({
+                'type': 'websocket.accept'
+            })
+            # Adding the user to the appropriate group
+            async_to_sync(self.channel_layer.group_add)(
+                this_user_group,
+                self.channel_name
+            )
 
     def websocket_disconnect(self, event):
         this_user_group = "denied"
         current_user = self.scope["user"]
+        url_id =  self.scope["url_route"]["kwargs"]["url_id"]
         if current_user.is_authenticated:
-            this_user_group = game_id + '-' + current_user.username
+            this_game = Game.objects.get(game_id=url_id)
+            if is_player(current_user,this_game):
+                this_user_group = "game-" + url_id + "-" + str(current_user)
+            self.send({
+                'type': 'websocket.accept'
+            })
 
         async_to_sync(self.channel_layer.group_discard)(
             this_user_group,
@@ -95,5 +99,7 @@ class LiveConsumer(SyncConsumer):
     def game_update(self, event):
         self.send({
             'type': 'websocket.send',
-            'text': self.scope["user"].username + str(event['content']),
+            'text': str(event['content']),
         })
+
+

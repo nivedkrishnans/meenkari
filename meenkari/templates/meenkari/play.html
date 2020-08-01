@@ -4,17 +4,10 @@
     <head>
         <title>Game - FISH ON</title>
         <link rel="stylesheet" href="{% static 'styles/gamepage.css' %}">
-        <script type="text/javascript" src="{% static 'js/gamepage.js' %}"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
 
     <body>
-        <p style="display:none;">
-          game_info_json = {{game_info_json}} <br>
-          game_status_json = {{game_status_json}}
-        </p>
-
-
         <div class="heading">
             Loading
         </div>
@@ -24,6 +17,7 @@
                     <div class="playerboxh">
                         player11
                     </div>
+                    <p class="playercardno"> 9 </p>
                     <div class="cardbox">
                         <div class="cardWrapper firstcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
@@ -71,6 +65,7 @@
                     <div class="playerboxh">
                         player21
                     </div>
+                    <p class="playercardno"> 9 </p>
                     <div class="cardbox">
                         <div class="cardWrapper firstcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
@@ -93,6 +88,7 @@
                     <div class="playerboxh">
                         player12
                     </div>
+                    <p class="playercardno"> 9 </p>
                     <div class="cardbox">
                         <div class="cardWrapper firstcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
@@ -109,6 +105,7 @@
                     <div class="playerboxh">
                         player22
                     </div>
+                    <p class="playercardno"> 9 </p>
                     <div class="cardbox">
                         <div class="cardWrapper firstcard" id="33">
                             <img src="{% static 'images/cards/33.png' %}" alt=" " class="card">
@@ -131,6 +128,7 @@
                     <div class="playerboxh">
                         player13
                     </div>
+                    <p class="playercardno"> 9 </p>
                     <div class="cardbox">
                         <div class="cardWrapper firstcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
@@ -159,6 +157,7 @@
                     <div class="playerboxh">
                         player23
                     </div>
+                    <p class="playercardno"> 9 </p>
                     <div class="cardbox">
                         <div class="cardWrapper lastcard firstcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
@@ -208,7 +207,7 @@
         </div>
 
 
-
+        <script type="text/javascript" src="{% static 'js/gamepage.js' %}"></script>
         <script type="text/javascript">
             function gamecircle(){
 
@@ -233,12 +232,26 @@
 
 
           // initial page data
-          var game_status_json = {{game_status_json|safe}};
-          var game_info_json = {{game_info_json|safe}};
+          var game_status_json = '{{game_status_json|safe}}';
+          var game_info_json = '{{game_info_json|safe}}';
 
           
-          //window.addEventListener('load', refresh_cards());
+          window.addEventListener('load', refresh_cards());
         </script>
+        <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
+        <script type="text/javascript" src='{% static "js/main.js" %}'></script>
+        <script language="javascript">
+
+            var liveSocket = new ReconnectingWebSocket(generate_live_url());
+            liveSocket.onmessage = function(event) {
+                var data = event.data;
+                game_status_json = JSON.parse(data);
+                refresh_cards();
+                // do whatever required with received data ...
+            };
+
+
+        </script> 
     </body>
 
 </html>

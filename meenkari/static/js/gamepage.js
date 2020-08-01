@@ -88,16 +88,18 @@ function refresh_cards(){
   //this function takes the value of game_status_json and updates the cards using the update()
   //prior to calling the update() function, it arranges it into the format required
   //this function converts cards information from the back-end player numbering system to the front-end numbering
-  var my = game_status_json["my"];
-  var temp = {"player1" : my[1] , "player2" : 9,"player3" : 9,"player4" : 9,"player5" : 9,"player6" : 9}
-  if(my[1].length != 0){
-      temp["player1"] = my[1].substring(0,(my[1].length-1))
-  }
+  var game_status = JSON.parse(game_status_json);
+  var my = game_status["my"];
+  var my_cards = my[1];
+  if (my_cards.length != 0) { my_cards = my_cards.substring(0,my_cards.length-1);}
+  my_cards = my_cards.split(',');
+  var temp = {"player1" : my_cards , "player2" : 9,"player3" : 9,"player4" : 9,"player5" : 9,"player6" : 9}
+   
   for(var i=2; i<7; i++){
-    temp["player" + i] = game_status_json["hl"][(i+my[0]-2)%6]
+    temp["player" + i] = game_status["hl"][(i+my[0]-2)%6]
   }
   temp= JSON.stringify(temp);
   console.log("update text = " +temp);
-  //update(temp);
-  return temp;
+  update(temp);
+  //return temp;
 }
