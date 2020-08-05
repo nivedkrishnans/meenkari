@@ -24,12 +24,12 @@
                 imgdiv.setAttribute("alt", " ");
                 imgdiv.setAttribute("class", "card");
                 playercards.getElementsByClassName("cardWrapper")[playercards.getElementsByClassName("cardWrapper").length-1].appendChild(imgdiv);
-                console.log("add");
+
             }
         } else if (diff < 0){
             for (j=0; j < Math.abs(diff); j++){
                 playercards.getElementsByClassName("cardWrapper")[0].remove();
-                console.log("remove");
+
             }
         }
 
@@ -37,7 +37,7 @@
             playercards.getElementsByClassName("cardWrapper")[0].classList.add("firstcard");
             playercards.getElementsByClassName("cardWrapper")[playercards.getElementsByClassName("cardWrapper").length - 1].classList.add("lastcard");
         }
-        console.log("next");
+
 
     }
 
@@ -78,11 +78,6 @@
     return [mycards_old, mycards_new];
 }
 
-function ask() {
-    document.getElementsByClassName("askbox")[0].style.display = "block";
-}
-
-
 
 function refresh_cards(){
   //this function takes the value of game_status_json and updates the cards using the update()
@@ -95,7 +90,7 @@ function refresh_cards(){
   if (my_cards.length != 0) { my_cards = my_cards.substring(0,my_cards.length-1);}
   my_cards = my_cards.split(',');
   var temp = {"player1" : my_cards,}
-   
+
   for(var i=1; i<7; i++){
     j = (i+my[0]-2)%6;
     if(i>1){
@@ -104,9 +99,41 @@ function refresh_cards(){
     document.querySelector(".player" + (i) + " .playercardno").innerHTML = game_status["hl"][j];
     document.querySelector(".player" + (i) + " .playerboxh").innerHTML = game_info["pl"][j];
   }
-  
+
   temp= JSON.stringify(temp);
-  console.log("update text = " +temp);
+  // console.log("update text = " +temp);
   update(temp);
   //return temp;
+}
+
+
+// script to pop up askbox and declbox
+var askbutton = document.getElementsByClassName("askbutton")[0];
+var askbox = document.getElementsByClassName("askbox")[0];
+var declbutton = document.getElementsByClassName("declbutton")[0];
+var declbox = document.getElementsByClassName("declbox")[0];
+var container = document.getElementsByClassName("container")[0];
+
+askbutton.onclick = function() {
+    askbox.style.display = "block";
+    declbox.style.display = "none";
+}
+
+declbutton.onclick = function() {
+    declbox.style.display = "block";
+    askbox.style.display = "none";
+}
+
+
+window.onclick = function(event) {
+    if (event.target != askbox) {
+        if (event.target != askbutton){
+            askbox.style.display = "none";
+        }
+    }
+    if (event.target != declbox) {
+        if (event.target != declbutton){
+            declbox.style.display = "none";
+        }
+    }
 }

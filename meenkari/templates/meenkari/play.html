@@ -19,7 +19,7 @@
                     </div>
                     <p class="playercardno"> 9 </p>
                     <div class="cardbox">
-                        <div class="cardWrapper firstcard">
+                        <!-- <div class="cardWrapper firstcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
                         </div>
                         <div class="cardWrapper">
@@ -58,7 +58,7 @@
                         </div>
                         <div class="cardWrapper lastcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="playerbox player5">
@@ -67,7 +67,7 @@
                     </div>
                     <p class="playercardno"> 9 </p>
                     <div class="cardbox">
-                        <div class="cardWrapper firstcard">
+                        <!-- <div class="cardWrapper firstcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
                         </div>
                         <div class="cardWrapper">
@@ -81,7 +81,7 @@
                         </div>
                         <div class="cardWrapper lastcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="playerbox player6">
@@ -90,7 +90,7 @@
                     </div>
                     <p class="playercardno"> 9 </p>
                     <div class="cardbox">
-                        <div class="cardWrapper firstcard">
+                        <!-- <div class="cardWrapper firstcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
                         </div>
                         <div class="cardWrapper">
@@ -98,7 +98,7 @@
                         </div>
                         <div class="cardWrapper lastcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="playerbox player1">
@@ -107,7 +107,7 @@
                     </div>
                     <p class="playercardno"> 9 </p>
                     <div class="cardbox">
-                        <div class="cardWrapper firstcard" id="33">
+                        <!-- <div class="cardWrapper firstcard" id="33">
                             <img src="{% static 'images/cards/33.png' %}" alt=" " class="card">
                         </div>
                         <div class="cardWrapper" id="46">
@@ -121,7 +121,7 @@
                         </div>
                         <div class="cardWrapper lastcard" id="45">
                             <img src="{% static 'images/cards/45.png' %}" alt=" " class="card">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="playerbox player2">
@@ -130,7 +130,7 @@
                     </div>
                     <p class="playercardno"> 9 </p>
                     <div class="cardbox">
-                        <div class="cardWrapper firstcard">
+                        <!-- <div class="cardWrapper firstcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
                         </div>
                         <div class="cardWrapper">
@@ -150,7 +150,7 @@
                         </div>
                         <div class="cardWrapper lastcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="playerbox player3">
@@ -159,14 +159,22 @@
                     </div>
                     <p class="playercardno"> 9 </p>
                     <div class="cardbox">
-                        <div class="cardWrapper lastcard firstcard">
+                        <!-- <div class="cardWrapper lastcard firstcard">
                             <img src="{% static 'images/gray_back.png' %}" alt=" " class="card">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="askbox">
                     <div class="askboxh">
                         Ask
+                    </div>
+                    <div class="formbox">
+
+                    </div>
+                </div>
+                <div class="declbox">
+                    <div class="askboxh">
+                        Declare
                     </div>
                     <div class="formbox">
 
@@ -227,15 +235,11 @@
             gamecircle()
             window.addEventListener('resize', gamecircle);
 
-            var askbutton = document.getElementsByClassName("askbutton")[0];
-            askbutton.addEventListener("click", ask)
-
-
           // initial page data
           var game_status_json = '{{game_status_json|safe}}';
           var game_info_json = '{{game_info_json|safe}}';
 
-          
+
           window.addEventListener('load', refresh_cards());
         </script>
         <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
@@ -251,7 +255,7 @@
             };
 
 
-        </script> 
+        </script>
     </body>
 
 </html>

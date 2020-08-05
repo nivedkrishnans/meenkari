@@ -80,7 +80,7 @@ body{
     text-align: center;
     color: white;
     display: inline;
-    
+
 }
 
 .cardbox{
@@ -247,6 +247,22 @@ img{
     color: black;
 
 }
+
+.declbox{
+    box-sizing: border-box;
+    height: 60%;
+    width: 90%;
+    background-color: rgba(205,204,218,0.96);
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 10;
+    border-radius: 15px;
+}
+
 
 .playercardno{
     font-weight: bold;
