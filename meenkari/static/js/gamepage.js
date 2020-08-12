@@ -117,7 +117,10 @@ var container = document.getElementsByClassName("container")[0];
 askbutton.onclick = function() {
     askbox.style.display = "block";
     declbox.style.display = "none";
+    ask();
 }
+
+
 
 declbutton.onclick = function() {
     declbox.style.display = "block";
@@ -125,15 +128,248 @@ declbutton.onclick = function() {
 }
 
 
-window.onclick = function(event) {
-    if (event.target != askbox) {
-        if (event.target != askbutton){
-            askbox.style.display = "none";
+
+// window,onclick = function(event) {
+//     if (event.target == askbox){
+//         console.log("inside box");
+//     } else {
+//         if (event.target == askbutton){
+//             console.log("inside button");
+//         } else {
+//             askbox.style.display = "none";
+//             console.log("hidden");
+//         }
+//     }
+// }
+
+var askclose = askbox.getElementsByClassName("close")[0];
+askclose.onclick = function() {
+    askbox.style.display = "none";
+}
+
+//  The follwing function is triggered upon clinking the ask button and
+// it creates a JSON in a global varibale called send_data which can be
+// sent to server.
+function ask() {
+    var game_status = JSON.parse(game_status_json);
+    var game_info = JSON.parse(game_info_json);
+    var formbox = askbox.getElementsByClassName("formbox")[0];
+    var askform = formbox.getElementsByClassName("askform");
+
+    if(askform.length != 0){
+        askform[0].remove();
+    }
+
+
+    var oppteam = [];
+
+    for(i=0; i<3 ; i++){
+        j=(game_status.my[0]+(2*i))%6;
+        oppteam[i] = game_info.pl[j];
+    }
+
+    var my_suits = findmysuits(game_status.my[1]);
+
+
+    var askform = document.createElement("form");
+    askform.setAttribute("class", "askform");
+    formbox.appendChild(askform);
+
+    var askform = formbox.getElementsByClassName("askform")[0];
+
+    var head1 = document.createElement("label");
+    head1.innerHTML = "Select a player to ask to"+"<br>";
+    askform.appendChild(head1);
+
+    for(i=0; i<oppteam.length; i++){
+        var input = document.createElement("input");
+        input.setAttribute("type", "radio");
+        input.setAttribute("id", oppteam[i]);
+        input.setAttribute("name", "toplayer");
+        input.setAttribute("value", oppteam[i]);
+        askform.appendChild(input);
+
+        var label = document.createElement("label");
+        label.setAttribute("for", oppteam[i]);
+        label.innerHTML = oppteam[i];
+        askform.appendChild(label);
+    }
+
+    var head2 = document.createElement("label");
+    head2.innerHTML = "Select suit"+"<br>";
+    head2.setAttribute("style", "display : block")
+    head2.setAttribute("for", "suit");
+    askform.appendChild(head2);
+
+    var suitselect = document.createElement("select");
+    suitselect.setAttribute("id", "asksuit");
+    suitselect.setAttribute("name", "suit");
+    suitselect.setAttribute("onchange", "showcardlist(this.value)")
+    askform.appendChild(suitselect);
+
+    suitselect = document.getElementById("asksuit");
+
+    for(i=0; i<my_suits.length; i++){
+        var option = document.createElement("option");
+        option.setAttribute("value", my_suits[i]);
+        option.innerHTML = suitlist[my_suits[i]];
+        suitselect.appendChild(option);
+    }
+
+    var head3 = document.createElement("label");
+    head3.innerHTML = "Select card"+"<br>";
+    head3.setAttribute("style", "display : block")
+    askform.appendChild(head3);
+
+
+    askform.addEventListener("submit", handleFormSubmit);
+
+}
+
+// This function returns what are the suits in a string of card number given in
+// an array.
+function findmysuits(my_cards){
+    if (my_cards.length != 0) { my_cards = my_cards.substring(0,my_cards.length-1);}
+    my_cards = my_cards.split(',');
+
+    my_suits = [];
+
+    for(j=0; j<my_cards.length; j++) {
+            if (!(my_suits.includes(my_cards[j][0]))){
+                my_suits.push(my_cards[j][0])
+            }
+    }
+
+    return my_suits;
+
+}
+
+// This function selectively creates the list of cards for asking
+// according to the suit selected for asking.
+function showcardlist(value){
+
+    var askform = askbox.getElementsByClassName("askform")[0];
+    var askcardlist = askform.getElementsByClassName("askcardlist");
+
+    console.log(askcardlist);
+
+    if(askcardlist.length != 0){
+        lmax = askcardlist.length;
+        for(l=0; l<lmax; l++){
+            askcardlist[0].remove();
         }
     }
-    if (event.target != declbox) {
-        if (event.target != declbutton){
-            declbox.style.display = "none";
+
+
+
+    for(j=1; j<7; j++){
+            var card = document.createElement("input");
+            card.setAttribute("type", "radio");
+            card.setAttribute("name", "askcard");
+            card.setAttribute("value", value+String(j));
+            card.setAttribute("onchange", "showask()");
+            card.setAttribute("class", "askcardlist");
+            askform.appendChild(card);
+
+            var label = document.createElement("label");
+            label.setAttribute("for", value+String(j));
+            label.setAttribute("class", "askcardlist");
+            label.innerHTML = cardlist[value+String(j)];
+            askform.appendChild(label);
+    }
+}
+
+// This function shows the ask button after card is selected.
+function showask(){
+
+    var askform = askbox.getElementsByClassName("askform")[0];
+    var asksubmit = askform.getElementsByClassName("asksubmit");
+
+    if(asksubmit.length != 0){
+        asksubmit[0].remove();
+    }
+
+
+    var submit = document.createElement("input");
+    submit.setAttribute("type", "submit");
+    submit.setAttribute("value", "Ask");
+    submit.setAttribute("name", "action")
+    submit.setAttribute("class", "asksubmit");
+    submit.setAttribute("style", "display : block");
+    askform.appendChild(submit);
+}
+
+var suitlist = {
+    "1" : "8's and Jokers" ,
+    "2" : "Higher Spades",
+    "3" : "Higher Diamonds",
+    "4" : "Higher Clubs",
+    "5" : "Higher Hearts",
+    "6" : "Lower Spades",
+    "7" : "Lower Diamonds",
+    "8" : "Lower Clubs",
+    "9" : "Lower Hearts"
+};
+
+var cardlist = makecardlist();
+
+// This function makes the cardlist object which gives relation between
+// the card numbers and its actual names.
+function makecardlist(){
+    var cardlist = {
+        "11" : "Black Joker",
+        "12" : "8 of Spades",
+        "13" : "8 of Diamonds",
+        "14" : "8 of Clubs",
+        "15" : "8 of Hearts",
+        "16" : "White Joker",
+    };
+
+    lower = ["2", "3", "4", "5", "6", "7"];
+    higher = ["9", "10", "Jack", "Queen", "King", "Ace"];
+    suit = ["Spades", "Diamonds", "Clubs", "Hearts"];
+
+    for(i=0; i<4; i++){
+        for(j=0; j<6; j++){
+            cardlist[String(i+2)+String(j+1)] = higher[j]+" of "+suit[i];
         }
     }
+
+    for(i=0; i<4; i++){
+        for(j=0; j<6; j++){
+            cardlist[String(i+6)+String(j+1)] = lower[j]+" of "+suit[i];
+        }
+    }
+
+    return cardlist;
+}
+
+// This function converts the form to JSON
+const formtoJSON = elements => [].reduce.call(elements, (data, element) => {
+
+    if(isValidValue(element)){
+        data[element.name] = element.value;
+    }
+    return data;
+
+},{});
+
+// This function prevents the default action of form submit button and
+// instead makes the contents of the form into a JSON
+const handleFormSubmit = event => {
+
+    askform = document.getElementsByClassName("askform")[0];
+    event.preventDefault();
+    data = formtoJSON(askform.elements);
+    console.log(data);
+    send_data = JSON.stringify(data);
+
+    askform.remove();
+    askbox.style.display = "none";
+}
+
+// THis function makes sure that only the checked radio buttons'
+// value appear in the final JSON.
+const isValidValue = element => {
+    return (!['checkbox', 'radio'].includes(element.type) || element.checked);
 }

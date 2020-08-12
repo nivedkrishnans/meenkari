@@ -226,8 +226,8 @@ img{
 
 .askbox{
     box-sizing: border-box;
-    height: 60%;
-    width: 90%;
+    height: 40%;
+    width: 130%;
     background-color: rgba(205,204,218,0.96);
     padding: 10px;
     position: absolute;
