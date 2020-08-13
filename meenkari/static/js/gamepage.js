@@ -1,3 +1,15 @@
+//code for displaying the time since last update
+var lastUpdated = document.getElementById("lastUpdated");
+var last_timestamp = new Date();
+console.log("ls",last_timestamp);
+var timestamp_display = setInterval(function(){
+    now = new Date();
+    //console.log("ls",last_timestamp);
+    diff = Math.round((now - last_timestamp)/1000);
+    //if(diff > 600) location.reload();
+    lastUpdated.innerHTML = time_sec(diff) + " ago";
+},1000);
+
 function update(json){
     // this function takes data in the format '{"player1" : [64,24,84,46,22,15,25], "player2" : 2,"player3" : 6,"player4" : 8,"player5" : 15,"player6" : 3}'
     // it updates the cards on the screen, without considering the actul player numbers, but their positions  on the screen
@@ -99,15 +111,13 @@ function refresh_cards(){
     document.querySelector(".player" + (i) + " .playercardno").innerHTML = game_status["hl"][j];
     document.querySelector(".player" + (i) + " .playerboxh").innerHTML = game_info["pl"][j];
 
-    last_timestamp = new Date(game_status["ts"]);
-    
   }
-
+  last_timestamp = new Date(game_status["ts"]*1000);
   temp= JSON.stringify(temp);
   // console.log("update text = " +temp);
   update(temp);
   audio1.play();
-  console.log("Refresh Initiated", temp);
+  console.log("Refresh Initiated", game_status["ts"], last_timestamp, temp);
   //return temp;
 }
 

@@ -9,115 +9,133 @@
     </head>
 
     <body>
-        <div class="heading">
-            Loading
-        </div>
+        
         <div class="container">
-            <div class="gamecircle" id="gamecircle">
-                <div class="playerbox player4">
-                    <div class="playerboxh">
-                        player11
+            <div class="col col1">
+                <div class="scorebox">
+                    <div class="scoreboxh">
+                        Declarations
                     </div>
-                    <p class="playercardno"> 9 </p>
-                    <div class="cardbox">
+                    <div class="scoreteams">
+                        Team 1<br>
+                        <ol>
+                            <li>Suit 1</li>
+                            <li>Suit 2</li>
+                            <li>Suit 3</li>
+                            <li>Suit 4</li>
+                        </ol>
+                        Team 2<br>
+                        <ol>
+                            <li>Suit 1</li>
+                            <li>Suit 2</li>
+                            <li>Suit 3</li>
+                            <li>Suit 4</li>
+                        </ol>
+                    </div>
+                    </div>
 
+            </div>
+            <div class="col col2">
+                <div class="heading">
+                    Loading
+                </div>
+                <div class="gamecircleWrapper">
+                    <div class="gamecircle" id="gamecircle">
+                        <div class="playerbox player4">
+                            <div class="playerboxh">
+                                player11
+                            </div>
+                            <p class="playercardno"> 9 </p>
+                            <div class="cardbox">
+        
+                            </div>
+                        </div>
+                        <div class="playerbox player5">
+                            <div class="playerboxh">
+                                player21
+                            </div>
+                            <p class="playercardno"> 9 </p>
+                            <div class="cardbox">
+        
+                            </div>
+                        </div>
+                        <div class="playerbox player6">
+                            <div class="playerboxh">
+                                player12
+                            </div>
+                            <p class="playercardno"> 9 </p>
+                            <div class="cardbox">
+        
+                            </div>
+                        </div>
+                        <div class="playerbox player1">
+                            <div class="playerboxh">
+                                player22
+                            </div>
+                            <p class="playercardno"> 9 </p>
+                            <div class="cardbox">
+        
+                            </div>
+                        </div>
+                        <div class="playerbox player2">
+                            <div class="playerboxh">
+                                player13
+                            </div>
+                            <p class="playercardno"> 9 </p>
+                            <div class="cardbox">
+        
+                            </div>
+                        </div>
+                        <div class="playerbox player3">
+                            <div class="playerboxh">
+                                player23
+                            </div>
+                            <p class="playercardno"> 9 </p>
+                            <div class="cardbox">
+        
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="playerbox player5">
-                    <div class="playerboxh">
-                        player21
-                    </div>
-                    <p class="playercardno"> 9 </p>
-                    <div class="cardbox">
-
-                    </div>
-                </div>
-                <div class="playerbox player6">
-                    <div class="playerboxh">
-                        player12
-                    </div>
-                    <p class="playercardno"> 9 </p>
-                    <div class="cardbox">
-
-                    </div>
-                </div>
-                <div class="playerbox player1">
-                    <div class="playerboxh">
-                        player22
-                    </div>
-                    <p class="playercardno"> 9 </p>
-                    <div class="cardbox">
-
-                    </div>
-                </div>
-                <div class="playerbox player2">
-                    <div class="playerboxh">
-                        player13
-                    </div>
-                    <p class="playercardno"> 9 </p>
-                    <div class="cardbox">
-
-                    </div>
-                </div>
-                <div class="playerbox player3">
-                    <div class="playerboxh">
-                        player23
-                    </div>
-                    <p class="playercardno"> 9 </p>
-                    <div class="cardbox">
-
-                    </div>
-                </div>
-                <div class="askbox">
-                    <div class="askboxh">
-                        Ask
-                        <span class="close"> &times; </span>
-                    </div>
-                    <div class="formbox">
-
-                    </div>
-                </div>
-                <div class="declbox">
-                    <div class="askboxh">
+                
+                <div class="buttonContainer">
+                    <button class="declbutton">
                         Declare
+                    </button>
+                    <button class="askbutton">
+                        Ask
+                    </button>
+                    <div class="askbox">
+                        <div class="askboxh">
+                            Ask
+                            <span class="close"> &times; </span>
+                        </div>
+                        <div class="formbox">
+    
+                        </div>
                     </div>
-
-                    <div class="formbox">
-
+                    <div class="declbox">
+                        <div class="askboxh">
+                            Declare
+                        </div>
+    
+                        <div class="formbox">
+    
+                        </div>
                     </div>
                 </div>
+
             </div>
-            <div class="statbox">
-                <p>Connection status   : <span class="statboxstat" id="connectionStatus">    </span></p>
-                <p>Last updated   : <span class="statboxstat" id="lastUpdated">  Never </span></p>
-            </div>
-            <div class="scorebox">
-                <div class="scoreboxh">
-                    Declarations
-                </div>
-                <div class="scoreteams">
-                    Team 1<br>
-                    <ol>
-                        <li>Suit 1</li>
-                        <li>Suit 2</li>
-                        <li>Suit 3</li>
-                        <li>Suit 4</li>
-                    </ol>
-                    Team 2<br>
-                    <ol>
-                        <li>Suit 1</li>
-                        <li>Suit 2</li>
-                        <li>Suit 3</li>
-                        <li>Suit 4</li>
-                    </ol>
+            <div class="col col3">
+                <div class="statbox">
+                    <p>Connection status   : <span class="statboxstat" id="connectionStatus">    </span></p>
+                    <p>Last updated   : <span class="statboxstat" id="lastUpdated">  Never </span></p>
                 </div>
             </div>
-            <div class="declbutton">
-                Declare
-            </div>
-            <div class="askbutton">
-                Ask
-            </div>
+            
+            
+            
+            
         </div>
 
         <audio id="audio1">
@@ -131,7 +149,7 @@
                 var gamecircle = document.getElementById("gamecircle");
                 var height = gamecircle.parentElement.clientHeight;
                 var width = gamecircle.parentElement.clientWidth;
-
+                console.log("gamecircle",gamecircle.parentElement,height,width);
 
                 if (height < width) {
                     gamecircle.style.height = String(height*0.8)+"px";
@@ -172,17 +190,7 @@
                 connectionStatus.style.backgroundColor = "red";
             };
 
-            //code for displaying the time since last update
-            var lastUpdated = document.getElementById("lastUpdated");
-            var last_timestamp = new Date();
-            console.log("ls",last_timestamp);
-            var timestamp_display = setInterval(function(){
-                now = new Date();
-                console.log("ls",last_timestamp);
-                diff = Math.round((now - last_timestamp)/1000);
-                //if(diff > 600) location.reload();
-                lastUpdated.innerHTML = time_sec(diff) + " ago";
-            },1000);
+            
         </script>
     </body>
 
