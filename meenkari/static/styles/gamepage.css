@@ -7,6 +7,7 @@ body{
     margin:0px;
     padding:0px;
     overflow: hidden;
+    font-family: 'Saira Extra Condensed',sans-serif;
 }
 
 .container{
@@ -94,6 +95,7 @@ body{
     background-color: transparent;
     margin: 0;
     padding: 0;
+    transform: translate(-12%);
 
 }
 
@@ -105,6 +107,7 @@ body{
         background-color: white;
         transition: opacity 4000ms;
         will-change: opacity;
+        transform: rotate(2deg);
 }
 
 .cardWrapper.fadedut{
@@ -146,14 +149,31 @@ img{
     border-radius: 15px;
     border:  2px dotted grey;
     width: 20%;
-    height: 12%;
+    height: auto;
     position: absolute;
     bottom: 5%;
     right: 2%;
-    font-family: "Consolas", sans-serif;
-    font-size: 0.8em;
+    font-family: 'Inconsolata', monospace;
+    font-size: 1em;
     color: grey;
     padding: 1%;
+}
+
+.statbox p{
+    margin: 4px !important;
+    padding: 2px;
+}
+
+
+
+#connectionStatus{
+    height: 0.9em;
+    width: 0.9em;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    background-color: red;
+    display: inline-block;
 }
 
 .scorebox{
@@ -165,7 +185,7 @@ img{
     left: 3%;
     border-radius: 15px;
     border: 2px dotted grey;
-    font-family: "Consolas", sans-serif;
+    font-family: 'Inconsolata', monospace;
     color: grey;
 }
 

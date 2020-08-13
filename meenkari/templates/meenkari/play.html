@@ -4,6 +4,7 @@
     <head>
         <title>Game - FISH ON</title>
         <link rel="stylesheet" href="{% static 'styles/gamepage.css' %}">
+        <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet"> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
 
@@ -87,8 +88,8 @@
                 </div>
             </div>
             <div class="statbox">
-                Connection status : <br><br>
-                Last updated : <br><br>
+                <p>Connection status   : <span class="statboxstat" id="connectionStatus">    </span></p>
+                <p>Last updated   : <span class="statboxstat" id="lastUpdated">  Never </span></p>
             </div>
             <div class="scorebox">
                 <div class="scoreboxh">
@@ -162,7 +163,26 @@
                 // do whatever required with received data ...
             };
 
+            //code for displaying the connection status
+            var connectionStatus = document.getElementById("connectionStatus");
+            liveSocket.onopen = function(event) {
+                connectionStatus.style.backgroundColor = "green";
+            };
+            liveSocket.onclose = function(event) {
+                connectionStatus.style.backgroundColor = "red";
+            };
 
+            //code for displaying the time since last update
+            var lastUpdated = document.getElementById("lastUpdated");
+            var last_timestamp = new Date();
+            console.log("ls",last_timestamp);
+            var timestamp_display = setInterval(function(){
+                now = new Date();
+                console.log("ls",last_timestamp);
+                diff = Math.round((now - last_timestamp)/1000);
+                //if(diff > 600) location.reload();
+                lastUpdated.innerHTML = time_sec(diff) + " ago";
+            },1000);
         </script>
     </body>
 

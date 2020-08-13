@@ -1,5 +1,5 @@
 from django.utils import timezone
-#from datetime import datetime
+from datetime import datetime
 from .models import *
 import string
 import random
@@ -163,7 +163,7 @@ def game_status_json(thisuser,thisgame,message):
     ]
     game_status_json = {
         "ty":"gsj",
-        "ts": str(timezone.now()),
+        "ts": datetime.timestamp(timezone.now()),
         "hl": hand_lengths,
         "my": player_status_finder(thisuser,thisgame),
         "te": [thisgame.team_1_status,thisgame.team_2_status],

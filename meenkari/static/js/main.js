@@ -15,3 +15,13 @@ function lobby_finalized(){
     },1000);
     setTimeout(function(){location.reload();},10000);
 }
+
+function time_sec(seconds){
+    // takes the number of seconds and display in MM:SS format
+    seconds = Math.round(seconds);
+    var sec = seconds%60;
+    var min = Math.floor(seconds/60);
+    //console.log(seconds,sec,min);
+    var str = (Math.floor(min/10)).toString() + (min%10).toString() + ":" + (Math.floor(sec/10)).toString() + (sec%10).toString();
+    return str;
+}

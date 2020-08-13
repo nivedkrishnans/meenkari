@@ -1,4 +1,4 @@
-    function update(json){
+function update(json){
     // this function takes data in the format '{"player1" : [64,24,84,46,22,15,25], "player2" : 2,"player3" : 6,"player4" : 8,"player5" : 15,"player6" : 3}'
     // it updates the cards on the screen, without considering the actul player numbers, but their positions  on the screen
     // the positions are 1 for the current player, and 2 to 6 are the players clockwise from the current player
@@ -98,6 +98,9 @@ function refresh_cards(){
     }
     document.querySelector(".player" + (i) + " .playercardno").innerHTML = game_status["hl"][j];
     document.querySelector(".player" + (i) + " .playerboxh").innerHTML = game_info["pl"][j];
+
+    last_timestamp = new Date(game_status["ts"]);
+    
   }
 
   temp= JSON.stringify(temp);
@@ -375,3 +378,7 @@ const handleFormSubmit = event => {
 const isValidValue = element => {
     return (!['checkbox', 'radio'].includes(element.type) || element.checked);
 }
+
+
+
+
