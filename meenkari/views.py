@@ -69,6 +69,7 @@ def lobby(request,url_id=1):
                         this_game.p6 = User.objects.get(username=f.cleaned_data['p6'])
                         this_game.game_status = "united"
                         this_game.lastmodify_time = timezone.now()
+                        random_p0(this_game)
                         this_game.save()
                         messages.add_message(request, messages.INFO, 'You have succesfully started the game ' + (this_game.game_name) + '. You can play with your teammembers at play/' + (this_game.game_id))
                         player_lobby_update(this_game)

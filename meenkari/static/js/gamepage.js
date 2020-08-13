@@ -103,6 +103,8 @@ function refresh_cards(){
   temp= JSON.stringify(temp);
   // console.log("update text = " +temp);
   update(temp);
+  audio1.play();
+  console.log("Refresh Initiated", temp);
   //return temp;
 }
 

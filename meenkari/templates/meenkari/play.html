@@ -119,7 +119,10 @@
             </div>
         </div>
 
-
+        <audio id="audio1">
+            <source src="{% static "audio/1.mp3" %}" type="audio/mp3">
+        </audio>
+        
         <script type="text/javascript" src="{% static 'js/gamepage.js' %}"></script>
         <script type="text/javascript">
             function gamecircle(){
@@ -143,7 +146,7 @@
           // initial page data
           var game_status_json = '{{game_status_json|safe}}';
           var game_info_json = '{{game_info_json|safe}}';
-
+          var audio1 = document.getElementById("audio1");
 
           window.addEventListener('load', refresh_cards());
         </script>

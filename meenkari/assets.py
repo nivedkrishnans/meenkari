@@ -39,16 +39,32 @@ newdeck = [
 
 
 def shuffle_cards(thisgame): #the argument is a game instance
+    # the function first randomly arranges the cards, splits it into hands of 9 cards each, and then sorts the individual hands before giving it to the players
     shuffleddeck= random.sample(newdeck, k=54)
-    thisgame.p1_hand =  delimiter.join(shuffleddeck[0:9]) + delimiter
-    thisgame.p2_hand =  delimiter.join(shuffleddeck[9:18]) + delimiter
-    thisgame.p3_hand =  delimiter.join(shuffleddeck[18:27]) + delimiter
-    thisgame.p4_hand =  delimiter.join(shuffleddeck[27:36]) + delimiter
-    thisgame.p5_hand =  delimiter.join(shuffleddeck[36:45]) + delimiter
-    thisgame.p6_hand =  delimiter.join(shuffleddeck[45:54]) + delimiter
-    thisgame.save();
+    t1 = shuffleddeck[0:9]
+    t2 = shuffleddeck[9:18]
+    t3 = shuffleddeck[18:27]
+    t4 = shuffleddeck[27:36]
+    t5 = shuffleddeck[36:45]
+    t6 = shuffleddeck[45:54]
+    t1.sort()
+    t2.sort()
+    t3.sort()
+    t4.sort()
+    t5.sort()
+    t6.sort()
+    thisgame.p1_hand =  delimiter.join(t1) + delimiter
+    thisgame.p2_hand =  delimiter.join(t2) + delimiter
+    thisgame.p3_hand =  delimiter.join(t3) + delimiter
+    thisgame.p4_hand =  delimiter.join(t4) + delimiter
+    thisgame.p5_hand =  delimiter.join(t5) + delimiter
+    thisgame.p6_hand =  delimiter.join(t6) + delimiter
+    thisgame.save()
+    print("Cards shuffled")
 
-
+def display_hands(thisgame):
+    hands = [thisgame.p1_hand,thisgame.p2_hand,thisgame.p3_hand,thisgame.p4_hand,thisgame.p5_hand,thisgame.p6_hand]
+    print(hands)
 
 def assign_id(thisgame):
     #this function assigns random strings as game_id and lobby_id for the game instance passed as argument.
@@ -71,6 +87,8 @@ def assign_id(thisgame):
       if (random_id not in all_lobby_ids):
         random_id_chosen = True
         thisgame.lobby_id = random_id
+    
+    thisgame.save()
 
 
 
@@ -195,7 +213,12 @@ def game_status_update(thisuser,thisgame,message):
             "content": json.dumps(game_status_json(thisuser,thisgame,message)),
         })
 
-
+def random_p0(thisgame):
+    #this function assigns the first player randomly
+    temp = [thisgame.p1,thisgame.p2,thisgame.p3,thisgame.p4,thisgame.p5,thisgame.p6,]
+    thisgame.p0 = temp[random.randint(0,5)]
+    thisgame.save()
+    print(thisgame.p0)    
 
 def tester_sender(group,message):
     #this function sends the message from the tester to the given group
