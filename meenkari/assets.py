@@ -167,7 +167,7 @@ def game_status_json(thisuser,thisgame,message):
         "hl": hand_lengths,
         "my": player_status_finder(thisuser,thisgame),
         "te": [thisgame.team_1_status,thisgame.team_2_status],
-        "p0": str(thisgame.p1),
+        "p0": str(thisgame.p0),
         "me": message,
     }
     return json.dumps(game_status_json)

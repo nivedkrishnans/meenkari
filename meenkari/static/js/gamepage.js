@@ -110,9 +110,16 @@ function refresh_cards(){
     }
     document.querySelector(".player" + (i) + " .playercardno").innerHTML = game_status["hl"][j];
     document.querySelector(".player" + (i) + " .playerboxh").innerHTML = game_info["pl"][j];
-
+    if(game_info["pl"][j] ==  game_status["p0"]){
+        //current player indicator
+        document.querySelector(".player" + (i) + " .playerboxh").classList.add("playernow");
+    }
+    else{
+        document.querySelector(".player" + (i) + " .playerboxh").classList.remove("playernow");
+    }
   }
   document.getElementsByClassName('heading')[0].innerHTML = game_info["na"];
+  document.getElementById('gameName').innerHTML = game_info["na"];
   last_timestamp = new Date(game_status["ts"]*1000);
   temp= JSON.stringify(temp);
   // console.log("update text = " +temp);
@@ -124,6 +131,8 @@ function refresh_cards(){
   catch{
       console.log("Could not play audio");
   }
+  
+  document.getElementById('currentPlayer').innerHTML = game_status["p0"]
   
   console.log("Refresh Initiated", game_status["ts"], last_timestamp, temp);
   //return temp;
