@@ -11,93 +11,123 @@
     <body>
         
         <div class="container">
-            <div class="col col1">
-                <div class="scorebox">
-                    <div class="scoreboxh">
-                        Declarations
-                    </div>
-                    <div class="scoreteams">
-                        Team 1<br>
-                        <ol>
-                            <li>Suit 1</li>
-                            <li>Suit 2</li>
-                            <li>Suit 3</li>
-                            <li>Suit 4</li>
-                        </ol>
-                        Team 2<br>
-                        <ol>
-                            <li>Suit 1</li>
-                            <li>Suit 2</li>
-                            <li>Suit 3</li>
-                            <li>Suit 4</li>
-                        </ol>
-                    </div>
-                    </div>
-
-            </div>
-            <div class="col col2">
-                <div class="heading">
-                    Loading
+            <div class="row mainrow">
+                <div class="col col1">
+                    <div class="scorebox">
+                        <div class="scoreboxh">
+                            Declarations
+                        </div>
+                        <div class="scoreteams">
+                            Team 1<br>
+                            <ol>
+                                <li>Suit 1</li>
+                                <li>Suit 2</li>
+                                <li>Suit 3</li>
+                                <li>Suit 4</li>
+                            </ol>
+                            Team 2<br>
+                            <ol>
+                                <li>Suit 1</li>
+                                <li>Suit 2</li>
+                                <li>Suit 3</li>
+                                <li>Suit 4</li>
+                            </ol>
+                        </div>
+                        </div>
+    
                 </div>
-                <div class="gamecircleWrapper">
-                    <div class="gamecircle" id="gamecircle">
-                        <div class="playerbox player4">
-                            <div class="playerboxh">
-                                player11
+                <div class="col col2">
+                    <div class="heading">
+                        Loading
+                    </div>
+                    <div class="gamecircleWrapper">
+                        <div class="gamecircle" id="gamecircle">
+                            <div class="playerbox player4">
+                                <div class="playerboxh">
+                                    player11
+                                </div>
+                                <p class="playercardno"> N </p>
+                                <div class="cardbox">
+            
+                                </div>
                             </div>
-                            <p class="playercardno"> 9 </p>
-                            <div class="cardbox">
-        
+                            <div class="playerbox player5">
+                                <div class="playerboxh">
+                                    player21
+                                </div>
+                                <p class="playercardno"> N </p>
+                                <div class="cardbox">
+            
+                                </div>
                             </div>
-                        </div>
-                        <div class="playerbox player5">
-                            <div class="playerboxh">
-                                player21
+                            <div class="playerbox player6">
+                                <div class="playerboxh">
+                                    player12
+                                </div>
+                                <p class="playercardno"> N </p>
+                                <div class="cardbox">
+            
+                                </div>
                             </div>
-                            <p class="playercardno"> 9 </p>
-                            <div class="cardbox">
-        
+                            <div class="playerbox player1">
+                                <div class="playerboxh">
+                                    player22
+                                </div>
+                                <p class="playercardno"> N </p>
+                                <div class="cardbox">
+            
+                                </div>
                             </div>
-                        </div>
-                        <div class="playerbox player6">
-                            <div class="playerboxh">
-                                player12
+                            <div class="playerbox player2">
+                                <div class="playerboxh">
+                                    player13
+                                </div>
+                                <p class="playercardno"> N </p>
+                                <div class="cardbox">
+                                                
+                                </div>
                             </div>
-                            <p class="playercardno"> 9 </p>
-                            <div class="cardbox">
-        
-                            </div>
-                        </div>
-                        <div class="playerbox player1">
-                            <div class="playerboxh">
-                                player22
-                            </div>
-                            <p class="playercardno"> 9 </p>
-                            <div class="cardbox">
-        
-                            </div>
-                        </div>
-                        <div class="playerbox player2">
-                            <div class="playerboxh">
-                                player13
-                            </div>
-                            <p class="playercardno"> 9 </p>
-                            <div class="cardbox">
-        
-                            </div>
-                        </div>
-                        <div class="playerbox player3">
-                            <div class="playerboxh">
-                                player23
-                            </div>
-                            <p class="playercardno"> 9 </p>
-                            <div class="cardbox">
-        
+                            <div class="playerbox player3">
+                                <div class="playerboxh">
+                                    player23
+                                </div>
+                                <p class="playercardno"> N </p>
+                                <div class="cardbox">
+            
+                                </div>
                             </div>
                         </div>
                     </div>
+                    
+    
+                </div>
+                <div class="col col3">
+                    <div class="logbox">
+                        <div class="logboxh">
+                            Logs
+                        </div>
+                        <div class="logs">
+                            <p>
+                                
+                                Note: A maximum of two previous moves will be shown
+                            </p>
+                            <p>
+                                Log009 -  00:53 <br>
+                                Jon Snow got the Queen of Dragons from Manavalan
+                            </p>
+                            <p>
+                                Log010 -  00:42 <br>
+                                Manavalan declared the Low Hearts Successfully.
+                            </p>
+                            
+                        </div>
+                        </div>
+    
                 </div>
                 
+
+            </div>
+            <div class="row statusbar">
                 <div class="buttonContainer">
                     <button class="declbutton">
                         Declare
@@ -124,13 +154,11 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
-            <div class="col col3">
-                <div class="statbox">
-                    <p>Connection status   : <span class="statboxstat" id="connectionStatus">    </span></p>
-                    <p>Last updated   : <span class="statboxstat" id="lastUpdated">  Never </span></p>
+                <div>Last updated   : <span class="statboxstat" id="lastUpdated">  Never &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></div>
+                <div>Connection status   : <span class="statboxstat" id="connectionStatus"> </span></div>
+                
                 </div>
+
             </div>
             
             
@@ -138,9 +166,7 @@
             
         </div>
 
-        <audio id="audio1">
-            <source src="{% static "audio/1.mp3" %}" type="audio/mp3">
-        </audio>
+        <audio autoplay id="audio1" src="{% static 'audio/1.mp3' %}">
         
         <script type="text/javascript" src="{% static 'js/gamepage.js' %}"></script>
         <script type="text/javascript">
@@ -166,7 +192,8 @@
           var game_status_json = '{{game_status_json|safe}}';
           var game_info_json = '{{game_info_json|safe}}';
           var audio1 = document.getElementById("audio1");
-
+        
+          
           window.addEventListener('load', refresh_cards());
         </script>
         <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>

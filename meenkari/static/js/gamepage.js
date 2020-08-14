@@ -112,11 +112,19 @@ function refresh_cards(){
     document.querySelector(".player" + (i) + " .playerboxh").innerHTML = game_info["pl"][j];
 
   }
+  document.getElementsByClassName('heading')[0].innerHTML = game_info["na"];
   last_timestamp = new Date(game_status["ts"]*1000);
   temp= JSON.stringify(temp);
   // console.log("update text = " +temp);
   update(temp);
-  audio1.play();
+
+  try{
+    //audio1.play();
+  }
+  catch{
+      console.log("Could not play audio");
+  }
+  
   console.log("Refresh Initiated", game_status["ts"], last_timestamp, temp);
   //return temp;
 }

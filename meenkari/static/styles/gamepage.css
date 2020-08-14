@@ -8,9 +8,42 @@ body{
     padding:0px;
     overflow: auto;
     font-family: 'Saira Extra Condensed',sans-serif;
+    background-color: black;
 }
 
 .container{
+    height:100%;
+    width:100%;
+    padding-top: 32px;
+    box-sizing: border-box;
+    background-color:black;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.statusbar{
+    background-color: rgba(10,10,10,0.9);
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    color: rgb(250,250,250);
+    padding: 2px 16px;
+    box-sizing: border-box;
+}
+
+.statusbar > div{
+    margin: 0 8px;
+}
+.statusbar button{
+    margin: 0 8px;
+}
+
+
+.mainrow{
     height:100%;
     width:100%;
     padding: 14px;
@@ -28,6 +61,8 @@ body{
 }
 .col1{
     flex: 0 1 auto;
+    background-color: rgba(10,10,10,0.9);
+    height: 100%;
 }
 .col2{
     flex: 1 1 auto;
@@ -38,6 +73,8 @@ body{
 }
 .col3{
     flex: 0 1 auto;
+    background-color: rgba(10,10,10,0.9);
+    height: 100%;
 }
 
 .heading{
@@ -55,6 +92,8 @@ body{
     flex-direction: row;
     justify-content: center;
     flex: 1 1 auto;
+    min-height: 400px;
+    min-width: 400px;
 }
 
 .buttonContainer{
@@ -184,14 +223,14 @@ img{
 
 .statbox{
     box-sizing: border-box;
-    border:  2px solid grey;
+    border:  2px solid rgb(250,250,250);
     min-width: 240px;
     width: auto;
     height: auto;
     position: static;
     font-family: 'Inconsolata', monospace;
     font-size: 0.9em;
-    color: grey;
+    color: rgb(250,250,250);
     padding: 1%;
 }
 
@@ -214,35 +253,65 @@ img{
 
 .scorebox{
     box-sizing: border-box;
-    min-width: 240px;
-    width: auto;
+    max-width: 280px;
     height: auto;
     position: static;
-    border:  2px solid grey;
+    /* border:  2px solid rgb(250,250,250); */
     font-family: 'Inconsolata', monospace;
-    color: grey;
-    font-size: 0.9em;
+    color: rgb(250,250,250);
+    font-size: 1em;
 }
 
 .scoreboxh{
     font-size: 1.2em;
     box-sizing: border-box;
     width: 100%;
-    height: 15%;
+    padding: 14px ;
+    margin: 14px ;
     text-align: center;
-    border-bottom: 2px solid grey;
+    border-bottom: 2px solid rgb(250,250,250);
 }
 
 .scoreteams{
     padding: 0.5em;
 }
 
+.logbox{
+    box-sizing: border-box;
+    max-width: 280px;
+    height: auto;
+    position: static;
+    /* border:  2px solid rgb(250,250,250); */
+    font-family: 'Inconsolata', monospace;
+    color: rgb(250,250,250);
+    font-size: 1em;
+}
+
+.logboxh{
+    color: rgba(250,250,250,0.9);
+    background-color: rgba(10, 10, 10, 0.9);
+    font-size: 1.5em;
+    box-sizing: border-box;
+    margin: 14px;
+    padding: 14px;
+    text-align: center;
+    border-bottom: 2px solid rgb(250,250,250);
+}
+.logs p{
+    margin: 14px;
+    padding: 14px;
+    color: rgba(250,250,250,0.9);
+    background-color: rgba(30, 30, 30, 0.9);
+    border-radius: 2px;
+}
+
+
 
 
 
 
 .declbutton{
-    box-sizing: border-box;
+    /*box-sizing: border-box;
     width: 90px;
     height: 40px;
     padding: 10px;
@@ -251,16 +320,16 @@ img{
     background-color: grey;
     color: rgba(255, 255, 255, 0.9);
     text-align: center;
-    border-radius: 10px;
+    border-radius: 10px; */
 }
 
 .declbutton:hover{
-    background-color: rgba(255, 255, 255, 0.2);
-    cursor: pointer;
+    /*background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;*/
 }
 
 .askbutton{
-    box-sizing: border-box;
+    /*box-sizing: border-box;
     width: 90px;
     height: 40px;
     padding: 10px;
@@ -269,27 +338,28 @@ img{
     background-color: grey;
     color: rgba(255, 255, 255, 0.9);
     text-align: center;
-    border-radius: 10px;
+    border-radius: 10px; */
 }
 
 .askbutton:hover{
-    background-color: rgba(255, 255, 255, 0.2);
-    cursor: pointer;
+    /*background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;*/
 }
 
 .askbox{
     box-sizing: border-box;
     height: auto;
     width: 320px;
-    background-color: rgba(205,204,218,0.96);
-    padding: 10px;
+    color: rgba(250,250,250,0.9);
+    background-color: rgba(30, 30, 30, 0.95);
+    padding: 32px;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: none;
     z-index: 10;
-    border-radius: 15px;
+    border-radius: 4px;
 }
 
 .askboxh{
@@ -297,7 +367,7 @@ img{
     height: 10%;
     background-color: transparent;
     text-align: center;
-    color: black;
+    color:rgba(250,250,250,0.9);
 
 }
 
@@ -305,15 +375,16 @@ img{
     box-sizing: border-box;
     height: auto;
     width: 320px;
-    background-color: rgba(205,204,218,0.96);
-    padding: 10px;
+    color: rgba(250,250,250,0.9);
+    background-color: rgba(30, 30, 30, 0.95);
+    padding: 32px;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: none;
     z-index: 10;
-    border-radius: 15px;
+    border-radius: 4px;
 }
 
 
@@ -327,4 +398,23 @@ img{
     height: 20px;
     text-align: center;
     display: inline-block;
+}
+
+.close{
+    padding: 0;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    height:20px;
+    width:20px;
+    color: black;
+    font-size: 14px;
+    background-color:  antiquewhite;
+    cursor: pointer;
+    border-radius: 50%;
+    transform: all 0.2s;
+}
+.close:hover{
+    color: black;
+    background-color: rgb(216, 65, 65);
 }
