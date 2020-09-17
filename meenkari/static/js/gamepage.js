@@ -131,9 +131,9 @@ function refresh_cards(){
   catch{
       console.log("Could not play audio");
   }
-  
+
   document.getElementById('currentPlayer').innerHTML = game_status["p0"]
-  
+
   console.log("Refresh Initiated", game_status["ts"], last_timestamp, temp);
   //return temp;
 }
@@ -157,6 +157,7 @@ askbutton.onclick = function() {
 declbutton.onclick = function() {
     declbox.style.display = "block";
     askbox.style.display = "none";
+    declare();
 }
 
 
@@ -177,7 +178,15 @@ declbutton.onclick = function() {
 var askclose = askbox.getElementsByClassName("close")[0];
 askclose.onclick = function() {
     askbox.style.display = "none";
+    declbox.style.display = "none";
 }
+
+var declclose = declbox.getElementsByClassName("close")[0];
+declclose.onclick = function() {
+    askbox.style.display = "none";
+    declbox.style.display = "none";
+}
+
 
 //  The follwing function is triggered upon clinking the ask button and
 // it creates a JSON in a global varibale called send_data which can be
@@ -283,7 +292,7 @@ function showcardlist(value){
     var askform = askbox.getElementsByClassName("askform")[0];
     var askcardlist = askform.getElementsByClassName("askcardlist");
 
-    console.log(askcardlist);
+    // console.log(askcardlist);
 
     if(askcardlist.length != 0){
         lmax = askcardlist.length;
@@ -324,7 +333,7 @@ function showask(){
 
     var submit = document.createElement("input");
     submit.setAttribute("type", "submit");
-    submit.setAttribute("value", "Ask");
+    submit.setAttribute("value", "ask");
     submit.setAttribute("name", "action")
     submit.setAttribute("class", "asksubmit");
     submit.setAttribute("style", "display : block");
@@ -406,6 +415,169 @@ const isValidValue = element => {
     return (!['checkbox', 'radio'].includes(element.type) || element.checked);
 }
 
+//  The follwing function is triggered upon clinking the ask button and
+// it creates a JSON in a global varibale called send_data which can be
+// sent to server.
+function declare() {
+    var game_status = JSON.parse(game_status_json);
+    var game_info = JSON.parse(game_info_json);
+    var formbox = declbox.getElementsByClassName("formbox")[0];
+    var declform = formbox.getElementsByClassName("declform");
+
+    if(declform.length != 0){
+        declform[0].remove();
+    }
 
 
+    var declsuits = game_status["te"][0]+game_status["te"][1]
+    if (declsuits.length != 0) { declsuits = declsuits.substring(0,declsuits.length-1);}
+    declsuits = declsuits.split(',');
+    allsuits = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    declsuits = _.difference(allsuits, declsuits)
 
+    var declform = document.createElement("form");
+    declform.setAttribute("class", "declform");
+    formbox.appendChild(declform);
+
+    var declform = formbox.getElementsByClassName("declform")[0];
+
+    var head1 = document.createElement("label");
+    head1.innerHTML = "Select the team to declare the suit for "+"<br>";
+    declform.appendChild(head1);
+
+    for(i=1; i<3; i++){
+        var input = document.createElement("input");
+        input.setAttribute("type", "radio");
+        input.setAttribute("id", "team"+String(i));
+        input.setAttribute("name", "for team");
+        input.setAttribute("value", "team"+String(i));
+        input.setAttribute("onchange", "finddeclteam()")
+        declform.appendChild(input);
+
+        var label = document.createElement("label");
+        label.setAttribute("for", "team"+String(i));
+        label.innerHTML = "Team "+String(i);
+        declform.appendChild(label);
+    }
+
+    var head2 = document.createElement("label");
+    head2.innerHTML = "Select suit"+"<br>";
+    head2.setAttribute("style", "display : block")
+    head2.setAttribute("for", "suit");
+    declform.appendChild(head2);
+
+    var suitselect = document.createElement("select");
+    suitselect.setAttribute("id", "declsuit");
+    suitselect.setAttribute("name", "suit");
+    suitselect.setAttribute("onchange", "showcardlist_decl(this.value)")
+    declform.appendChild(suitselect);
+
+    suitselect = document.getElementById("declsuit");
+
+    for(i=0; i<declsuits.length; i++){
+        var option = document.createElement("option");
+        option.setAttribute("value", declsuits[i]);
+        option.innerHTML = suitlist[declsuits[i]];
+        suitselect.appendChild(option);
+    }
+
+    // var head3 = document.createElement("label");
+    // head3.innerHTML = "Select card"+"<br>";
+    // head3.setAttribute("style", "display : block")
+    // askform.appendChild(head3);
+
+
+    declform.addEventListener("submit", handleFormSubmit_decl);
+
+}
+
+var declteam = ""
+
+function finddeclteam(){
+    radio = document.getElementsByName("for team");
+    for(i=0; i<radio.length; i++){
+        if(radio[i].checked){
+            declteam = radio[i].value;
+        }
+    }
+}
+
+
+function showcardlist_decl(value){
+    var game_info = JSON.parse(game_info_json);
+    var declform = declbox.getElementsByClassName("declform")[0];
+    var declcardlist = declform.getElementsByClassName("declcardlist");
+
+    // console.log(askcardlist);
+
+    if(declcardlist.length != 0){
+        lmax = declcardlist.length;
+        for(l=0; l<lmax; l++){
+            declcardlist[0].remove();
+        }
+    }
+
+    pl = game_info["pl"];
+    team1 = [pl[0], pl[2], pl[4]];
+    team2 = [pl[1], pl[3], pl[5]];
+
+    if(declteam == "team1") {team = team1;}
+    if(declteam == "team2") {team = team2;}
+
+    for(j=1; j<7; j++){
+        var head3 = document.createElement("label");
+        head3.innerHTML = cardlist[value+String(j)]+"<br>";
+        head3.setAttribute("style", "display : block");
+        head3.setAttribute("class", "declcardlist");
+        declform.appendChild(head3);
+
+        for(k=0; k<3; k++){
+            var card = document.createElement("input");
+            card.setAttribute("type", "radio");
+            card.setAttribute("name", "card"+String(j));
+            card.setAttribute("value", team[k]);
+            card.setAttribute("onchange", "showdecl()");
+            card.setAttribute("class", "declcardlist");
+            card.setAttribute("required", "required")
+            declform.appendChild(card);
+
+            var label = document.createElement("label");
+            label.setAttribute("for", team[k]);
+            label.setAttribute("class", "declcardlist");
+            label.innerHTML = team[k];
+            declform.appendChild(label);
+        }
+    }
+}
+
+
+function showdecl(){
+
+    var declform = declbox.getElementsByClassName("declform")[0];
+    var declsubmit = declform.getElementsByClassName("declsubmit");
+
+    if(declsubmit.length != 0){
+        declsubmit[0].remove();
+    }
+
+
+    var submit = document.createElement("input");
+    submit.setAttribute("type", "submit");
+    submit.setAttribute("value", "declare");
+    submit.setAttribute("name", "action")
+    submit.setAttribute("class", "declsubmit");
+    submit.setAttribute("style", "display : block");
+    declform.appendChild(submit);
+}
+
+const handleFormSubmit_decl = event => {
+
+    declform = document.getElementsByClassName("declform")[0];
+    event.preventDefault();
+    data = formtoJSON(declform.elements);
+    console.log(data);
+    send_data = JSON.stringify(data);
+
+    declform.remove();
+    declbox.style.display = "none";
+}

@@ -4,12 +4,12 @@
     <head>
         <title>Game - FISH ON</title>
         <link rel="stylesheet" href="{% static 'styles/gamepage.css' %}">
-        <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
 
     <body>
-        
+
         <div class="container">
             <div class="row mainrow">
                 <div class="col col1">
@@ -33,7 +33,7 @@
                             </ol>
                         </div>
                         </div>
-    
+
                 </div>
                 <div class="col col2">
                     <div class="heading">
@@ -47,7 +47,7 @@
                                 </div>
                                 <p class="playercardno"> N </p>
                                 <div class="cardbox">
-            
+
                                 </div>
                             </div>
                             <div class="playerbox player5">
@@ -56,7 +56,7 @@
                                 </div>
                                 <p class="playercardno"> N </p>
                                 <div class="cardbox">
-            
+
                                 </div>
                             </div>
                             <div class="playerbox player6">
@@ -65,7 +65,7 @@
                                 </div>
                                 <p class="playercardno"> N </p>
                                 <div class="cardbox">
-            
+
                                 </div>
                             </div>
                             <div class="playerbox player1">
@@ -74,7 +74,7 @@
                                 </div>
                                 <p class="playercardno"> N </p>
                                 <div class="cardbox">
-            
+
                                 </div>
                             </div>
                             <div class="playerbox player2">
@@ -83,7 +83,7 @@
                                 </div>
                                 <p class="playercardno"> N </p>
                                 <div class="cardbox">
-                                                
+
                                 </div>
                             </div>
                             <div class="playerbox player3">
@@ -92,13 +92,13 @@
                                 </div>
                                 <p class="playercardno"> N </p>
                                 <div class="cardbox">
-            
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-    
+
+
                 </div>
                 <div class="col col3">
                     <div class="logbox">
@@ -107,7 +107,7 @@
                         </div>
                         <div class="logs">
                             <p>
-                                
+
                                 Note: A maximum of two previous moves will be shown
                             </p>
                             <p>
@@ -118,12 +118,12 @@
                                 Log010 -  00:42 <br>
                                 Manavalan declared the Low Hearts Successfully.
                             </p>
-                            
+
                         </div>
                         </div>
-    
+
                 </div>
-                
+
 
             </div>
             <div class="row statusbar">
@@ -140,33 +140,33 @@
                             <span class="close"> &times; </span>
                         </div>
                         <div class="formbox">
-    
+
                         </div>
                     </div>
                     <div class="declbox">
                         <div class="askboxh">
                             Declare
+                            <span class="close"> &times; </span>
                         </div>
-    
                         <div class="formbox">
-    
+
                         </div>
                     </div>
                 </div>
                 <div>Last updated   : <span class="statboxstat" id="lastUpdated">  Never &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></div>
                 <div>Connection status   : <span class="statboxstat" id="connectionStatus"> </span></div>
-                
+
                 </div>
 
             </div>
-            
-            
-            
-            
+
+
+
+
         </div>
 
         <audio autoplay id="audio1" src="{% static 'audio/1.mp3' %}">
-        
+
         <script type="text/javascript" src="{% static 'js/gamepage.js' %}"></script>
         <script type="text/javascript">
             function gamecircle(){
@@ -191,10 +191,11 @@
           var game_status_json = '{{game_status_json|safe}}';
           var game_info_json = '{{game_info_json|safe}}';
           var audio1 = document.getElementById("audio1");
-        
-          
+
+
           window.addEventListener('load', refresh_cards());
         </script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.11.0/underscore-min.js"></script>
         <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
         <script type="text/javascript" src='{% static "js/main.js" %}'></script>
         <script language="javascript">
@@ -216,7 +217,7 @@
                 connectionStatus.style.backgroundColor = "red";
             };
 
-            
+
         </script>
     </body>
 
