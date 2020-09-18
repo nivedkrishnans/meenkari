@@ -141,7 +141,7 @@ function refresh_cards(){
 
   document.getElementById('currentPlayer').innerHTML = game_status["p0"]
   document.getElementById('teamName').innerHTML = (parseInt(game_status["my"][0])+1)%2 +1;
-  
+
   console.log("Refresh Initiated", game_status["ts"], last_timestamp, temp);
   //return temp;
 }
@@ -264,6 +264,9 @@ function ask() {
         option.innerHTML = suitlist[my_suits[i]];
         suitselect.appendChild(option);
     }
+
+
+    suitselect.selectedIndex = -1;
 
     var head3 = document.createElement("label");
     head3.innerHTML = "Select card"+"<br>";
@@ -482,12 +485,19 @@ function declare() {
 
     suitselect = document.getElementById("declsuit");
 
+    // var option = document.createElement("option");
+    // option.setAttribute("value", declsuits[i]);
+    // option.innerHTML = suitlist[declsuits[i]];
+    // suitselect.appendChild(option);
+
     for(i=0; i<declsuits.length; i++){
         var option = document.createElement("option");
         option.setAttribute("value", declsuits[i]);
         option.innerHTML = suitlist[declsuits[i]];
         suitselect.appendChild(option);
     }
+
+    suitselect.selectedIndex = -1;
 
     // var head3 = document.createElement("label");
     // head3.innerHTML = "Select card"+"<br>";
@@ -507,6 +517,10 @@ function finddeclteam(){
         if(radio[i].checked){
             declteam = radio[i].value;
         }
+    }
+    suitselect = document.getElementById("declsuit")
+    if (suitselect.value){
+        showcardlist_decl(suitselect.value);
     }
 }
 
