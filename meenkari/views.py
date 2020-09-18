@@ -107,7 +107,7 @@ def play(request,url_id=1):
             if this_game.game_status in ['over','stopped']:
                 return render(request, 'meenkari/gameover.html',)
             elif this_game.game_status in ['united','started']:
-                game_status = game_status_json(this_user,this_game,"0")
+                game_status = game_status_json(this_user,this_game,log_generate(this_game))
                 game_info = game_info_json(this_game)
                 return render(request, 'meenkari/play.html',{'game_info_json':game_info,"game_status_json":game_status})
             else:
@@ -132,7 +132,7 @@ def gsu(request,url_id=1):
     if request.user.is_authenticated:
         this_user = request.user
         this_game = get_object_or_404(Game, game_id=url_id)
-        game_status_update(this_user,this_game,"gsu")
+        game_status_update(this_user,this_game,log_generate(this_game))
     
     return render(request, 'meenkari/error.html',)
 

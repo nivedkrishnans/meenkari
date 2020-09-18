@@ -227,10 +227,22 @@ def game_status_broadcast(thisgame):
     except:
         print("oops")
     
-    message = thisgame.log
-
+    message = log_generate(thisgame)
     for player in players:
         game_status_update(player,thisgame,message)
+
+
+def log_generate(thisgame):
+    all_log_lines = (thisgame.log).splitlines()
+    log_length = len(all_log_lines)
+    if log_length >= 3:
+        log = all_log_lines[log_length-3:log_length]
+    elif log_length>0:
+        log = all_log_lines[0:log_length]
+    else:
+        log = ['Game created']
+    log = "<p>" + "</p><p>".join(log) + "</p>"
+    return log
 
 def random_p0(thisgame):
     #this function assigns the first player randomly

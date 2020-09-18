@@ -11,20 +11,6 @@ var timestamp_display = setInterval(function(){
 },1000);
 
 
-function valet(json) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(xhttp.responseText);
-        }
-    };
-    pathname = (window.location.pathname)
-    var valet_url = '/valet' + pathname.substring(5); //the pathname is play/<id>, hence the substring method is used to extract just the url
-    console.log('valet_url', valet_url)
-    xhttp.open("POST", valet_url, true);
-    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhttp.send(json);
-}
 
 
 function update(json){
@@ -135,6 +121,9 @@ function refresh_cards(){
         document.querySelector(".player" + (i) + " .playerboxh").classList.remove("playernow");
     }
   }
+
+  document.getElementById('log_temp').innerHTML = game_status["me"];
+
   document.getElementById('gameName').innerHTML = game_info["na"];
   document.getElementById('team1score').innerHTML = game_status["te"][0];
   document.getElementById('team2score').innerHTML = game_status["te"][1];
@@ -151,7 +140,8 @@ function refresh_cards(){
   }
 
   document.getElementById('currentPlayer').innerHTML = game_status["p0"]
-
+  document.getElementById('teamName').innerHTML = (parseInt(game_status["my"][0])+1)%2 +1;
+  
   console.log("Refresh Initiated", game_status["ts"], last_timestamp, temp);
   //return temp;
 }
@@ -595,7 +585,7 @@ const handleFormSubmit_decl = event => {
     data = formtoJSON(declform.elements);
     console.log(data);
     send_data = JSON.stringify(data);
-
+    valet(send_data);
     declform.remove();
     declbox.style.display = "none";
 }

@@ -20,6 +20,7 @@
                         <table>
                             <tr><td>Game Name </td><td id="gameName">A</td></tr>
 
+                            <tr><td>My Team</td><td id="teamName">A</td></tr>
                             <tr><td>Current Player</td><td id="currentPlayer">A</td></tr>
                         </table>
                         <div class="infoteams">
@@ -106,16 +107,12 @@
                         <div class="logs">
                             <p>
 
-                                Note: A maximum of two previous moves will be shown
+                                Note: A maximum of three previous moves will be shown
                             </p>
-                            <p>
-                                Log009 -  00:53 <br>
-                                Jon Snow got the Queen of Dragons from Manavalan
-                            </p>
-                            <p>
-                                Log010 -  00:42 <br>
-                                Manavalan declared the Low Hearts Successfully.
-                            </p>
+                            <div id="log_temp">
+
+                                Note: A maximum of three previous moves will be shown
+                            </div>
 
                         </div>
                         </div>
@@ -196,6 +193,7 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.11.0/underscore-min.js"></script>
         <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
         <script type="text/javascript" src='{% static "js/main.js" %}'></script>
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
         <script language="javascript">
 
             var liveSocket = new ReconnectingWebSocket(generate_live_url());
@@ -214,6 +212,41 @@
             liveSocket.onclose = function(event) {
                 connectionStatus.style.backgroundColor = "red";
             };
+
+            
+                        
+            function valet(json) {
+                pathname = (window.location.pathname);
+                var valet_url = '/valet' + pathname.substring(5); //the pathname is play/<id>, hence the substring method is used to extract just the url
+                console.log('valet_url', valet_url);
+
+                $.ajax({
+                    type: "POST",
+                    url: valet_url,
+                    data: {
+                        'json': json,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log("response", data);
+                        if (data == 0){
+                            alert("Bad request. Please reload the page if something seems wrong..");
+                        }
+                        else if (data == 2){
+                            alert("Invalid game id. Please reload the page if something seems wrong..");
+                        }
+                        else if (data == 3){
+                            alert("This isn't your turn. Please reload the page if something seems wrong..");
+                        }
+                        else if (data == 4){
+                            alert("The other player does not have cards. Please reload the page if something seems wrong..");
+                        }
+                    }
+                });
+            }
+
+            
 
 
         </script>
