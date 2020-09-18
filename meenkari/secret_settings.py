@@ -1,10 +1,12 @@
+# IMPORTANT: During deployment set up a random SECRET_KEY_DEPLOY environment variable
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
-#create a random string for SECRET_KEY for your project
-SECRET_KEY = ";+h!7qsT<;n%<yTI/~N9c\g?cpBH{tJ9ui,V5mVzkMf-W?BlxQnvO"
+#if the SECRET_KEY_DEPLOY environment variabe is available use that else use this random string
+SECRET_KEY_DEPLOY = os.environ.get('SECRET_KEY_DEPLOY')
+SECRET_KEY = SECRET_KEY_DEPLOY if SECRET_KEY_DEPLOY else ";+h!7qsT<;n%<yTI/~N9c\g?cpBH{tJ9ui,V5mVzkMf-W?BlxQnvO"
 
 #change DEBUG to False for production
 DEBUG = True
