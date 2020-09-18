@@ -9,8 +9,8 @@
     </head>
 
     <body>
-
-        <div class="container">
+        
+        <div class="mainContainer">
             <div class="row mainrow">
                 <div class="col col1">
                     <div class="infobox">
@@ -24,11 +24,11 @@
                         </table>
                         <div class="infoteams">
                             Team 1<br>
-                            <ol>
+                            <ol id="team1score">
                                 <li>Suit 1</li>
                             </ol>
                             Team 2<br>
-                            <ol>
+                            <ol id="team2score">
                                 <li>Suit 1</li>
                             </ol>
                         </div>
@@ -36,9 +36,6 @@
 
                 </div>
                 <div class="col col2">
-                    <div class="heading">
-                        Loading
-                    </div>
                     <div class="gamecircleWrapper">
                         <div class="gamecircle" id="gamecircle">
                             <div class="playerbox player4">
@@ -101,6 +98,7 @@
 
                 </div>
                 <div class="col col3">
+                    <a href="{% url 'home' %}"><button class="exit">Exit</button></a>
                     <div class="logbox">
                         <div class="logboxh">
                             Logs

@@ -111,7 +111,8 @@ def is_player(thisuser,thisgame):
 def is_host(thisuser,thisgame):
     return (thisuser == thisgame.p1)
 
-
+def is_current_player(thisuser,thisgame):
+    return (thisuser == thisgame.p0)
 
 def host_lobby_update(thisgame):
     #this function updates the host about the players in the queue
@@ -212,6 +213,24 @@ def game_status_update(thisuser,thisgame,message):
             "type": 'game_update',
             "content": json.dumps(game_status_json(thisuser,thisgame,message)),
         })
+
+def game_status_broadcast(thisgame):
+    #broadcasts the game status to all 6 players
+    players = []
+    try:
+        players.append(thisgame.p1)
+        players.append(thisgame.p2)
+        players.append(thisgame.p3)
+        players.append(thisgame.p4)
+        players.append(thisgame.p5)
+        players.append(thisgame.p6)
+    except:
+        print("oops")
+    
+    message = thisgame.log
+
+    for player in players:
+        game_status_update(player,thisgame,message)
 
 def random_p0(thisgame):
     #this function assigns the first player randomly

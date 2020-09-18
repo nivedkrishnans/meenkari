@@ -10,6 +10,23 @@ var timestamp_display = setInterval(function(){
     lastUpdated.innerHTML = time_sec(diff) + " ago";
 },1000);
 
+
+function valet(json) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(xhttp.responseText);
+        }
+    };
+    pathname = (window.location.pathname)
+    var valet_url = '/valet' + pathname.substring(5); //the pathname is play/<id>, hence the substring method is used to extract just the url
+    console.log('valet_url', valet_url)
+    xhttp.open("POST", valet_url, true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send(json);
+}
+
+
 function update(json){
     // this function takes data in the format '{"player1" : [64,24,84,46,22,15,25], "player2" : 2,"player3" : 6,"player4" : 8,"player5" : 15,"player6" : 3}'
     // it updates the cards on the screen, without considering the actul player numbers, but their positions  on the screen
@@ -118,8 +135,9 @@ function refresh_cards(){
         document.querySelector(".player" + (i) + " .playerboxh").classList.remove("playernow");
     }
   }
-  document.getElementsByClassName('heading')[0].innerHTML = game_info["na"];
   document.getElementById('gameName').innerHTML = game_info["na"];
+  document.getElementById('team1score').innerHTML = game_status["te"][0];
+  document.getElementById('team2score').innerHTML = game_status["te"][1];
   last_timestamp = new Date(game_status["ts"]*1000);
   temp= JSON.stringify(temp);
   // console.log("update text = " +temp);
@@ -404,7 +422,7 @@ const handleFormSubmit = event => {
     data = formtoJSON(askform.elements);
     console.log(data);
     send_data = JSON.stringify(data);
-
+    valet(send_data);
     askform.remove();
     askbox.style.display = "none";
 }
