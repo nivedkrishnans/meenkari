@@ -104,7 +104,7 @@ def meenkari(request_json, this_user, this_game):
                         print("The other player has the card")
                         remove_card(card,request_json["toplayer"],this_game)
                         add_card(card, this_user, this_game)                    
-                        log = '\n' + str(timezone.now()) + ' - ' + ' ' + this_user + ' received ' + cardlist[card] + ' from ' + request_json["toplayer"]
+                        log = '\n' + str(timezone.now().ctime()) + ' - ' + ' ' + this_user + ' received ' + cardlist[card] + ' from ' + request_json["toplayer"]
                         this_game.log = this_game.log + log
                         this_game.save()
                         print(log)
@@ -115,7 +115,7 @@ def meenkari(request_json, this_user, this_game):
                             this_game.p0 = new_current
                         except Exception as e:
                             print(e)
-                        log = '\n' + str(timezone.now()) + ' - ' + ' ' + this_user + ' asked for ' + cardlist[card] + ' to ' + request_json["toplayer"] + ' but didnt recieve it'
+                        log = '\n' + str(timezone.now().ctime()) + ' - ' + ' ' + this_user + ' asked for ' + cardlist[card] + ' to ' + request_json["toplayer"] + ' but didnt recieve it'
                         this_game.log = this_game.log + log
                         this_game.save()
                         print(log)
@@ -151,13 +151,13 @@ def meenkari(request_json, this_user, this_game):
             print('Declaring for own team')
             #that is, if the user is declaring for his own team
             if declare_result:
-                log = '\n' + str(timezone.now()) + ' - ' + ' ' + this_user + ' declared the suit ' + suitlist[request_json['suit']] + ' for team ' + request_json["for team"] + ' successfully. Team ' +  request_json["for team"] + ' gains 1 point.'
+                log = '\n' + str(timezone.now().ctime()) + ' - ' + ' ' + this_user + ' declared the suit ' + suitlist[request_json['suit']] + ' for team ' + request_json["for team"] + ' successfully. Team ' +  request_json["for team"] + ' gains 1 point.'
                 this_game.log = this_game.log + log
                 success_team = True
                 this_game.save()
                 print(log)
             else:
-                log = '\n' + str(timezone.now()) + ' - ' + ' ' + this_user + ' wrongly declared the suit ' + suitlist[request_json['suit']] + ' for team ' + request_json["for team"] + '. Other team gets the point.'
+                log = '\n' + str(timezone.now().ctime()) + ' - ' + ' ' + this_user + ' wrongly declared the suit ' + suitlist[request_json['suit']] + ' for team ' + request_json["for team"] + '. Other team gets the point.'
                 this_game.log = this_game.log + log
                 success_team = False
                 this_game.save()
@@ -165,7 +165,7 @@ def meenkari(request_json, this_user, this_game):
         else:
             print('Declaring for the other team')
             correct = ' correctly ' if declare_result else ' wrongly '
-            log = '\n' + str(timezone.now()) + ' - ' + ' ' + this_user + ' misdeclared the suit ' + suitlist[request_json['suit']] + correct + ' for team ' + request_json["for team"] + '. Other team gets the point.'
+            log = '\n' + str(timezone.now().ctime()) + ' - ' + ' ' + this_user + ' misdeclared the suit ' + suitlist[request_json['suit']] + correct + ' for team ' + request_json["for team"] + '. Other team gets the point.'
             this_game.log = this_game.log + log
             success_team = False
             this_game.save()
