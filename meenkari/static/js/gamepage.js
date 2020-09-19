@@ -6,7 +6,7 @@ var timestamp_display = setInterval(function(){
     now = new Date();
     //console.log("ls",last_timestamp);
     diff = Math.round((now - last_timestamp)/1000);
-    //if(diff > 600) location.reload();
+    if(diff > 90) location.reload();
     lastUpdated.innerHTML = time_sec(diff) + " ago";
 },1000);
 
