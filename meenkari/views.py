@@ -7,7 +7,7 @@ import random
 from django.utils import timezone
 from django.contrib import messages
 import json
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
@@ -127,6 +127,26 @@ def gameover(request):
 
 def error(request):
     return render(request, 'meenkari/error.html',)
+
+from django.views.decorators.csrf import csrf_exempt
+#The view is exempted from using csrf token. to be fixed.
+@csrf_exempt
+def game_status(request,url_id=1):
+    if request.user.is_authenticated:
+        this_user = request.user
+        try:
+            this_game = Game.objects.get(game_id=url_id)
+        except:
+            return HttpResponse(0)
+        
+        data = game_status_json(this_user, this_game, log_generate(this_game))
+        return JsonResponse(data, safe=False)
+    
+    return HttpResponse(0)
+
+
+
+
 
 def gsu(request,url_id=1):
     if request.user.is_authenticated:

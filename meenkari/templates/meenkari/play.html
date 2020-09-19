@@ -99,7 +99,11 @@
 
                 </div>
                 <div class="col col3">
-                    <a href="{% url 'home' %}"><button class="exit">Exit</button></a>
+                    <div class="hor_buttons">
+                        <button onclick="manual_refresh()" class="refresh">Refresh</button>
+                        <a href="{% url 'home' %}"><button class="exit">Exit</button></a>
+                    </div>
+                    
                     <div class="logbox">
                         <div class="logboxh">
                             Logs
@@ -244,6 +248,32 @@
                         }
                         else if (data == 5){
                             alert("Half-Suit already declared. Please reload the page if something seems wrong..");
+                        }
+                    }
+                });
+            }
+
+            function manual_refresh(){
+                refresh_button = document.getElementsByClassName("refresh")[0];
+                refresh_button.classList.add('refresh_waiting');
+                console.log("Manual refresh initiated");
+                pathname = (window.location.pathname);
+                var game_status_url = '/game_status' + pathname.substring(5); //the pathname is play/<id>, hence the substring method is used to extract just the url
+                console.log('game_status', game_status_url);
+                $.ajax({
+                    type: "POST",
+                    url: game_status_url,
+                    data: 1,
+                    success: function (data) {
+                        console.log("game_status recieved", data);
+                        game_status_json = data;
+                        refresh_cards();
+                        if (data == 0){
+                            alert("Bad request. Please reload the page if something seems wrong..");
+                        }
+                        else{
+                            console.log("Manual refresh successfull");
+                            refresh_button.classList.remove('refresh_waiting');
                         }
                     }
                 });
