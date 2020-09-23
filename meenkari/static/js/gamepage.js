@@ -352,7 +352,7 @@ function showask(){
 }
 
 var suitlist = {
-    "1" : "8's and Jokers" ,
+    "1" : "8s and Jokers" ,
     "2" : "Higher Spades",
     "3" : "Higher Diamonds",
     "4" : "Higher Clubs",
