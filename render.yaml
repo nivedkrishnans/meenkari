@@ -1,6 +1,5 @@
 databases:
   - name: meenkari
-    region: singapore
     plan: free
     databaseName: meenkari
     user: meenkari
@@ -9,7 +8,6 @@ services:
   - type: web
     name: meenkari
     runtime: python
-    region: singapore
     plan: free
     buildCommand: "./build.sh"
     startCommand: "daphne meenkari.asgi:application"
