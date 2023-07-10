@@ -8,8 +8,8 @@ DATABASE_URL = os.environ.get('DATABASE_URL')
 SECRET_KEY_DEPLOY = os.environ.get('SECRET_KEY_DEPLOY')
 SECRET_KEY = SECRET_KEY_DEPLOY if SECRET_KEY_DEPLOY else ";+h!7qsT<;n%<yTI/~N9c\g?cpBH{tJ9ui,V5mVzkMf-W?BlxQnvO"
 
-#change DEBUG to False for production
-DEBUG = True
+#change DEBUG to False for production. Following statement makes debug true if env variable DEBUG is either true or non-existent
+DEBUG =  True if os.environ.get('DEBUG') in [None, True] else False
 
 #add your respective hostname(s) to the ALLOWED_HOSTS list
 ALLOWED_HOSTS = ["*"]
