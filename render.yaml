@@ -5,8 +5,8 @@ databases:
     plan: free
 
 services:
-  - plan: free
   - type: web
+    plan: free
     name: meenkari
     runtime: python
     buildCommand: "./build.sh"
