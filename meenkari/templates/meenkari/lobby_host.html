@@ -47,12 +47,10 @@
   <script type="text/javascript" src='{% static "js/main.js" %}'></script>
   <script language="javascript">
 
-    var refresh_user_queue = function(){
+    var refresh_user_queue = function(sendAlert){ //argument decides if an alert is to be sent
         // Takes the contents of user_queue_invisible and updates the user queue in user_queue_visible
         str = document.getElementById("user_queue_invisible").innerHTML;
         str = str.replaceAll("\'", "\"");
-        console.log(str);
-        console.log(typeof str);
         j = JSON.parse(str);
         console.log(j);
         temp = "";
@@ -62,19 +60,23 @@
             }
             document.getElementById("user_queue_visible").innerHTML=temp;
             console.log("User queue updated");
+            if(sendAlert){
+                alert("New user in lobby");
+            }
+            
         }
         else{
             console.log("No user list found in queue");
         }
         
     };
-    refresh_user_queue(); // For loading the users already added to queue before the websocket stuff happens
+    refresh_user_queue(false); // For loading the users already added to queue before the websocket stuff happens
 
     var liveSocket = new WebSocket(generate_live_url());
     liveSocket.onmessage = function(event) {
         var data = event.data;
         document.getElementById("user_queue_invisible").innerHTML=data.toString();
-        refresh_user_queue();
+        refresh_user_queue(true);
         console.log('Message from the server:', data);
     };
     liveSocket.onopen = function(event) {
