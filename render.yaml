@@ -1,16 +1,16 @@
 databases:
   - name: meenkari
+    region: singapore
+    plan: free
     databaseName: meenkari
     user: meenkari
-    plan: free
-    region: singapore
 
 services:
   - type: web
-    plan: free
-    region: singapore
     name: meenkari
     runtime: python
+    region: singapore
+    plan: free
     buildCommand: "./build.sh"
     startCommand: "daphne meenkari.asgi:application"
     envVars:
