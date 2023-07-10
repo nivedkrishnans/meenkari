@@ -10,9 +10,10 @@
 
     <div class="box" id="signin">
         <h1>Unite</h1>
-                <p style="font-size:10px;">Here you shall choose your players</p>
-                <p style="font-size:10px;" id="user_queue"> {{lobby}}</p>
-                <p style="font-size:10px;">Team 1 Player 1 is the host, {{user}}</p>
+                <p style="font-size:10px;">Enter the player usernames into the form below. <br>Team 1 Player 1 will be the host, {{user}}.<br> The following users have joined the lobby:</p>
+                <p style="font-size:10px;display:none" id="user_queue_invisible" > {{lobby}}</p> <!-- This will remain invisible and recieve the user queue -->
+                <p style="font-size:10px;" id="user_queue_visible"> </p> <!-- This will take the contents of user_queue_invisible and make then appear aesthetically-->
+
                 <form method="POST">
                     <div class="form-container">
                         {% csrf_token %}
@@ -46,12 +47,48 @@
   <script type="text/javascript" src='{% static "js/main.js" %}'></script>
   <script language="javascript">
 
-    var liveSocket = new ReconnectingWebSocket(generate_live_url());
+    var refresh_user_queue = function(){
+        // Takes the contents of user_queue_invisible and updates the user queue in user_queue_visible
+        str = document.getElementById("user_queue_invisible").innerHTML;
+        str = str.replaceAll("\'", "\"");
+        console.log(str);
+        console.log(typeof str);
+        j = JSON.parse(str);
+        console.log(j);
+        temp = "";
+        if(j.hasOwnProperty('queue')){
+            for (let i = 0; i < j["queue"].length; i++) {
+                temp = temp.concat("<span>",j["queue"][i],"</span>");
+            }
+            document.getElementById("user_queue_visible").innerHTML=temp;
+            console.log("User queue updated");
+        }
+        else{
+            console.log("No user list found in queue");
+        }
+        
+    };
+    refresh_user_queue(); // For loading the users already added to queue before the websocket stuff happens
+
+    var liveSocket = new WebSocket(generate_live_url());
     liveSocket.onmessage = function(event) {
         var data = event.data;
-        document.getElementById("user_queue").innerHTML=data.toString();
-        console.log('data', data);
-        // do whatever required with received data ...
+        document.getElementById("user_queue_invisible").innerHTML=data.toString();
+        refresh_user_queue();
+        console.log('Message from the server:', data);
+    };
+    liveSocket.onopen = function(event) {
+        console.log("Connection open attempting")
+        liveSocket.send(JSON.stringify({
+            'message': "Hello from the client side",
+            'type':'websocket.receive'
+        }));
+    };
+    liveSocket.onerror = function(event) {
+        console.log("Connection error")
+    };
+    liveSocket.onclose = function(event) {
+        console.log("Connection closed")
     };
 
 

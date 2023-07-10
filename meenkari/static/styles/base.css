@@ -101,7 +101,7 @@ img{
     width:25%;
     /* padding:100%; */
     border-radius:50%;
-    background-image:url('./images/person.jfif');
+    /* background-image:url('./images/person.jfif'); */
     background-size:contain;
     background-repeat: no-repeat;
     /* background-color:red; */
@@ -279,4 +279,19 @@ img{
       font-size:4em;
       border-radius:2em;
   }
+}
+
+
+#user_queue_visible span{
+    border: 1px solid rgba(10,10,10,0.7) !important;
+    background-color: rgba(10,10,10,0.7) !important;
+    color: rgb(240,240,240) !important;
+    border-radius: 2px;
+    margin: 2px;
+    padding:2px;
+    /* cursor:copy; */
+}
+
+#user_queue_visible span:hover{
+    background-color: rgba(50,50,50,0.7) !important;
 }

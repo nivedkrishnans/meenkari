@@ -138,12 +138,12 @@ def host_lobby_update(thisgame):
 def lobby_json(thisgame):
     # this function generates the present player queue inorder to show the host
     this_queue = list(thisgame.lobby.players.all(
-    ).values_list('username', flat=True))
+    ).values_list("username", flat=True))
     this_queue_json = {
-        "type": 'lobby_update',
-        'time': str(timezone.now()),
-        'lobby_id': thisgame.lobby_id,
-        'queue': this_queue,
+        "type": "lobby_update",
+        "time": str(timezone.now()),
+        "lobby_id": thisgame.lobby_id,
+        "queue": this_queue,
     }
     return this_queue_json
 
@@ -216,8 +216,7 @@ def player_status_finder(thisuser, thisgame):
 
 def game_status_update(thisuser, thisgame, message):
     # this function sends the game_status_json to the players on the game page in an active game
-    this_group_name = "game-" + \
-        thisgame.game_id + "-" + str(thisuser)
+    this_group_name = game_group_name(thisgame, thisgame.game_id)
     channel_layer = channels.layers.get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         this_group_name, {
@@ -317,3 +316,23 @@ def makecardlist():
 
 
 cardlist = makecardlist()
+
+
+
+def lobby_group_name(user, url_id):
+    # Create the name for the channels group for the LobbyConsumer
+    this_game = Game.objects.get(lobby_id=url_id)
+    if is_host(user,this_game):
+        this_user_group = "lobby-" + url_id + "-host"
+    else:
+        this_user_group = "lobby-" + url_id + "-queue"
+    return this_user_group
+
+def game_group_name(user, url_id):
+    # Create the name for the channels group for the GameConsumer
+    this_game = Game.objects.get(game_id=url_id)
+    if is_player(user, this_game):
+        this_user_group = "game-" + this_game.game_id + "-" + (user)
+    else:
+        this_user_group = "denied"
+    return this_user_group

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = secret_settings.ALLOWED_HOSTS
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -129,13 +130,13 @@ STATIC_ROOT = './static/'
 #    },
 #}
 
+ASGI_APPLICATION = "meenkari.asgi.application"
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
-     }
+    }
 }
-
-ASGI_APPLICATION = "meenkari.routing.application"
 LIVE_GROUP_NAME= "live_group"
 
 

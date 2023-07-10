@@ -12,7 +12,7 @@ SECRET_KEY = SECRET_KEY_DEPLOY if SECRET_KEY_DEPLOY else ";+h!7qsT<;n%<yTI/~N9c\
 DEBUG = True
 
 #add your respective hostname(s) to the ALLOWED_HOSTS list
-ALLOWED_HOSTS = ['127.0.0.1','meenkari.herokuapp.com']
+ALLOWED_HOSTS = ["*"]
 
 #if the DATABSE_URL variable is found like in heroku, it uses that, otherwise uses the database provided in DB_temp
 import dj_database_url
