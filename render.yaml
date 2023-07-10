@@ -3,14 +3,16 @@ databases:
     databaseName: meenkari
     user: meenkari
     plan: free
+    region: singapore
 
 services:
   - type: web
     plan: free
+    region: singapore
     name: meenkari
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "uvicorn meenkari.asgi:application"
+    startCommand: "daphne meenkari.asgi:application"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
