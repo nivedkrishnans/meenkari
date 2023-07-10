@@ -1,8 +1,8 @@
 databases:
-  - plan: free
   - name: meenkari
     databaseName: meenkari
     user: meenkari
+    plan: free
 
 services:
   - plan: free
