@@ -1,15 +1,16 @@
 databases:
+  - plan: free
   - name: meenkari
     databaseName: meenkari
     user: meenkari
 
 services:
+  - plan: free
   - type: web
     name: meenkari
     runtime: python
     buildCommand: "./build.sh"
     startCommand: "uvicorn meenkari.asgi:application"
-    plan: free
     envVars:
       - key: DATABASE_URL
         fromDatabase:
