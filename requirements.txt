@@ -1,5 +1,5 @@
 django
-dj_database_url
+dj-database-url
 channels[daphne]
 django_registration
 whitenoise

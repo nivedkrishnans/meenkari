@@ -1,0 +1,26 @@
+databases:
+  - name: meenkari
+    plan: free
+    databaseName: meenkari
+    user: meenkari
+
+services:
+  - type: web
+    name: meenkari
+    runtime: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "daphne -b 0.0.0.0 -p 8001 meenkari.asgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: meenkari
+          property: connectionString
+      - key: SECRET_KEY_DEPLOY
+        generateValue: true
+      - key: DJANGO_SUPERUSER_PASSWORD
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: WEB_CONCURRENCY
+        value: 4
