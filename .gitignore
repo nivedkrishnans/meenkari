@@ -7,3 +7,4 @@ db.sqlite3
 sent_emails/
 meenkari/secret_settings.py
 static/
+*.pem
