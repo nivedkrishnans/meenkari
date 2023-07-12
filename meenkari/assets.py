@@ -70,7 +70,7 @@ def shuffle_cards(thisgame):
 def display_hands(thisgame):
     hands = [thisgame.p1_hand, thisgame.p2_hand, thisgame.p3_hand,
              thisgame.p4_hand, thisgame.p5_hand, thisgame.p6_hand]
-    print(hands)
+    # print(hands)
 
 
 def assign_id(thisgame):
@@ -109,6 +109,7 @@ def is_player(thisuser, thisgame):
         thisgame.p5,
         thisgame.p6,
     }
+    print("Current player:", str(thisuser), "All users: ", [str(i) for i in player_list])
     if thisuser in player_list:
         return True
     else:
@@ -125,8 +126,7 @@ def is_current_player(thisuser, thisgame):
 
 def host_lobby_update(thisgame):
     # this function updates the host about the players in the queue
-    this_group_name = "lobby-" + \
-        thisgame.lobby_id + "-host"
+    this_group_name = "lobby-" + thisgame.lobby_id + "-host"
     channel_layer = channels.layers.get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         this_group_name, {
@@ -150,8 +150,7 @@ def lobby_json(thisgame):
 
 def player_lobby_update(thisgame):
     # this function updates the non-host that the players have been chosen. they players will be asked to reload the page
-    this_group_name = "lobby-" + \
-        thisgame.lobby_id + "-" + 'queue'
+    this_group_name = "lobby-" + thisgame.lobby_id + "-" + 'queue'
     lobby_update = {
         "type": 'lobby_update',
     }
@@ -216,8 +215,9 @@ def player_status_finder(thisuser, thisgame):
 
 def game_status_update(thisuser, thisgame, message):
     # this function sends the game_status_json to the players on the game page in an active game
-    this_group_name = game_group_name(thisgame, thisgame.game_id)
+    this_group_name = game_group_name(thisuser, thisgame.game_id)
     channel_layer = channels.layers.get_channel_layer()
+    print("Sending game update to ", str(thisuser), "for", this_group_name)
     async_to_sync(channel_layer.group_send)(
         this_group_name, {
             "type": 'game_update',
@@ -235,13 +235,14 @@ def game_status_broadcast(thisgame):
         players.append(thisgame.p4)
         players.append(thisgame.p5)
         players.append(thisgame.p6)
-    except:
-        print("oops")
+    except Exception as e:
+        print(e)
 
     message = log_generate(thisgame)
+    print('Recent game history (logs) generated')
+    print('Initiating game_status_update for the players')
     for player in players:
-        game_status_update(
-            player, thisgame, message)
+        game_status_update(player, thisgame, message)
 
 
 def log_generate(thisgame):
@@ -264,7 +265,7 @@ def random_p0(thisgame):
             thisgame.p4, thisgame.p5, thisgame.p6, ]
     thisgame.p0 = temp[random.randint(0, 5)]
     thisgame.save()
-    print(thisgame.p0)
+    print('Assigned first player: ', thisgame.p0, thisgame)
 
 
 def tester_sender(group, message):
@@ -278,31 +279,31 @@ def tester_sender(group, message):
 
 
 suitlist = {
-    "1": "8s and Jokers",
-    "2": "Higher Spades",
-    "3": "Higher Diamonds",
-    "4": "Higher Clubs",
-    "5": "Higher Hearts",
-    "6": "Lower Spades",
-    "7": "Lower Diamonds",
-    "8": "Lower Clubs",
-    "9": "Lower Hearts"
+    "1": "8 and J",
+    "2": "High ♠",
+    "3": "High ◆",
+    "4": "High ♣",
+    "5": "High ♥",
+    "6": "Low ♠",
+    "7": "Low ◆",
+    "8": "Low ♣",
+    "9": "Low ♥"
 }
 
 
 def makecardlist():
     cardlist = {
-        "11": "Black Joker",
-        "12": "8 of Spades",
-        "13": "8 of Diamonds",
-        "14": "8 of Clubs",
-        "15": "8 of Hearts",
-        "16": "White Joker",
+        "11": "Black J",
+        "12": "8 of ♠",
+        "13": "8 of ◆",
+        "14": "8 of ♣",
+        "15": "8 of ♥",
+        "16": "White J",
     }
 
     lower = ["2", "3", "4", "5", "6", "7"]
     higher = ["9", "10", "Jack", "Queen", "King", "Ace"]
-    suit = ["Spades", "Diamonds", "Clubs", "Hearts"]
+    suit = ["♠", "◆", "♣", "♥"]
 
     for i in range(4):
         for j in range(6):

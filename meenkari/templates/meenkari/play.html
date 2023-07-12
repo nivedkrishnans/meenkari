@@ -203,10 +203,18 @@
             var liveSocket = new ReconnectingWebSocket(generate_live_url());
             liveSocket.onmessage = function(event) {
                 var data = event.data;
-                game_status_json = JSON.parse(data);
-                console.log('game_status_json', game_status_json);
-                refresh_cards();
-                // do whatever required with received data ...
+                try {
+                    // Verifing that the data received is indeed a game_status_json and not some other format
+                    temp = JSON.parse(JSON.parse(data));
+                    if(temp["ty"] == "gsj"){
+                        game_status_json = JSON.parse(data);
+                        console.log('game_status received from websocket: ', game_status_json);
+                    }
+                    refresh_cards();                    
+                } catch (error) {
+                    console.log(error.message, "Received message: ", data);
+                    return 0;
+                }
             };
 
             //code for displaying the connection status
@@ -269,8 +277,8 @@
                     url: game_status_url,
                     data: 1,
                     success: function (data) {
-                        console.log("game_status recieved", data);
                         game_status_json = data;
+                        console.log("game_status recieved via manual refresh", game_status_json);
                         refresh_cards();
                         if (data == 0){
                             alert("Bad request. Please reload the page if something seems wrong..");

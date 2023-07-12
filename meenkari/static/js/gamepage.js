@@ -6,7 +6,8 @@ var timestamp_display = setInterval(function(){
     now = new Date();
     //console.log("ls",last_timestamp);
     diff = Math.round((now - last_timestamp)/1000);
-    if(diff > 90) location.reload();
+    if(diff > 90) manual_refresh(); // attempts refresh via ajax at 1.5min of no update
+    if(diff > 150) location.reload(); // reloads page after 2.5min of no update
     lastUpdated.innerHTML = time_sec(diff) + " ago";
 },1000);
 
@@ -352,16 +353,16 @@ function showask(){
 }
 
 var suitlist = {
-    "1" : "8s and Jokers" ,
-    "2" : "Higher Spades",
-    "3" : "Higher Diamonds",
-    "4" : "Higher Clubs",
-    "5" : "Higher Hearts",
-    "6" : "Lower Spades",
-    "7" : "Lower Diamonds",
-    "8" : "Lower Clubs",
-    "9" : "Lower Hearts"
-};
+    "1": "8 and J",
+    "2": "High ♠",
+    "3": "High ◆",
+    "4": "High ♣",
+    "5": "High ♥",
+    "6": "Low ♠",
+    "7": "Low ◆",
+    "8": "Low ♣",
+    "9": "Low ♥"
+}
 
 var cardlist = makecardlist();
 
@@ -369,17 +370,17 @@ var cardlist = makecardlist();
 // the card numbers and its actual names.
 function makecardlist(){
     var cardlist = {
-        "11" : "Black Joker",
-        "12" : "8 of Spades",
-        "13" : "8 of Diamonds",
-        "14" : "8 of Clubs",
-        "15" : "8 of Hearts",
-        "16" : "White Joker",
+        "11": "Black J",
+        "12": "8 of ♠",
+        "13": "8 of ◆",
+        "14": "8 of ♣",
+        "15": "8 of ♥",
+        "16": "White J",
     };
 
     lower = ["2", "3", "4", "5", "6", "7"];
     higher = ["9", "10", "Jack", "Queen", "King", "Ace"];
-    suit = ["Spades", "Diamonds", "Clubs", "Hearts"];
+    suit = ["♠", "◆", "♣", "♥"];
 
     for(i=0; i<4; i++){
         for(j=0; j<6; j++){
