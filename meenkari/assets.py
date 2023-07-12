@@ -278,31 +278,31 @@ def tester_sender(group, message):
 
 
 suitlist = {
-    "1": "8s and Jokers",
-    "2": "Higher Spades",
-    "3": "Higher Diamonds",
-    "4": "Higher Clubs",
-    "5": "Higher Hearts",
-    "6": "Lower Spades",
-    "7": "Lower Diamonds",
-    "8": "Lower Clubs",
-    "9": "Lower Hearts"
+    "1": "8 and J",
+    "2": "High ♠",
+    "3": "High ◆",
+    "4": "High ♣",
+    "5": "High ♥",
+    "6": "Low ♠",
+    "7": "Low ◆",
+    "8": "Low ♣",
+    "9": "Low ♥"
 }
 
 
 def makecardlist():
     cardlist = {
-        "11": "Black Joker",
-        "12": "8 of Spades",
-        "13": "8 of Diamonds",
-        "14": "8 of Clubs",
-        "15": "8 of Hearts",
-        "16": "White Joker",
+        "11": "Black J",
+        "12": "8 of ♠",
+        "13": "8 of ◆",
+        "14": "8 of ♣",
+        "15": "8 of ♥",
+        "16": "White J",
     }
 
     lower = ["2", "3", "4", "5", "6", "7"]
     higher = ["9", "10", "Jack", "Queen", "King", "Ace"]
-    suit = ["Spades", "Diamonds", "Clubs", "Hearts"]
+    suit = ["♠", "◆", "♣", "♥"]
 
     for i in range(4):
         for j in range(6):
