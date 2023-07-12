@@ -72,7 +72,7 @@
     };
     refresh_user_queue(false); // For loading the users already added to queue before the websocket stuff happens
 
-    var liveSocket = new WebSocket(generate_live_url());
+    var liveSocket = new ReconnectingWebSocket(generate_live_url());
     liveSocket.onmessage = function(event) {
         var data = event.data;
         document.getElementById("user_queue_invisible").innerHTML=data.toString();
