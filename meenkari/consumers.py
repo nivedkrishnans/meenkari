@@ -64,8 +64,7 @@ class GameConsumer(WebsocketConsumer):
                 group, self.channel_name
             )      
             self.accept()
-            # We avoid this because the game page assumes all messages from the server to be a game update so will end up throwing an erro
-            # self.send(text_data=json.dumps({"message": "Hello from the server"}))
+            self.send(text_data=json.dumps({"message": "Hello from the server"}))
         else:
             self.close()
 

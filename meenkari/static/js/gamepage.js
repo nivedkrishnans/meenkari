@@ -6,7 +6,8 @@ var timestamp_display = setInterval(function(){
     now = new Date();
     //console.log("ls",last_timestamp);
     diff = Math.round((now - last_timestamp)/1000);
-    if(diff > 90) location.reload();
+    if(diff > 90) manual_refresh(); // attempts refresh via ajax at 1.5min of no update
+    if(diff > 150) location.reload(); // reloads page after 2.5min of no update
     lastUpdated.innerHTML = time_sec(diff) + " ago";
 },1000);
 
