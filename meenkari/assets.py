@@ -332,7 +332,7 @@ def game_group_name(user, url_id):
     # Create the name for the channels group for the GameConsumer
     this_game = Game.objects.get(game_id=url_id)
     if is_player(user, this_game):
-        this_user_group = "game-" + this_game.game_id + "-" + (user)
+        this_user_group = "game-" + this_game.game_id + "-" + str(user)
     else:
         this_user_group = "denied"
     return this_user_group

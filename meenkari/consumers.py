@@ -64,7 +64,8 @@ class GameConsumer(WebsocketConsumer):
                 group, self.channel_name
             )      
             self.accept()
-            self.send(text_data=json.dumps({"message": "Hello from the server"}))
+            # We avoid this because the game page assumes all messages from the server to be a game update so will end up throwing an erro
+            # self.send(text_data=json.dumps({"message": "Hello from the server"}))
         else:
             self.close()
 
@@ -85,9 +86,10 @@ class GameConsumer(WebsocketConsumer):
         url_id =  self.scope["url_route"]["kwargs"]["url_id"]
         group = lobby_group_name(current_user,url_id)
         # Send message to room group
-        async_to_sync(self.channel_layer.group_send)(
-            group, {"type": "confirmation_message", "message": json.loads(text_data)["message"]}
-        )
+        # We avoid this because the game page assumes all messages from the server to be a game update so will end up throwing an erro
+        # async_to_sync(self.channel_layer.group_send)(
+        #     group, {"type": "confirmation_message", "message": json.loads(text_data)["message"]}
+        # )
     # Receive message from room group
     def confirmation_message(self, event):
         message = event["message"]

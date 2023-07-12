@@ -204,6 +204,7 @@
             liveSocket.onmessage = function(event) {
                 var data = event.data;
                 game_status_json = JSON.parse(data);
+                console.log('game_status_json', game_status_json);
                 refresh_cards();
                 // do whatever required with received data ...
             };
@@ -214,6 +215,9 @@
                 connectionStatus.style.backgroundColor = "green";
             };
             liveSocket.onclose = function(event) {
+                connectionStatus.style.backgroundColor = "red";
+            };
+            liveSocket.error = function(event) {
                 connectionStatus.style.backgroundColor = "red";
             };
 
