@@ -54,6 +54,10 @@ function update(json){
             playercards.getElementsByClassName("cardWrapper")[playercards.getElementsByClassName("cardWrapper").length - 1].classList.add("lastcard");
         }
 
+        if (cardnumber_new == 0){
+            playercards.innerHTML = '';
+        }
+
 
     }
 
@@ -62,33 +66,37 @@ function update(json){
     mycards_new = updatedata.player1;
     mycards_old = [];
 
-    for (i=0; i < mycardbox.getElementsByClassName("cardWrapper").length; i++){
-        mycards_old[mycards_old.length] = parseInt(mycardbox.getElementsByClassName("cardWrapper")[i].id);
-    }
-
-    for (i=0; i < mycards_old.length; i++){
-        if (!(mycards_new.includes(mycards_old[i]))){
-            document.getElementById(String(mycards_old[i])).remove();
+    if (mycards_new != 0){
+        for (i=0; i < mycardbox.getElementsByClassName("cardWrapper").length; i++){
+            mycards_old[mycards_old.length] = parseInt(mycardbox.getElementsByClassName("cardWrapper")[i].id);
         }
-    }
 
-    for (i=0; i < mycards_new.length; i++){
-        if (!(mycards_old.includes(mycards_new[i]))){
-            var newdiv = document.createElement("div");
-            newdiv.setAttribute("class", "cardWrapper");
-            newdiv.id = String(mycards_new[i]);
-            mycardbox.appendChild(newdiv);
-            var imgdiv = document.createElement("img");
-            imgdiv.setAttribute("src", "../static/images/cards/"+String(mycards_new[i])+".png");
-            imgdiv.setAttribute("alt", " ");
-            imgdiv.setAttribute("class", "card");
-            mycardbox.getElementsByClassName("cardWrapper")[mycardbox.getElementsByClassName("cardWrapper").length-1].appendChild(imgdiv);
+        for (i=0; i < mycards_old.length; i++){
+            if (!(mycards_new.includes(mycards_old[i]))){
+                document.getElementById(String(mycards_old[i])).remove();
+            }
         }
-    }
 
-    if (mycards_new.length != 0){
-        mycardbox.getElementsByClassName("cardWrapper")[0].classList.add("firstcard");
-        mycardbox.getElementsByClassName("cardWrapper")[mycardbox.getElementsByClassName("cardWrapper").length - 1].classList.add("lastcard");
+        for (i=0; i < mycards_new.length; i++){
+            if (!(mycards_old.includes(mycards_new[i]))){
+                var newdiv = document.createElement("div");
+                newdiv.setAttribute("class", "cardWrapper");
+                newdiv.id = String(mycards_new[i]);
+                mycardbox.appendChild(newdiv);
+                var imgdiv = document.createElement("img");
+                imgdiv.setAttribute("src", "../static/images/cards/"+String(mycards_new[i])+".png");
+                imgdiv.setAttribute("alt", " ");
+                imgdiv.setAttribute("class", "card");
+                mycardbox.getElementsByClassName("cardWrapper")[mycardbox.getElementsByClassName("cardWrapper").length-1].appendChild(imgdiv);
+            }
+        }
+
+        if (mycards_new.length != 0){
+            mycardbox.getElementsByClassName("cardWrapper")[0].classList.add("firstcard");
+            mycardbox.getElementsByClassName("cardWrapper")[mycardbox.getElementsByClassName("cardWrapper").length - 1].classList.add("lastcard");
+        }
+    } else {
+        mycardbox.innerHTML = '';
     }
 
     return [mycards_old, mycards_new];
