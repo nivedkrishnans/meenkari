@@ -20,14 +20,15 @@ function update(json){
     // the positions are 1 for the current player, and 2 to 6 are the players clockwise from the current player
     var updatedata=JSON.parse(json);
 
+    // Stores the old and new card counts for the 5 other players as an array to change the display accordingly
     var cardnumber_old = [];
     var cardnumber_new = [];
 
     for (i=2; i<7; i++){
 
         var playercards = document.getElementsByClassName("player"+String(i))[0].getElementsByClassName('cardbox')[0];
-        cardnumber_old[cardnumber_old.length] = playercards.getElementsByClassName("cardWrapper").length;
-        eval("cardnumber_new[cardnumber_new.length] = updatedata.player"+i+";");
+        cardnumber_old.push( playercards.getElementsByClassName("cardWrapper").length );
+        eval("cardnumber_new.push(updatedata.player"+i+");");
 
         var diff = cardnumber_new[i-2] - cardnumber_old[i-2];
         if (diff > 0){
@@ -48,13 +49,13 @@ function update(json){
 
             }
         }
-
-        if (cardnumber_new != 0){
+        
+        if (cardnumber_new[i-2] != 0){
             playercards.getElementsByClassName("cardWrapper")[0].classList.add("firstcard");
             playercards.getElementsByClassName("cardWrapper")[playercards.getElementsByClassName("cardWrapper").length - 1].classList.add("lastcard");
         }
 
-        if (cardnumber_new == 0){
+        if (cardnumber_new[i-2] == 0){
             playercards.innerHTML = '';
         }
 
@@ -64,6 +65,7 @@ function update(json){
     mycardbox = document.getElementsByClassName("player1")[0].getElementsByClassName("cardbox")[0];
 
     mycards_new = updatedata.player1;
+    console.log("mycards", mycards_new, updatedata);
     mycards_old = [];
 
     if (mycards_new != 0){
