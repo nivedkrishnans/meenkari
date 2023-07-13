@@ -20,14 +20,15 @@ function update(json){
     // the positions are 1 for the current player, and 2 to 6 are the players clockwise from the current player
     var updatedata=JSON.parse(json);
 
+    // Stores the old and new card counts for the 5 other players as an array to change the display accordingly
     var cardnumber_old = [];
     var cardnumber_new = [];
 
     for (i=2; i<7; i++){
 
         var playercards = document.getElementsByClassName("player"+String(i))[0].getElementsByClassName('cardbox')[0];
-        cardnumber_old[cardnumber_old.length] = playercards.getElementsByClassName("cardWrapper").length;
-        eval("cardnumber_new[cardnumber_new.length] = updatedata.player"+i+";");
+        cardnumber_old.push( playercards.getElementsByClassName("cardWrapper").length );
+        eval("cardnumber_new.push(updatedata.player"+i+");");
 
         var diff = cardnumber_new[i-2] - cardnumber_old[i-2];
         if (diff > 0){
@@ -48,10 +49,14 @@ function update(json){
 
             }
         }
-
-        if (cardnumber_new != 0){
+        
+        if (cardnumber_new[i-2] != 0){
             playercards.getElementsByClassName("cardWrapper")[0].classList.add("firstcard");
             playercards.getElementsByClassName("cardWrapper")[playercards.getElementsByClassName("cardWrapper").length - 1].classList.add("lastcard");
+        }
+
+        if (cardnumber_new[i-2] == 0){
+            playercards.innerHTML = '';
         }
 
 
@@ -60,35 +65,40 @@ function update(json){
     mycardbox = document.getElementsByClassName("player1")[0].getElementsByClassName("cardbox")[0];
 
     mycards_new = updatedata.player1;
+    console.log("mycards", mycards_new, updatedata);
     mycards_old = [];
 
-    for (i=0; i < mycardbox.getElementsByClassName("cardWrapper").length; i++){
-        mycards_old[mycards_old.length] = parseInt(mycardbox.getElementsByClassName("cardWrapper")[i].id);
-    }
-
-    for (i=0; i < mycards_old.length; i++){
-        if (!(mycards_new.includes(mycards_old[i]))){
-            document.getElementById(String(mycards_old[i])).remove();
+    if (mycards_new != 0){
+        for (i=0; i < mycardbox.getElementsByClassName("cardWrapper").length; i++){
+            mycards_old[mycards_old.length] = parseInt(mycardbox.getElementsByClassName("cardWrapper")[i].id);
         }
-    }
 
-    for (i=0; i < mycards_new.length; i++){
-        if (!(mycards_old.includes(mycards_new[i]))){
-            var newdiv = document.createElement("div");
-            newdiv.setAttribute("class", "cardWrapper");
-            newdiv.id = String(mycards_new[i]);
-            mycardbox.appendChild(newdiv);
-            var imgdiv = document.createElement("img");
-            imgdiv.setAttribute("src", "../static/images/cards/"+String(mycards_new[i])+".png");
-            imgdiv.setAttribute("alt", " ");
-            imgdiv.setAttribute("class", "card");
-            mycardbox.getElementsByClassName("cardWrapper")[mycardbox.getElementsByClassName("cardWrapper").length-1].appendChild(imgdiv);
+        for (i=0; i < mycards_old.length; i++){
+            if (!(mycards_new.includes(mycards_old[i]))){
+                document.getElementById(String(mycards_old[i])).remove();
+            }
         }
-    }
 
-    if (mycards_new.length != 0){
-        mycardbox.getElementsByClassName("cardWrapper")[0].classList.add("firstcard");
-        mycardbox.getElementsByClassName("cardWrapper")[mycardbox.getElementsByClassName("cardWrapper").length - 1].classList.add("lastcard");
+        for (i=0; i < mycards_new.length; i++){
+            if (!(mycards_old.includes(mycards_new[i]))){
+                var newdiv = document.createElement("div");
+                newdiv.setAttribute("class", "cardWrapper");
+                newdiv.id = String(mycards_new[i]);
+                mycardbox.appendChild(newdiv);
+                var imgdiv = document.createElement("img");
+                imgdiv.setAttribute("src", "../static/images/cards/"+String(mycards_new[i])+".png");
+                imgdiv.setAttribute("alt", " ");
+                imgdiv.setAttribute("class", "card");
+                mycardbox.getElementsByClassName("cardWrapper")[mycardbox.getElementsByClassName("cardWrapper").length-1].appendChild(imgdiv);
+            }
+        }
+
+        if (mycards_new.length != 0){
+            mycardbox.getElementsByClassName("cardWrapper")[0].classList.add("firstcard");
+            mycardbox.getElementsByClassName("cardWrapper")[mycardbox.getElementsByClassName("cardWrapper").length - 1].classList.add("lastcard");
+        }
+    } else {
+        mycardbox.innerHTML = '';
     }
 
     return [mycards_old, mycards_new];

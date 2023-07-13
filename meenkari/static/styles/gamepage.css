@@ -197,7 +197,10 @@ body{
         transition: opacity 4000ms;
         will-change: opacity;
         transform: rotate(2deg);
-        box-shadow: -1px 1px 1px rgba(0,0,0,0.5);
+        /* box-shadow: -1px 1px 1px rgba(0,0,0,0.5); */
+        overflow: visible;
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
 }
 
 .cardWrapper.fadedut{

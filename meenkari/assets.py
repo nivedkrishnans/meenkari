@@ -21,55 +21,27 @@ def random_string_generator(size):
     return "".join(random.choices(string.ascii_lowercase + string.digits, k=size))
 
 
-newdeck = [
-    # the 9 half-suits and their 6 cards
-    "11", "12", "13", "14", "15", "16",
-    "21", "22", "23", "24", "25", "26",
-    "31", "32", "33", "34", "35", "36",
-    "41", "42", "43", "44", "45", "46",
-    "51", "52", "53", "54", "55", "56",
-    "61", "62", "63", "64", "65", "66",
-    "71", "72", "73", "74", "75", "76",
-    "81", "82", "83", "84", "85", "86",
-    "91", "92", "93", "94", "95", "96",
-]
+newdeck = [str(i)+str(j) for i in range(1,10) for j in range(1,7)] # the 9 half-suits and their 6 cards (Named 11-16, 21-26,...91-96)
 
 
 # the argument is a game instance
 def shuffle_cards(thisgame):
     # the function first randomly arranges the cards, splits it into hands of 9 cards each, and then sorts the individual hands before giving it to the players
     shuffleddeck = random.sample(newdeck, k=54)
-    t1 = shuffleddeck[0:9]
-    t2 = shuffleddeck[9:18]
-    t3 = shuffleddeck[18:27]
-    t4 = shuffleddeck[27:36]
-    t5 = shuffleddeck[36:45]
-    t6 = shuffleddeck[45:54]
-    t1.sort()
-    t2.sort()
-    t3.sort()
-    t4.sort()
-    t5.sort()
-    t6.sort()
-    thisgame.p1_hand = delimiter.join(
-        t1) + delimiter
-    thisgame.p2_hand = delimiter.join(
-        t2) + delimiter
-    thisgame.p3_hand = delimiter.join(
-        t3) + delimiter
-    thisgame.p4_hand = delimiter.join(
-        t4) + delimiter
-    thisgame.p5_hand = delimiter.join(
-        t5) + delimiter
-    thisgame.p6_hand = delimiter.join(
-        t6) + delimiter
+    for i in range(1,7):
+        # Using  locals() to refer to a variable via its name as a string. Eg: locals()['t1'] = 3 is same as t1=3
+        var_name = "t"+str(i) # t1, t2, etc as temporary variables
+        locals()[var_name] = shuffleddeck[(i-1)*9:i*9]
+        locals()[var_name].sort() 
+        model_attribute = "p"+str(i)+"_hand" # p1_hand, p2_hand, etc from game model
+        player_hand = delimiter.join(locals()[var_name]) + delimiter # Each card is two digits with a comma after. Eg for player hand: "12,32,54,91,"
+        setattr(thisgame, model_attribute, player_hand) 
     thisgame.save()
     print("Cards shuffled")
 
 
 def display_hands(thisgame):
-    hands = [thisgame.p1_hand, thisgame.p2_hand, thisgame.p3_hand,
-             thisgame.p4_hand, thisgame.p5_hand, thisgame.p6_hand]
+    hands = [ getattr(thisgame, "p"+str(i)+"_hand") for i in range(1,7)]
     # print(hands)
 
 
@@ -101,16 +73,8 @@ def assign_id(thisgame):
 
 
 def is_player(thisuser, thisgame):
-    player_list = {
-        thisgame.p1,
-        thisgame.p2,
-        thisgame.p3,
-        thisgame.p4,
-        thisgame.p5,
-        thisgame.p6,
-    }
-    print("Current player:", str(thisuser), "All users: ", [str(i) for i in player_list])
-    if thisuser in player_list:
+    player_list = [str(getattr(thisgame, "p"+str(i)) )for i in range(1,7)]
+    if str(thisuser) in player_list:
         return True
     else:
         return False
@@ -164,14 +128,8 @@ def player_lobby_update(thisgame):
 
 def game_status_json(thisuser, thisgame, message):
     # arguments are a user instance and a game instance, and a string/integer which carries some message to the client
-    hand_lengths = [
-        int(len(thisgame.p1_hand)/3),
-        int(len(thisgame.p2_hand)/3),
-        int(len(thisgame.p3_hand)/3),
-        int(len(thisgame.p4_hand)/3),
-        int(len(thisgame.p5_hand)/3),
-        int(len(thisgame.p6_hand)/3),
-    ]
+    hand_lengths = [ int(len(getattr(thisgame, "p"+str(i)+"_hand"))/3) for i in range(1,7)]
+
     game_status_json = {
         "ty": "gsj",
         "ts": datetime.timestamp(timezone.now()),
@@ -196,21 +154,11 @@ def game_info_json(thisgame):
 
 def player_status_finder(thisuser, thisgame):
     # finds the number (1-6) and the hand of a user in a game
-    if thisgame.p1 == thisuser:
-        return [1, thisgame.p1_hand]
-    elif thisgame.p2 == thisuser:
-        return [2, thisgame.p2_hand]
-    elif thisgame.p3 == thisuser:
-        return [3, thisgame.p3_hand]
-    elif thisgame.p4 == thisuser:
-        return [4, thisgame.p4_hand]
-    elif thisgame.p5 == thisuser:
-        return [5, thisgame.p5_hand]
-    elif thisgame.p6 == thisuser:
-        return [6, thisgame.p6_hand]
-    else:
-        # zero means the player isn't a part of the game
-        return [0, "error"]
+    for i in range(1,7):
+        if str(thisuser) == str(getattr(thisgame,'p'+str(i))):
+            return [i, getattr(thisgame,'p'+str(i)+'_hand')]
+    # zero means the player isn't a part of the game
+    return [0, "error"]
 
 
 def game_status_update(thisuser, thisgame, message):
@@ -227,14 +175,8 @@ def game_status_update(thisuser, thisgame, message):
 
 def game_status_broadcast(thisgame):
     # broadcasts the game status to all 6 players
-    players = []
     try:
-        players.append(thisgame.p1)
-        players.append(thisgame.p2)
-        players.append(thisgame.p3)
-        players.append(thisgame.p4)
-        players.append(thisgame.p5)
-        players.append(thisgame.p6)
+        players = [getattr(thisgame, "p"+str(i)) for i in range(1,7)]
     except Exception as e:
         print(e)
 
@@ -261,9 +203,8 @@ def log_generate(thisgame):
 
 def random_p0(thisgame):
     # this function assigns the first player randomly
-    temp = [thisgame.p1, thisgame.p2, thisgame.p3,
-            thisgame.p4, thisgame.p5, thisgame.p6, ]
-    thisgame.p0 = temp[random.randint(0, 5)]
+    players = [getattr(thisgame, "p"+str(i)) for i in range(1,7)]
+    thisgame.p0 = players[random.randint(0, 5)]
     thisgame.save()
     print('Assigned first player: ', thisgame.p0, thisgame)
 
