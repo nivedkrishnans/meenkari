@@ -99,7 +99,6 @@ def meenkari(request_json, this_user, this_game):
                 print('Players are in opposite teams')
                 card = request_json["askcard"]
                 if has_suit(request_json['suit'], this_user, this_game):
-                    print("Valid suit")
                     if has_card(card,request_json["toplayer"],this_game):
                         print("The other player has the card")
                         remove_card(card,request_json["toplayer"],this_game)
@@ -197,167 +196,84 @@ def meenkari(request_json, this_user, this_game):
     return HttpResponse(0)
 
 def card_count(this_user,this_game):
-    this_user = str(this_user)
-    
-    count = 0
-    if this_user == str(this_game.p1):
-        count =  int(len(this_game.p1_hand)/3)
-    elif this_user == str(this_game.p2):
-        count =  int(len(this_game.p2_hand)/3)
-    elif this_user == str(this_game.p3):
-        count =  int(len(this_game.p3_hand)/3)
-    elif this_user == str(this_game.p4):
-        count =  int(len(this_game.p4_hand)/3)
-    elif this_user == str(this_game.p5):
-        count =  int(len(this_game.p5_hand)/3)
-    elif this_user == str(this_game.p6):
-        count =  int(len(this_game.p6_hand)/3)
+    player_attribute_names = ["p"+str(i) for i in range(1,7)] # p1, p2, etc in the game model
+    try:
+        current_player_position = [p for p in player_attribute_names if str(getattr(this_game, p)) == str(this_user)][0] # Eg is player is game.p4, returns "p4"
+    except Exception as e:
+        print("Error finding card count:", e)
+
+    count = int(len(getattr(this_game, current_player_position+"_hand"))/3) # Because if current_player_position is p3, then hand will be p3_hand and each card is teo digits followed by a comma
     print('Card count of ', this_user, count)
-    print()
     return count
 
 
 def remove_suit(suit,this_game):
-    for i in range(1,7):
-        remove_card(suit+str(i),this_game.p1,this_game)
-        remove_card(suit+str(i),this_game.p2,this_game)
-        remove_card(suit+str(i),this_game.p3,this_game)
-        remove_card(suit+str(i),this_game.p4,this_game)
-        remove_card(suit+str(i),this_game.p5,this_game)
-        remove_card(suit+str(i),this_game.p6,this_game)
-
+    for i in range(1,7): # For each card in the suit
+        for j in range(1,7): # For each player in the game
+            remove_card(suit+str(i),getattr(this_game, "p"+str(j)),this_game)
     print("Removed suit ", suit)
 
 def remove_card(card,this_user,this_game):
-    this_user = str(this_user)
-    card = card + ','
+    # Removes a card from a given player in the game
+    # Returns true if succesfull
+    card = (card + ',') if ',' not in card else card
 
-    if str(this_game.p1)== this_user:
-        temp = this_game.p1_hand
-        this_game.p1_hand = (this_game.p1_hand).replace(card,'')
-        this_game.save()
-        return card in temp
-    elif str(this_game.p2)== this_user:
-        temp = this_game.p2_hand
-        this_game.p2_hand = (this_game.p2_hand).replace(card,'')
-        this_game.save()
-        return card in temp
-    elif str(this_game.p3)== this_user:
-        temp = this_game.p3_hand
-        this_game.p3_hand = (this_game.p3_hand).replace(card,'')
-        this_game.save()
-        return card in temp
-    elif str(this_game.p4)== this_user:
-        temp = this_game.p4_hand
-        this_game.p4_hand = (this_game.p4_hand).replace(card,'')
-        this_game.save()
-        return card in temp
-    elif str(this_game.p5)== this_user:
-        temp = this_game.p5_hand
-        this_game.p5_hand = (this_game.p5_hand).replace(card,'')
-        this_game.save()
-        return card in temp
-    elif str(this_game.p6)== this_user:
-        temp = this_game.p6_hand
-        this_game.p6_hand = (this_game.p6_hand).replace(card,'')
-        this_game.save()
-        return card in temp
-    else:
-        return False
+    for i in range(1,7):
+        player_attribute_name = "p"+str(i)
+        hand_attribute_name = "p"+str(i)+"_hand"
+        if str(this_user) == str(getattr(this_game, player_attribute_name)):
+            hand = getattr(this_game, hand_attribute_name)
+            setattr(this_game, hand_attribute_name, hand.replace(card,'') )  
+            this_game.save()
+            return card in hand
+    return False
     
 def delete_card(card,this_game):
     #removes the card from all players in the game
-    card = card + ','
-    this_game.p1_hand = (this_game.p3_hand).replace(card,'')
-    this_game.p2_hand = (this_game.p3_hand).replace(card,'')
-    this_game.p3_hand = (this_game.p3_hand).replace(card,'')
-    this_game.p4_hand = (this_game.p3_hand).replace(card,'')
-    this_game.p5_hand = (this_game.p3_hand).replace(card,'')
-    this_game.p6_hand = (this_game.p3_hand).replace(card,'')
+    card = (card + ',') if ',' not in card else card
 
+    for i in range(1,7):
+        hand_attribute_name = "p"+str(i)+"_hand"
+        hand = getattr(this_game, hand_attribute_name)
+        setattr(this_game, hand_attribute_name, hand.replace(card,'') )  
     this_game.save()
 
 def add_card(card,this_user,this_game):
-    this_user = str(this_user)
-    card = card + ','
+    # Returns true if succesfull, else false
+    card = (card + ',') if ',' not in card else card
 
-    if str(this_game.p1)== this_user:
-        if card not in this_game.p1_hand:
-            this_game.p1_hand = (this_game.p1_hand) + card
-            this_game.save()
-            return True
-    elif str(this_game.p2)== this_user:
-        if card not in this_game.p2_hand:
-            this_game.p2_hand = (this_game.p2_hand) + card
-            this_game.save()
-            return True
-    elif str(this_game.p3)== this_user:
-        if card not in this_game.p3_hand:
-            this_game.p3_hand = (this_game.p3_hand) + card
-            this_game.save()
-            return True
-    elif str(this_game.p4)== this_user:
-        if card not in this_game.p1_hand:
-            this_game.p4_hand = (this_game.p4_hand) + card
-            this_game.save()
-            return True
-    elif str(this_game.p5)== this_user:
-        if card not in this_game.p5_hand:
-            this_game.p5_hand = (this_game.p5_hand) + card
-            this_game.save()
-            return True
-    elif str(this_game.p6)== this_user:
-        if card not in this_game.p6_hand:
-            this_game.p6_hand = (this_game.p6_hand) + card
-            this_game.save()
-            return True
-    
+    for i in range(1,7):
+        player_attribute_name = "p"+str(i)
+        hand_attribute_name = "p"+str(i)+"_hand"
+        if str(this_user) == str(getattr(this_game, player_attribute_name)):
+            hand = getattr(this_game, hand_attribute_name)
+            if card not in hand:
+                setattr(this_game, hand_attribute_name, hand + card )  
+                this_game.save()
+                return True
+            
     return False
     
 def has_suit(suit, this_user, this_game):
-    temp = ''
-    this_user = str(this_user)
-    if str(this_game.p1)== this_user:
-        temp = this_game.p1_hand
-    elif str(this_game.p2)== this_user:
-        temp = this_game.p2_hand
-    elif str(this_game.p3)== this_user:
-        temp = this_game.p3_hand
-    elif str(this_game.p4)== this_user:
-        temp = this_game.p4_hand
-    elif str(this_game.p5)== this_user:
-        temp = this_game.p5_hand
-    elif str(this_game.p6)== this_user:
-        temp = this_game.p6_hand
-    cards = temp.split(',')
-    print('My cards', cards)
-    for i in cards:
-        if i.startswith(suit):
-            return True
-            break # :-)
+    for i in range(1,7):
+        player_attribute_name = "p"+str(i)
+        hand_attribute_name = "p"+str(i)+"_hand"
+        if str(this_user) == str(getattr(this_game, player_attribute_name)):
+            hand = getattr(this_game, hand_attribute_name)
+            cards = hand.split(',')
+            for card in cards:
+                if card.startswith(suit):
+                    print(this_user, " has the suit")
+                    return True
     return False
 
 def has_card(card, this_user, this_game):
-    temp = ''
-    this_user = str(this_user)
-    if str(this_game.p1)== this_user:
-        temp = this_game.p1_hand
-    elif str(this_game.p2)== this_user:
-        temp = this_game.p2_hand
-    elif str(this_game.p3)== this_user:
-        temp = this_game.p3_hand
-    elif str(this_game.p4)== this_user:
-        temp = this_game.p4_hand
-    elif str(this_game.p5)== this_user:
-        temp = this_game.p5_hand
-    elif str(this_game.p6)== this_user:
-        temp = this_game.p6_hand
-
-    cards = temp.split()
-    print('Other player cards ', cards)
-    for i in cards:
-        if card in i:
-            print(card, ' found in other players hand ', cards)
-            return True
-    print(card, ' not found in other players hand ', cards)
+    for i in range(1,7):
+        player_attribute_name = "p"+str(i)
+        hand_attribute_name = "p"+str(i)+"_hand"
+        if str(this_user) == str(getattr(this_game, player_attribute_name)):
+            hand = getattr(this_game, hand_attribute_name)
+            if (card in hand):
+                print(this_user, " has the card")
+                return True
     return False
