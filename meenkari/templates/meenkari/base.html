@@ -16,13 +16,13 @@
 
 <body>
     <div class="top-bar">
-        <a href='{% url ' home' %}'>
+        <a href='{% url 'home' %}'>
             <div class="button">Home</div>
         </a>
-        <a href='{%url ' host'%}'>
+        <a href='{%url 'host'%}'>
             <div class="button">Host</div>
         </a>
-        <a href='{%url ' join'%}'>
+        <a href='{%url 'join'%}'>
             <div class="button">Join</div>
         </a>
         <!-- only show login and signup pages if the user isn't already logged in -->
@@ -41,13 +41,21 @@
             </div>
         </div>
         {% else %}
-        <a href='{%url ' django_registration_register'%}'>
+        <a href='{%url 'django_registration_register'%}'>
             <div class="leftbutton">&nbsp&nbspSign&nbspUp&nbsp&nbsp</div>
         </a>
-        <a href='{%url ' login'%}'>
+        <a href='{%url 'login'%}'>
             <div class="leftbutton leftbutton2">&nbsp&nbspSign&nbspIn&nbsp&nbsp</div>
         </a>
         {% endif %}
+
+        <!-- Ignore this part, testing another project
+        Objective is to detect the browser time and change appearance accordingly
+        For now showing time as a progress bar-->
+        <div style="position: absolute;left:0;right:0;bottom:0;height:1vh;background-color: black;">
+            <div id="day_progress" style="background-color: white;position:absolute;left:0;bottom:0;top:0;"></div>
+        </div>
+
     </div>
     {% if messages %}
     {% for message in messages%}
@@ -60,7 +68,7 @@
     {% endif %}
     {% block content %}{% endblock %}
     <div class="container">
-        <ul id="scene">
+        <ul id="s cene">
             <li class="layer" data-depth="0.04">
                 <img src={% static 'images/card_09.png' %}>
             </li>
@@ -95,6 +103,18 @@
         var scene = document.getElementById("scene");
         var parallax = new Parallax(scene);
     </script>
+
+<script>
+    // Ignore this block. testing changing the appearance according to browser time
+    // testing for anothing project, may not be included in meenkari
+    // might be useful when there are users from across the world
+    var today = new Date();
+    var hours = today.getHours();
+    console.log(hours);
+    var day_progress = Math.round(hours/24*100);
+    var temp = document.getElementById("day_progress")
+    temp.style.setProperty("width",day_progress+"%");
+</script>
 </body>
 
 </html>
