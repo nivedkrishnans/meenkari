@@ -1,95 +1,120 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en" dir="ltr">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="{% static 'styles/base.css' %}">
     {% block head %}
     {% endblock %}
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Francois+One&family=Fredoka+One&family=Saira+Extra+Condensed:wght@500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Francois+One&family=Fredoka+One&family=Saira+Extra+Condensed:wght@500&display=swap"
+        rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
-  </head>
-  <body>
-      <div class = "top-bar">
-              <a href='{% url 'home' %}'>
-                  <div class = "button">Home</div>
-              </a>
-              <a href='{%url 'host'%}'>
-                  <div class = "button">Host</div>
-              </a>
-              <a href='{%url 'join'%}'>
-                  <div class = "button">Join</div>
-              </a>
-              <!-- only show login and signup pages if the user isn't already logged in -->
-              {% if user.is_authenticated %}
-              <div class="nametag">
-                  <div class="dp">
-                      image
-                  </div>
-                  <div class="username">
-                      {{user}}
-                  </div>
-                  <div class="dropdown-content">
-                      <div class='elt'><a href="#">Profile(to be added)</a></div>
-                      <div class='elt'><a href="{%url 'password_change'%}">Change Password</a></div>
-                      <div class='elt'><a href="{%url 'logout'%}">Sign out</a></div>
-                  </div>
-              </div>
-              {% else %}
-              <a href='{%url 'django_registration_register'%}'>
-                  <div class="leftbutton">&nbsp&nbspSign&nbspUp&nbsp&nbsp</div>
-              </a>
-              <a href='{%url 'login'%}'>
-                  <div class="leftbutton leftbutton2">&nbsp&nbspSign&nbspIn&nbsp&nbsp</div>
-              </a>
-              {% endif %}
-          </div>
-          {% if messages %}
-              {% for message in messages%}
-                  <div class="message message-{{message.tags}}">
-                      <div class="message-text">
-                          {{message}}
-                      </div>
-                  </div>
-              {% endfor %}
-          {% endif %}
-          {% block content %}{% endblock %}
-          <div class="container">
-            <ul id="scene">
-                <li class="layer" data-depth="0.04" >
-                    <img src={% static 'images/card_09.png'%}>
-                </li>
-                <li class="layer" data-depth="0.04" >
-                    <img src={% static 'images/card_08.png'%}>
-                </li>
-                <li class="layer" data-depth="0.06" >
-                    <img src={% static 'images/card_07.png'%}>
-                </li>
-                <li class="layer" data-depth="0.08" >
-                    <img src={% static 'images/card_06.png'%}>
-                </li>
-                <li class="layer" data-depth="0.1" >
-                    <img src={% static 'images/card_05.png'%}>
-                </li>
-                <li class="layer" data-depth="0.15" >
-                    <img src={% static 'images/card_04.png'%}>
-                </li>
-                <li class="layer" data-depth="0.2" >
-                    <img src={% static 'images/card_03.png'%}>
-                </li>
-                <li class="layer" data-depth="0.3">
-                    <img src={% static 'images/card_02.png'%}>
-                </li>
-                <li class="layer" data-depth="0.5" >
-                    <img src={% static 'images/card_01.png'%}>
-                </li>
-            </ul>
-          </div>
+</head>
 
-          <script>
-              var scene= document.getElementById("scene");
-              var parallax = new Parallax(scene);
-          </script>
-  </body>
+<body>
+    <div class="top-bar">
+        <a href='{% url 'home' %}'>
+            <div class="button">Home</div>
+        </a>
+        <a href='{%url 'host'%}'>
+            <div class="button">Host</div>
+        </a>
+        <a href='{%url 'join'%}'>
+            <div class="button">Join</div>
+        </a>
+        <!-- only show login and signup pages if the user isn't already logged in -->
+        {% if user.is_authenticated %}
+        <div class="nametag">
+            <div class="dp">
+                image
+            </div>
+            <div class="username">
+                {{user}}
+            </div>
+            <div class="dropdown-content">
+                <div class='elt'><a href="#">Profile(to be added)</a></div>
+                <div class='elt'><a href="{%url 'password_change'%}">Change Password</a></div>
+                <div class='elt'><a href="{%url 'logout'%}">Sign out</a></div>
+            </div>
+        </div>
+        {% else %}
+        <a href='{%url 'django_registration_register'%}'>
+            <div class="leftbutton">&nbsp&nbspSign&nbspUp&nbsp&nbsp</div>
+        </a>
+        <a href='{%url 'login'%}'>
+            <div class="leftbutton leftbutton2">&nbsp&nbspSign&nbspIn&nbsp&nbsp</div>
+        </a>
+        {% endif %}
+
+        <!-- Ignore this part, testing another project
+        Objective is to detect the browser time and change appearance accordingly
+        For now showing time as a progress bar-->
+        <div style="position: absolute;left:0;right:0;bottom:0;height:1vh;background-color: black;">
+            <div id="day_progress" style="background-color: white;position:absolute;left:0;bottom:0;top:0;"></div>
+        </div>
+
+    </div>
+    {% if messages %}
+    {% for message in messages%}
+    <div class="message message-{{message.tags}}">
+        <div class="message-text">
+            {{message}}
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+    <div class="container">
+        <ul id="s cene">
+            <li class="layer" data-depth="0.04">
+                <img src={% static 'images/card_09.png' %}>
+            </li>
+            <li class="layer" data-depth="0.04">
+                <img src={% static 'images/card_08.png' %}>
+            </li>
+            <li class="layer" data-depth="0.06">
+                <img src={% static 'images/card_07.png' %}>
+            </li>
+            <li class="layer" data-depth="0.08">
+                <img src={% static 'images/card_06.png' %}>
+            </li>
+            <li class="layer" data-depth="0.1">
+                <img src={% static 'images/card_05.png' %}>
+            </li>
+            <li class="layer" data-depth="0.15">
+                <img src={% static 'images/card_04.png' %}>
+            </li>
+            <li class="layer" data-depth="0.2">
+                <img src={% static 'images/card_03.png' %}>
+            </li>
+            <li class="layer" data-depth="0.3">
+                <img src={% static 'images/card_02.png' %}>
+            </li>
+            <li class="layer" data-depth="0.5">
+                <img src={% static 'images/card_01.png' %}>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        var scene = document.getElementById("scene");
+        var parallax = new Parallax(scene);
+    </script>
+
+<script>
+    // Ignore this block. testing changing the appearance according to browser time
+    // testing for anothing project, may not be included in meenkari
+    // might be useful when there are users from across the world
+    var today = new Date();
+    var hours = today.getHours();
+    console.log(hours);
+    var day_progress = Math.round(hours/24*100);
+    var temp = document.getElementById("day_progress")
+    temp.style.setProperty("width",day_progress+"%");
+</script>
+</body>
+
 </html>
