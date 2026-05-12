@@ -1,7 +1,9 @@
-django
-dj-database-url
-channels[daphne]
-django_registration
-whitenoise
-uvicorn[standard]
-psycopg2-binary
+Django==6.0.5
+Channels==4.3.2
+Daphne==4.2.1
+django-registration==5.2.1
+dj-database-url==3.1.2
+whitenoise==6.12.0
+psycopg2-binary==2.9.12
+uvicorn==0.46.0
+python-dotenv==1.2.2

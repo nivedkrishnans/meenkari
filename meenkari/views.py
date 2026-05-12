@@ -45,7 +45,14 @@ def host(request):
 def join(request):
     if request.user.is_authenticated:
         #list all public games that are not over or stopped, latest first
-        game_list = list(Game.objects.filter(Q(game_privacy='public') & ~Q(game_status='over') & ~Q(game_status='stopped') ).order_by('-create_time'))[:10]
+        game_list = list(
+            Game.objects.filter(
+                Q(game_privacy='public')
+                & ~Q(game_status='over')
+                & ~Q(game_status='stopped')
+                & ~Q(lobby_id='')
+            ).exclude(lobby_id__isnull=True).order_by('-create_time')
+        )[:10]
         #game_list = list(Game.objects.all().order_by('-create_time'))
         return render(request, 'meenkari/join.html',{'game_list':game_list})
     else:

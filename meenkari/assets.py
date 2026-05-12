@@ -29,12 +29,10 @@ def shuffle_cards(thisgame):
     # the function first randomly arranges the cards, splits it into hands of 9 cards each, and then sorts the individual hands before giving it to the players
     shuffleddeck = random.sample(newdeck, k=54)
     for i in range(1,7):
-        # Using  locals() to refer to a variable via its name as a string. Eg: locals()['t1'] = 3 is same as t1=3
-        var_name = "t"+str(i) # t1, t2, etc as temporary variables
-        locals()[var_name] = shuffleddeck[(i-1)*9:i*9]
-        locals()[var_name].sort() 
+        player_hand_cards = shuffleddeck[(i-1)*9:i*9]
+        player_hand_cards.sort()
         model_attribute = "p"+str(i)+"_hand" # p1_hand, p2_hand, etc from game model
-        player_hand = delimiter.join(locals()[var_name]) + delimiter # Each card is two digits with a comma after. Eg for player hand: "12,32,54,91,"
+        player_hand = delimiter.join(player_hand_cards) + delimiter # Each card is two digits with a comma after. Eg for player hand: "12,32,54,91,"
         setattr(thisgame, model_attribute, player_hand) 
     thisgame.save()
     print("Cards shuffled")
@@ -46,28 +44,32 @@ def display_hands(thisgame):
 
 
 def assign_id(thisgame):
-    # this function assigns random strings as game_id and lobby_id for the game instance passed as argument.
-    # the length of the random strings is defined by game_id_size and lobby_id_size declared globally
-    all_game_ids = Game.objects.all().values('game_id')
-    all_lobby_ids = Game.objects.all().values('lobby_id')
+    # Assign random strings as game_id and lobby_id.
+    # These are used as URL slugs for lobby and game pages.
+    all_game_ids = set(Game.objects.values_list('game_id', flat=True))
+    all_lobby_ids = set(Game.objects.values_list('lobby_id', flat=True))
 
-    # choosing game_id
-    random_id_chosen = False
-    while not random_id_chosen:
-        random_id = random_string_generator(
-            game_id_size)
-        if (random_id not in all_game_ids):
-            random_id_chosen = True
+    # Generate unique game_id
+    game_id_attempts = 0
+    while game_id_attempts < 100:  # Prevent infinite loops
+        random_id = random_string_generator(game_id_size)
+        if random_id not in all_game_ids:
             thisgame.game_id = random_id
+            break
+        game_id_attempts += 1
+    else:
+        raise RuntimeError('Unable to generate unique game_id after 100 attempts')
 
-    # choosing lobby_id
-    random_id_chosen = False
-    while not random_id_chosen:
-        random_id = random_string_generator(
-            lobby_id_size)
-        if (random_id not in all_lobby_ids):
-            random_id_chosen = True
+    # Generate unique lobby_id
+    lobby_id_attempts = 0
+    while lobby_id_attempts < 100:  # Prevent infinite loops
+        random_id = random_string_generator(lobby_id_size)
+        if random_id not in all_lobby_ids:
             thisgame.lobby_id = random_id
+            break
+        lobby_id_attempts += 1
+    else:
+        raise RuntimeError('Unable to generate unique lobby_id after 100 attempts')
 
     thisgame.save()
 
@@ -133,6 +135,7 @@ def game_status_json(thisuser, thisgame, message):
     game_status_json = {
         "ty": "gsj",
         "ts": datetime.timestamp(timezone.now()),
+        "st": thisgame.game_status,
         "hl": hand_lengths,
         "my": player_status_finder(thisuser, thisgame),
         "te": [thisgame.team_1_status, thisgame.team_2_status],

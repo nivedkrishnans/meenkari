@@ -34,27 +34,33 @@ ajax request formats:
 }
 """
 
-#The view is exempted from using csrf token. to be fixed.
+# CSRF exemption is intentional for websocket-initiated AJAX calls, but should be reviewed
+# for production. Consider using csrf_trusted_origins or middleware-level exemption instead.
 @csrf_exempt
 def valet(request, url_id=1):
-    print("request recieved " , request.method)
-    #recieves the json from the request. the json is available as a dict key for some reason
-    #please find a neater way to do this :'-)
-    # request_json_temp = (list((request.POST.dict().keys())))[0]
+    print("request received", request.method)
+    # Parse JSON from request; POST.get returns the value directly as a string
     request_json_temp = request.POST.get('json')
     print(type(request_json_temp), request_json_temp)
-    request_json = json.loads(str(request_json_temp))
+    try:
+        request_json = json.loads(str(request_json_temp)) if request_json_temp else {}
+    except (json.JSONDecodeError, ValueError) as e:
+        print(f'JSON decode error: {e}')
+        return HttpResponse(0)
     print(request_json)
-    #checking whether user is logged in
+    # Check whether user is logged in
     if request.user.is_authenticated:
-        #saving the user into a variable
+        # Save the user into a variable
         this_user = request.user
-        #checking if the game_id is valid
+        # Check if the game_id is valid
         try:
             this_game = Game.objects.get(game_id=url_id)
-        except:
+        except Game.DoesNotExist:
             print('Invalid game_id')
             return HttpResponse(2)
+        except Exception as e:
+            print(f'Unexpected error fetching game: {e}')
+            return HttpResponse(0)
         
         
 
@@ -99,11 +105,11 @@ def meenkari(request_json, this_user, this_game):
                 print('Players are in opposite teams')
                 card = request_json["askcard"]
                 if has_suit(request_json['suit'], this_user, this_game):
-                    if has_card(card,request_json["toplayer"],this_game):
+                    if has_card(card, request_json["toplayer"], this_game):
                         print("The other player has the card")
-                        remove_card(card,request_json["toplayer"],this_game)
-                        add_card(card, this_user, this_game)                    
-                        log = '\n' + str(timezone.now().ctime()) + ' - ' + ' ' + this_user + ' received ' + cardlist[card] + ' from ' + request_json["toplayer"]
+                        remove_card(card, request_json["toplayer"], this_game)
+                        add_card(card, this_user, this_game)
+                        log = f'\n{timezone.now().ctime()} - {this_user} received {cardlist[card]} from {request_json["toplayer"]}'
                         this_game.log = this_game.log + log
                         this_game.save()
                         print(log)
@@ -112,8 +118,8 @@ def meenkari(request_json, this_user, this_game):
                         try:
                             new_current = User.objects.get(username=request_json["toplayer"])
                             this_game.p0 = new_current
-                        except Exception as e:
-                            print(e)
+                        except User.DoesNotExist:
+                            print(f'User {request_json["toplayer"]} not found')
                         log = '\n' + str(timezone.now().ctime()) + ' - ' + ' ' + this_user + ' asked for ' + cardlist[card] + ' to ' + request_json["toplayer"] + ' but didnt recieve it'
                         this_game.log = this_game.log + log
                         this_game.save()
@@ -177,19 +183,25 @@ def meenkari(request_json, this_user, this_game):
         else:
             this_game.team_2_status = this_game.team_2_status + suitlist[request_json['suit']] + '<br>'
             this_game.save()
+
+        declared_suits = declared_half_suits(this_game)
+        if len(set(declared_suits)) >= 9:
+            this_game.game_status = 'over'
+            this_game.log = this_game.log + '\n' + str(timezone.now().ctime()) + ' - ' + 'Game over. All 9 half-suits have been declared.'
+            this_game.save()
+
         if card_count(this_game.p0, this_game) == 0:
             my_team = team1 if str(this_game.p0) in team1 else team2
-            
-            for i in my_team:
-                if card_count(i, this_game) == 0:
-                    my_team.remove(i)
-            if len(my_team)>0:
-                new_current = random.choice(my_team)
+
+            # Remove players with no cards
+            active_team = [player for player in my_team if card_count(player, this_game) > 0]
+            if len(active_team) > 0:
+                new_current = random.choice(active_team)
                 try:
                     this_game.p0 = User.objects.get(username=new_current)
                     this_game.save()
-                except Exception as e:
-                    print(e)
+                except User.DoesNotExist:
+                    print(f'User {new_current} not found when setting current player')
         return HttpResponse(1)
             
     
@@ -212,6 +224,13 @@ def remove_suit(suit,this_game):
         for j in range(1,7): # For each player in the game
             remove_card(suit+str(i),getattr(this_game, "p"+str(j)),this_game)
     print("Removed suit ", suit)
+
+
+def declared_half_suits(this_game):
+    declared_suits = []
+    for status_text in [this_game.team_1_status, this_game.team_2_status]:
+        declared_suits.extend([suit for suit in status_text.split('<br>') if suit])
+    return declared_suits
 
 def remove_card(card,this_user,this_game):
     # Removes a card from a given player in the game

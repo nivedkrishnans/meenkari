@@ -25,10 +25,10 @@ function update(json){
     var cardnumber_new = [];
 
     for (i=2; i<7; i++){
-
         var playercards = document.getElementsByClassName("player"+String(i))[0].getElementsByClassName('cardbox')[0];
         cardnumber_old.push( playercards.getElementsByClassName("cardWrapper").length );
-        eval("cardnumber_new.push(updatedata.player"+i+");");
+        // Safe property access instead of eval()
+        cardnumber_new.push(updatedata["player" + i]);
 
         var diff = cardnumber_new[i-2] - cardnumber_old[i-2];
         if (diff > 0){
@@ -110,6 +110,10 @@ function refresh_cards(){
   //prior to calling the update() function, it arranges it into the format required
   //this function converts cards information from the back-end player numbering system to the front-end numbering
   var game_status = JSON.parse(game_status_json);
+    if (game_status["st"] === "over" || game_status["st"] === "stopped") {
+        window.location.href = "/gameover/";
+        return;
+    }
   var game_info = JSON.parse(game_info_json);
   var my = game_status["my"];
   var my_cards = my[1];
@@ -452,8 +456,8 @@ function declare() {
 
 
     var declsuits = game_status["te"][0]+game_status["te"][1]
-    if (declsuits.length != 0) { declsuits = declsuits.substring(0,declsuits.length-1);}
-    declsuits = declsuits.split(',');
+        if (declsuits.length != 0) { declsuits = declsuits.substring(0, declsuits.length - 1); }
+        declsuits = declsuits.split('<br>').filter(Boolean);
     allsuits = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     declsuits = _.difference(allsuits, declsuits)
 

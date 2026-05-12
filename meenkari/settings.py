@@ -10,22 +10,48 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import os
-from . import secret_settings
+from pathlib import Path
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import dj_database_url
+
+try:
+    from . import secret_settings
+except ImportError:
+    secret_settings = None
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+def _setting(name, default=None):
+    if secret_settings is not None and hasattr(secret_settings, name):
+        return getattr(secret_settings, name)
+    return os.environ.get(name, default)
+
+
+def _debug_setting():
+    value = _setting('DEBUG', 'True')
+    if isinstance(value, bool):
+        return value
+    return str(value).lower() in {'1', 'true', 'yes', 'on'}
+
+
+def _allowed_hosts_setting():
+    value = _setting('ALLOWED_HOSTS', 'localhost,127.0.0.1,[::1]')
+    if isinstance(value, (list, tuple)):
+        return list(value)
+    return [host.strip() for host in str(value).split(',') if host.strip()]
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secret_settings.SECRET_KEY
+SECRET_KEY = _setting('SECRET_KEY', 'dev-insecure-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = secret_settings.DEBUG
+DEBUG = _debug_setting()
 
-ALLOWED_HOSTS = secret_settings.ALLOWED_HOSTS
+ALLOWED_HOSTS = _allowed_hosts_setting()
 
 
 # Application definition
@@ -78,7 +104,10 @@ WSGI_APPLICATION = 'meenkari.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = secret_settings.DATABASES
+DATABASES = getattr(
+    secret_settings, 'DATABASES',
+    dj_database_url.config(default=f'sqlite:///{BASE_DIR / "db.sqlite3"}', conn_max_age=600),
+)
 
 
 # Password validation
@@ -118,7 +147,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = './static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 #CHANNEL_LAYERS = {
 #    "default": {
@@ -137,7 +166,7 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
-LIVE_GROUP_NAME= "live_group"
+LIVE_GROUP_NAME = "live_group"
 
 
 #django-registration settings

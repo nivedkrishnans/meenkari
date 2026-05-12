@@ -49,13 +49,6 @@
         </a>
         {% endif %}
 
-        <!-- Ignore this part, testing another project
-        Objective is to detect the browser time and change appearance accordingly
-        For now showing time as a progress bar-->
-        <div style="position: absolute;left:0;right:0;bottom:0;height:1vh;background-color: black;">
-            <div id="day_progress" style="background-color: white;position:absolute;left:0;bottom:0;top:0;"></div>
-        </div>
-
     </div>
     {% if messages %}
     {% for message in messages%}
@@ -68,7 +61,7 @@
     {% endif %}
     {% block content %}{% endblock %}
     <div class="container">
-        <ul id="s cene">
+        <ul id="scene">
             <li class="layer" data-depth="0.04">
                 <img src={% static 'images/card_09.png' %}>
             </li>
@@ -104,17 +97,6 @@
         var parallax = new Parallax(scene);
     </script>
 
-<script>
-    // Ignore this block. testing changing the appearance according to browser time
-    // testing for anothing project, may not be included in meenkari
-    // might be useful when there are users from across the world
-    var today = new Date();
-    var hours = today.getHours();
-    console.log(hours);
-    var day_progress = Math.round(hours/24*100);
-    var temp = document.getElementById("day_progress")
-    temp.style.setProperty("width",day_progress+"%");
-</script>
 </body>
 
 </html>
