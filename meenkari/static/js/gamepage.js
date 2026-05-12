@@ -459,11 +459,12 @@ function buildDeclarePanel() {
     
     // Card selection section (initially hidden)
     const cardSection = document.createElement("div");
-    cardSection.className = "formSection";
+    cardSection.className = "formSection declCardSection";
     cardSection.id = "declCardSection";
     cardSection.style.display = "none";
     cardSection.innerHTML = `<div class="formSectionLabel">Select Player for Each Card</div>`;
     const cardContainer = document.createElement("div");
+    cardContainer.className = "declCardContainer";
     cardContainer.id = "declCardContainer";
     cardSection.appendChild(cardContainer);
     form.appendChild(cardSection);
@@ -511,11 +512,10 @@ function updateDeclareCards(suitValue, form, team1, team2) {
     for (let j = 1; j < 7; j++) {
         const cardValue = suitValue + String(j);
         const cardLabel = document.createElement("div");
-        cardLabel.style.marginBottom = "12px";
+        cardLabel.className = "declareCardRow";
         
         const cardName = document.createElement("div");
-        cardName.className = "formSectionLabel";
-        cardName.style.marginBottom = "6px";
+        cardName.className = "declareCardName";
         cardName.textContent = cardlist[cardValue];
         cardLabel.appendChild(cardName);
         

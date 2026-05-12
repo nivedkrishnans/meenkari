@@ -362,6 +362,8 @@ body::before {
 .buttonContainer > a > button,
 .refresh,
 .exit,
+.askbutton,
+.declbutton,
 .asksubmit,
 .declsubmit {
         min-width: 104px;
@@ -375,6 +377,22 @@ body::before {
         text-transform: uppercase;
         cursor: pointer;
         transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+
+    .askbutton,
+    .declbutton {
+        color: #f4efe3;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.08));
+        border-color: rgba(255, 255, 255, 0.14);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+        backdrop-filter: blur(12px);
+    }
+
+    .askbutton:hover,
+    .declbutton:hover {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.1));
+        border-color: rgba(255, 255, 255, 0.22);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
     }
 
 .buttonContainer > button:hover,
@@ -495,18 +513,21 @@ body::before {
         bottom: 20px;
         left: 20px;
         z-index: 10;
-        max-width: 420px;
-        max-height: calc(100vh - 200px);
-        overflow-y: auto;
+    width: min(460px, calc(100vw - 40px));
+    max-height: min(86vh, 760px);
+    overflow: hidden;
     }
 
 .actionPanelContent {
         background: linear-gradient(180deg, rgba(24, 24, 26, 0.96), rgba(13, 13, 15, 0.98));
-        border: 1px solid var(--line-strong);
+    border: 1px solid rgba(255, 255, 255, 0.16);
         border-radius: 20px;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
         backdrop-filter: blur(18px);
         overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
     }
 
 .actionPanelHeader {
@@ -549,6 +570,7 @@ body::before {
 .actionBody {
         padding: 20px;
         color: var(--text);
+    overflow: hidden;
     }
 
 .actionForm {
@@ -590,7 +612,7 @@ body::before {
         cursor: pointer;
         transition: all 160ms ease;
         font-weight: 500;
-        min-height: 40px;
+        min-height: 42px;
     }
 
 .chip:hover {
@@ -610,41 +632,42 @@ body::before {
 .selectInput {
         width: 100%;
         padding: 12px 14px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.18);
         border-radius: 12px;
         color: var(--text);
         font-size: 0.9rem;
         outline: none;
         transition: all 160ms ease;
+    appearance: none;
     }
 
 .suitSelect:hover,
 .selectInput:hover {
-        border-color: var(--line-strong);
-        background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.12);
     }
 
 .suitSelect:focus,
 .selectInput:focus {
         border-color: var(--accent);
-        background: rgba(215, 180, 106, 0.05);
-        box-shadow: 0 0 0 3px rgba(215, 180, 106, 0.08);
+    background: rgba(215, 180, 106, 0.08);
+    box-shadow: 0 0 0 3px rgba(215, 180, 106, 0.14);
     }
 
 .cardGrid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
         gap: 8px;
     }
 
 .cardButton {
         aspect-ratio: 0.65 / 1;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
         border-radius: 8px;
         color: var(--text);
-        font-size: 0.65rem;
+    font-size: 0.72rem;
         font-weight: 600;
         cursor: pointer;
         transition: all 160ms ease;
@@ -657,8 +680,8 @@ body::before {
     }
 
 .cardButton:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: var(--line-strong);
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.28);
         transform: translateY(-2px);
     }
 
@@ -699,6 +722,44 @@ body::before {
         opacity: 0.5;
         cursor: not-allowed;
     }
+
+.declareCardRow {
+    display: grid;
+    grid-template-columns: minmax(88px, 0.8fr) minmax(0, 1.2fr);
+    gap: 10px;
+    align-items: center;
+    padding: 8px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.declareCardName {
+    font-size: 0.8rem;
+    line-height: 1.2;
+    color: var(--text);
+}
+
+.declareCardRow .chipGroup {
+    gap: 6px;
+}
+
+.declareCardRow .chip {
+    min-height: 34px;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+}
+
+.declCardContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    overflow: hidden;
+}
+
+.declCardSection {
+    overflow: hidden;
+}
 
     /* Hidden old modals */
 .askbox,
@@ -748,7 +809,7 @@ body::before {
         }
 
         .actionPanel {
-            max-width: calc(100vw - 40px);
+            width: min(460px, calc(100vw - 40px));
         }
     }
 
@@ -776,6 +837,10 @@ body::before {
 
         .askform,
         .declform {
+            grid-template-columns: 1fr;
+        }
+
+        .declareCardRow {
             grid-template-columns: 1fr;
         }
 
