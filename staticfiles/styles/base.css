@@ -1,0 +1,311 @@
+html {
+    height: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Saira Extra Condensed', 'Helvetica', sans-serif;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+    position: relative;
+}
+
+img{
+    max-width: 100%;
+    max-height: auto;
+    overflow: hidden;
+}
+
+.top-bar {
+    height: 10%;
+    width: 100%;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background: linear-gradient(to bottom, rgba(10, 10, 10, 0.95), transparent);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.top-bar a {
+    padding: 0.5em 1.5em;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.button {
+    box-sizing: border-box;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.2em;
+    font-family: 'Saira Extra Condensed', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    padding: 0.8em 1.5em;
+}
+
+.button:hover {
+    cursor: pointer;
+    color: #cccccc;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.leftbutton {
+    display: inline-block;
+    text-align: center;
+    box-sizing: border-box;
+    color: white;
+    background: linear-gradient(135deg, #333333, #1a1a1a);
+    border-radius: 25px;
+    border: 2px solid #555555;
+    height: min-content;
+    padding: 0.7em 1.5em;
+    margin-right: 1em;
+    font-size: 1em;
+    font-family: 'Saira Extra Condensed', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.leftbutton:hover, .currentlb {
+    cursor: pointer;
+    background: linear-gradient(135deg, #444444, #2a2a2a);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.leftbutton2 {
+    margin-left: 1em;
+}
+
+.nametag {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-size: 1em;
+    font-family: 'Saira Extra Condensed', sans-serif;
+    font-weight: 600;
+    margin-right: 2em;
+    gap: 1em;
+}
+
+.dp{
+    margin-top:0.6em;
+    display:inline-block;
+    width:25%;
+    /* padding:100%; */
+    border-radius:50%;
+    background-size:contain;
+    background-repeat: no-repeat;
+    /* background-color:red; */
+    color:transparent;
+}
+
+.nametag:hover{
+    opacity:90%;
+}
+
+.nametag:hover .dropdown-content{
+    display:block;
+}
+
+.dropdown-content{
+    box-sizing: border-box;
+    margin-top:0.5em;
+    display:none;
+    font-size:0.7em;
+    font-family:'Helvetica',sans-serif;
+    padding:4% 0%;
+    /* light color prototype */
+    background-color:#e8e8e8;
+    /* dark color prototype */
+    /* background-color: #454545; */
+    opacity:100%;
+    height:auto;
+    width:auto;
+    white-space: nowrap;
+    text-decoration: none;
+    color:white;
+    border-radius:0.5em;
+    /* light color prototype */
+    border:1px solid white;
+    /* dark color prototype */
+    /* border:1px solid #595959; */
+    /* box-shadow: 3px 3px 3px white; */
+}
+
+.dropdown-content a{
+    box-sizing: border-box;
+    text-align: left;
+    height:10%;
+    width:100%;
+    /*light color*/
+    color:#a3a3a3;
+    /*dark color*/
+    /* color:#969696; */
+    text-shadow: 1px 1px #a8a7b5;
+}
+
+.elt{
+    width:100%;
+    padding:0.6em 0em;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.dropdown-content a:hover{
+    font-size:1.1em;
+    color:white;
+    text-shadow: 1px 1px 2px #7d7d7d;
+}
+
+.elt:hover{
+    border-bottom: 1px solid white;
+}
+
+
+.username{
+    display: inline-block;
+    height: auto;
+    margin-top:0.6em;
+    /* background-color:blue; */
+    text-align: center;
+}
+/* Flash message box */
+.message {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    color: white;
+    width: 90%;
+    max-width: 400px;
+    padding: 1.5rem;
+    vertical-align: middle;
+    border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 8px 32px rgba(0, 212, 255, 0.3);
+    z-index: 1001;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(500px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.message-success {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(200, 200, 200, 0.1));
+    border: 2px solid #555555;
+}
+
+.message-text {
+    font-family: 'Saira Extra Condensed', sans-serif;
+    color: white;
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Used for debugging purposes. not part of final styles */
+/* .error-messages{
+    font-size:12;
+    color:red;
+} */
+
+/* for mobile devices*/
+@media only screen and (max-width: 600px) {
+
+    .button{
+        font-size:16px;
+    }
+
+    .button:hover{
+        font-size: 18px;
+    }
+
+    img{
+        max-width: 200%;
+        transform: translate(-25%,25%);
+    }
+
+}
+
+/* for 1440p or similar resolution monitors*/
+@media only screen and (min-width: 2000px){
+  img{
+      width:100vw;
+      max-width: none;
+      max-height: none;
+      overflow: hidden;
+  }
+
+  .button{
+      font-size:50px;
+  }
+
+  .button:hover{
+      font-size: 60px;
+  }
+
+  .leftbutton{
+      font-size:2em;
+  }
+}
+
+/* for 4k or similar resolution monitors*/
+@media only screen and (min-width: 3000px){
+  img{
+      width:100vw;
+      max-width: none;
+      max-height: none;
+      overflow: hidden;
+  }
+
+  .button{
+      font-size:90px;
+  }
+
+  .button:hover{
+      font-size: 100px;
+  }
+
+  .leftbutton{
+      font-size:4em;
+      border-radius:2em;
+  }
+}
+
+
+#user_queue_visible span{
+    border: 1px solid rgba(10,10,10,0.7) !important;
+    background-color: rgba(10,10,10,0.7) !important;
+    color: rgb(240,240,240) !important;
+    border-radius: 2px;
+    margin: 2px;
+    padding:2px;
+    /* cursor:copy; */
+}
+
+#user_queue_visible span:hover{
+    background-color: rgba(50,50,50,0.7) !important;
+}

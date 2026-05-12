@@ -7,7 +7,7 @@
     font-family: 'Francois One', sans-serif;
     font-size: 100px;
     z-index: 100;
-    text-shadow: 
+    text-shadow:
         0 0 20px rgba(255, 255, 255, 0.6),
         0 0 40px rgba(200, 200, 200, 0.4),
         10px 10px 30px rgba(0, 0, 0, 0.8);
@@ -18,13 +18,13 @@
 
 @keyframes glow {
     from {
-        text-shadow: 
+        text-shadow:
             0 0 20px rgba(255, 255, 255, 0.6),
             0 0 40px rgba(200, 200, 200, 0.4),
             10px 10px 30px rgba(0, 0, 0, 0.8);
     }
     to {
-        text-shadow: 
+        text-shadow:
             0 0 30px rgba(255, 255, 255, 0.8),
             0 0 60px rgba(200, 200, 200, 0.6),
             10px 10px 30px rgba(0, 0, 0, 0.8);

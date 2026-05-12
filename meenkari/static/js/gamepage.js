@@ -49,7 +49,7 @@ function update(json){
 
             }
         }
-        
+
         if (cardnumber_new[i-2] != 0){
             playercards.getElementsByClassName("cardWrapper")[0].classList.add("firstcard");
             playercards.getElementsByClassName("cardWrapper")[playercards.getElementsByClassName("cardWrapper").length - 1].classList.add("lastcard");
@@ -162,139 +162,437 @@ function refresh_cards(){
 }
 
 
-// script to pop up askbox and declbox
-var askbutton = document.getElementsByClassName("askbutton")[0];
-var askbox = document.getElementsByClassName("askbox")[0];
-var declbutton = document.getElementsByClassName("declbutton")[0];
-var declbox = document.getElementsByClassName("declbox")[0];
-var container = document.getElementsByClassName("container")[0];
+// Action Panel UI - Modern Left-Bottom Selector
+const actionPanel = document.querySelector(".actionPanel");
+const actionClose = document.querySelector(".actionClose");
+const actionBody = document.querySelector(".actionBody");
+const askbutton = document.querySelector(".askbutton");
+const declbutton = document.querySelector(".declbutton");
 
-askbutton.onclick = function() {
-    askbox.style.display = "block";
-    declbox.style.display = "none";
-    ask();
+// Initialize event listeners
+askbutton.addEventListener("click", function() {
+    showActionPanel("ask");
+});
+
+declbutton.addEventListener("click", function() {
+    showActionPanel("declare");
+});
+
+actionClose.addEventListener("click", function() {
+    hideActionPanel();
+});
+
+// Close panel on ESC key
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        hideActionPanel();
+    }
+});
+
+function showActionPanel(mode) {
+    actionPanel.style.display = "block";
+    const title = document.querySelector(".actionTitle");
+    actionBody.innerHTML = "";
+    
+    if (mode === "ask") {
+        title.textContent = "Ask for a Suit";
+        buildAskPanel();
+    } else if (mode === "declare") {
+        title.textContent = "Declare a Suit";
+        buildDeclarePanel();
+    }
+}
+
+function hideActionPanel() {
+    actionPanel.style.display = "none";
+    actionBody.innerHTML = "";
 }
 
 
-
-declbutton.onclick = function() {
-    declbox.style.display = "block";
-    askbox.style.display = "none";
-    declare();
+//  Modern ask panel builder
+function buildAskPanel() {
+    const game_status = JSON.parse(game_status_json);
+    const game_info = JSON.parse(game_info_json);
+    
+    // Get opponent team (3 players opposite to current player)
+    const oppteam = [];
+    for (let i = 0; i < 3; i++) {
+        const j = (game_status.my[0] + (2 * i)) % 6;
+        oppteam[i] = game_info.pl[j];
+    }
+    
+    const my_suits = findmysuits(game_status.my[1]);
+    
+    // Create form container
+    const form = document.createElement("form");
+    form.className = "actionForm";
+    form.addEventListener("submit", handleAskSubmit);
+    
+    // Player selection section
+    const playerSection = document.createElement("div");
+    playerSection.className = "formSection";
+    playerSection.innerHTML = `<div class="formSectionLabel">Select Player</div>`;
+    const playerChipGroup = document.createElement("div");
+    playerChipGroup.className = "chipGroup";
+    
+    oppteam.forEach(player => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "chip";
+        chip.textContent = player;
+        chip.dataset.value = player;
+        chip.addEventListener("click", function(e) {
+            e.preventDefault();
+            document.querySelectorAll(".chipGroup .chip").forEach(c => c.classList.remove("selected"));
+            this.classList.add("selected");
+            document.getElementById("askPlayer").value = player;
+        });
+        playerChipGroup.appendChild(chip);
+    });
+    playerSection.appendChild(playerChipGroup);
+    form.appendChild(playerSection);
+    
+    // Hidden input for selected player
+    const playerInput = document.createElement("input");
+    playerInput.type = "hidden";
+    playerInput.id = "askPlayer";
+    playerInput.name = "toplayer";
+    form.appendChild(playerInput);
+    
+    // Suit selection section
+    const suitSection = document.createElement("div");
+    suitSection.className = "formSection";
+    suitSection.innerHTML = `<div class="formSectionLabel">Select Suit from Your Hand</div>`;
+    const suitSelect = document.createElement("select");
+    suitSelect.className = "suitSelect";
+    suitSelect.id = "askSuit";
+    suitSelect.name = "suit";
+    
+    const emptyOption = document.createElement("option");
+    emptyOption.value = "";
+    emptyOption.textContent = "Choose a suit...";
+    suitSelect.appendChild(emptyOption);
+    
+    my_suits.forEach(suit => {
+        const option = document.createElement("option");
+        option.value = suit;
+        option.textContent = suitlist[suit];
+        suitSelect.appendChild(option);
+    });
+    
+    suitSelect.addEventListener("change", function() {
+        updateAskCards(this.value, form);
+    });
+    
+    suitSection.appendChild(suitSelect);
+    form.appendChild(suitSection);
+    
+    // Card selection section (initially hidden)
+    const cardSection = document.createElement("div");
+    cardSection.className = "formSection";
+    cardSection.id = "askCardSection";
+    cardSection.style.display = "none";
+    cardSection.innerHTML = `<div class="formSectionLabel">Select Card</div>`;
+    const cardGrid = document.createElement("div");
+    cardGrid.className = "cardGrid";
+    cardGrid.id = "askCardGrid";
+    cardSection.appendChild(cardGrid);
+    form.appendChild(cardSection);
+    
+    // Hidden input for selected card
+    const cardInput = document.createElement("input");
+    cardInput.type = "hidden";
+    cardInput.id = "askCard";
+    cardInput.name = "askcard";
+    form.appendChild(cardInput);
+    
+    // Submit button
+    const submitBtn = document.createElement("button");
+    submitBtn.type = "submit";
+    submitBtn.className = "actionSubmit";
+    submitBtn.textContent = "Ask";
+    submitBtn.disabled = true;
+    form.appendChild(submitBtn);
+    
+    actionBody.appendChild(form);
 }
 
-
-
-// window,onclick = function(event) {
-//     if (event.target == askbox){
-//         console.log("inside box");
-//     } else {
-//         if (event.target == askbutton){
-//             console.log("inside button");
-//         } else {
-//             askbox.style.display = "none";
-//             console.log("hidden");
-//         }
-//     }
-// }
-
-var askclose = askbox.getElementsByClassName("close")[0];
-askclose.onclick = function() {
-    askbox.style.display = "none";
-    declbox.style.display = "none";
+function updateAskCards(suitValue, form) {
+    const cardSection = document.getElementById("askCardSection");
+    const cardGrid = document.getElementById("askCardGrid");
+    const cardInput = document.getElementById("askCard");
+    const submitBtn = form.querySelector(".actionSubmit");
+    
+    if (!suitValue) {
+        cardSection.style.display = "none";
+        cardInput.value = "";
+        submitBtn.disabled = true;
+        return;
+    }
+    
+    cardSection.style.display = "block";
+    cardGrid.innerHTML = "";
+    
+    for (let j = 1; j < 7; j++) {
+        const cardValue = suitValue + String(j);
+        const cardBtn = document.createElement("button");
+        cardBtn.type = "button";
+        cardBtn.className = "cardButton";
+        cardBtn.textContent = cardlist[cardValue];
+        cardBtn.dataset.value = cardValue;
+        cardBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            document.querySelectorAll("#askCardGrid .cardButton").forEach(c => c.classList.remove("selected"));
+            this.classList.add("selected");
+            cardInput.value = cardValue;
+            submitBtn.disabled = false;
+        });
+        cardGrid.appendChild(cardBtn);
+    }
 }
 
-var declclose = declbox.getElementsByClassName("close")[0];
-declclose.onclick = function() {
-    askbox.style.display = "none";
-    declbox.style.display = "none";
+function handleAskSubmit(event) {
+    event.preventDefault();
+    
+    const playerValue = document.getElementById("askPlayer").value;
+    const suitValue = document.getElementById("askSuit").value;
+    const cardValue = document.getElementById("askCard").value;
+    
+    if (!playerValue || !suitValue || !cardValue) {
+        console.log("Incomplete form");
+        return;
+    }
+    
+    const data = {
+        toplayer: playerValue,
+        suit: suitValue,
+        askcard: cardValue
+    };
+    
+    console.log("Ask submission:", data);
+    valet(JSON.stringify(data));
+    hideActionPanel();
 }
 
+//  Modern declare panel builder
+function buildDeclarePanel() {
+    const game_status = JSON.parse(game_status_json);
+    const game_info = JSON.parse(game_info_json);
+    
+    // Get available suits (not yet declared)
+    let declsuits = game_status["te"][0] + game_status["te"][1];
+    if (declsuits.length != 0) { 
+        declsuits = declsuits.substring(0, declsuits.length - 1); 
+    }
+    declsuits = declsuits.split('<br>').filter(Boolean);
+    const allsuits = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    declsuits = _.difference(allsuits, declsuits);
+    
+    const pl = game_info["pl"];
+    const team1 = [pl[0], pl[2], pl[4]];
+    const team2 = [pl[1], pl[3], pl[5]];
+    
+    // Create form container
+    const form = document.createElement("form");
+    form.className = "actionForm";
+    form.addEventListener("submit", handleDeclareSubmit);
+    
+    // Team selection section
+    const teamSection = document.createElement("div");
+    teamSection.className = "formSection";
+    teamSection.innerHTML = `<div class="formSectionLabel">Select Team</div>`;
+    const teamChipGroup = document.createElement("div");
+    teamChipGroup.className = "chipGroup";
+    
+    ["team1", "team2"].forEach((teamId, idx) => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "chip";
+        chip.textContent = "Team " + (idx + 1);
+        chip.dataset.value = teamId;
+        chip.addEventListener("click", function(e) {
+            e.preventDefault();
+            document.querySelectorAll(".teamChipGroup .chip").forEach(c => c.classList.remove("selected"));
+            this.classList.add("selected");
+            document.getElementById("declTeam").value = teamId;
+        });
+        teamChipGroup.appendChild(chip);
+    });
+    teamChipGroup.className = "chipGroup teamChipGroup";
+    teamSection.appendChild(teamChipGroup);
+    form.appendChild(teamSection);
+    
+    // Hidden input for selected team
+    const teamInput = document.createElement("input");
+    teamInput.type = "hidden";
+    teamInput.id = "declTeam";
+    teamInput.name = "for team";
+    form.appendChild(teamInput);
+    
+    // Suit selection section
+    const suitSection = document.createElement("div");
+    suitSection.className = "formSection";
+    suitSection.innerHTML = `<div class="formSectionLabel">Select Suit to Declare</div>`;
+    const suitSelect = document.createElement("select");
+    suitSelect.className = "suitSelect";
+    suitSelect.id = "declSuit";
+    suitSelect.name = "suit";
+    
+    const emptyOption = document.createElement("option");
+    emptyOption.value = "";
+    emptyOption.textContent = "Choose a suit...";
+    suitSelect.appendChild(emptyOption);
+    
+    declsuits.forEach(suit => {
+        const option = document.createElement("option");
+        option.value = suit;
+        option.textContent = suitlist[suit];
+        suitSelect.appendChild(option);
+    });
+    
+    suitSelect.addEventListener("change", function() {
+        updateDeclareCards(this.value, form, team1, team2);
+    });
+    
+    suitSection.appendChild(suitSelect);
+    form.appendChild(suitSection);
+    
+    // Card selection section (initially hidden)
+    const cardSection = document.createElement("div");
+    cardSection.className = "formSection";
+    cardSection.id = "declCardSection";
+    cardSection.style.display = "none";
+    cardSection.innerHTML = `<div class="formSectionLabel">Select Player for Each Card</div>`;
+    const cardContainer = document.createElement("div");
+    cardContainer.id = "declCardContainer";
+    cardSection.appendChild(cardContainer);
+    form.appendChild(cardSection);
+    
+    // Hidden container for card selections
+    const cardInputsContainer = document.createElement("div");
+    cardInputsContainer.id = "declCardInputs";
+    cardInputsContainer.style.display = "none";
+    form.appendChild(cardInputsContainer);
+    
+    // Submit button
+    const submitBtn = document.createElement("button");
+    submitBtn.type = "submit";
+    submitBtn.className = "actionSubmit";
+    submitBtn.textContent = "Declare";
+    submitBtn.disabled = true;
+    form.appendChild(submitBtn);
+    
+    actionBody.appendChild(form);
+}
+
+function updateDeclareCards(suitValue, form, team1, team2) {
+    const cardSection = document.getElementById("declCardSection");
+    const cardContainer = document.getElementById("declCardContainer");
+    const cardInputsContainer = document.getElementById("declCardInputs");
+    const submitBtn = form.querySelector(".actionSubmit");
+    
+    if (!suitValue) {
+        cardSection.style.display = "none";
+        cardInputsContainer.innerHTML = "";
+        submitBtn.disabled = true;
+        return;
+    }
+    
+    cardSection.style.display = "block";
+    cardContainer.innerHTML = "";
+    cardInputsContainer.innerHTML = "";
+    
+    // Get selected team
+    const teamValue = document.getElementById("declTeam").value;
+    let team = teamValue === "team1" ? team1 : team2;
+    
+    let allCardsSelected = true;
+    
+    for (let j = 1; j < 7; j++) {
+        const cardValue = suitValue + String(j);
+        const cardLabel = document.createElement("div");
+        cardLabel.style.marginBottom = "12px";
+        
+        const cardName = document.createElement("div");
+        cardName.className = "formSectionLabel";
+        cardName.style.marginBottom = "6px";
+        cardName.textContent = cardlist[cardValue];
+        cardLabel.appendChild(cardName);
+        
+        const playerChips = document.createElement("div");
+        playerChips.className = "chipGroup";
+        playerChips.id = `playerGroup${j}`;
+        
+        team.forEach(player => {
+            const chip = document.createElement("button");
+            chip.type = "button";
+            chip.className = "chip";
+            chip.textContent = player;
+            chip.dataset.value = player;
+            chip.addEventListener("click", function(e) {
+                e.preventDefault();
+                document.querySelectorAll(`#playerGroup${j} .chip`).forEach(c => c.classList.remove("selected"));
+                this.classList.add("selected");
+                
+                // Store in hidden input
+                const hidden = document.getElementById(`declCard${j}`);
+                hidden.value = player;
+                
+                // Check if all cards have selections
+                const allInputs = document.querySelectorAll("[id^='declCard']");
+                allCardsSelected = Array.from(allInputs).every(inp => inp.value !== "");
+                submitBtn.disabled = !allCardsSelected;
+            });
+            playerChips.appendChild(chip);
+        });
+        
+        cardLabel.appendChild(playerChips);
+        cardContainer.appendChild(cardLabel);
+        
+        // Create hidden input for this card
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.id = `declCard${j}`;
+        hiddenInput.name = `card${j}`;
+        cardInputsContainer.appendChild(hiddenInput);
+    }
+    
+    form.appendChild(cardInputsContainer);
+    submitBtn.disabled = true; // Initially disabled until all cards selected
+}
+
+function handleDeclareSubmit(event) {
+    event.preventDefault();
+    
+    const teamValue = document.getElementById("declTeam").value;
+    const suitValue = document.getElementById("declSuit").value;
+    
+    if (!teamValue || !suitValue) {
+        console.log("Incomplete form");
+        return;
+    }
+    
+    const data = {
+        "for team": teamValue,
+        suit: suitValue
+    };
+    
+    // Add all card selections
+    const cardInputs = document.querySelectorAll("[id^='declCard']");
+    cardInputs.forEach(input => {
+        if (input.value) {
+            data[input.name] = input.value;
+        }
+    });
+    
+    console.log("Declare submission:", data);
+    valet(JSON.stringify(data));
+    hideActionPanel();
+}
 
 //  The follwing function is triggered upon clinking the ask button and
 // it creates a JSON in a global varibale called send_data which can be
-// sent to server.
-function ask() {
-    var game_status = JSON.parse(game_status_json);
-    var game_info = JSON.parse(game_info_json);
-    var formbox = askbox.getElementsByClassName("formbox")[0];
-    var askform = formbox.getElementsByClassName("askform");
-
-    if(askform.length != 0){
-        askform[0].remove();
-    }
-
-
-    var oppteam = [];
-
-    for(i=0; i<3 ; i++){
-        j=(game_status.my[0]+(2*i))%6;
-        oppteam[i] = game_info.pl[j];
-    }
-
-    var my_suits = findmysuits(game_status.my[1]);
-
-
-    var askform = document.createElement("form");
-    askform.setAttribute("class", "askform");
-    formbox.appendChild(askform);
-
-    var askform = formbox.getElementsByClassName("askform")[0];
-
-    var head1 = document.createElement("label");
-    head1.innerHTML = "Select a player to ask to"+"<br>";
-    askform.appendChild(head1);
-
-    for(i=0; i<oppteam.length; i++){
-        var input = document.createElement("input");
-        input.setAttribute("type", "radio");
-        input.setAttribute("id", oppteam[i]);
-        input.setAttribute("name", "toplayer");
-        input.setAttribute("value", oppteam[i]);
-        askform.appendChild(input);
-
-        var label = document.createElement("label");
-        label.setAttribute("for", oppteam[i]);
-        label.innerHTML = oppteam[i];
-        askform.appendChild(label);
-    }
-
-    var head2 = document.createElement("label");
-    head2.innerHTML = "Select suit"+"<br>";
-    head2.setAttribute("style", "display : block")
-    head2.setAttribute("for", "suit");
-    askform.appendChild(head2);
-
-    var suitselect = document.createElement("select");
-    suitselect.setAttribute("id", "asksuit");
-    suitselect.setAttribute("name", "suit");
-    suitselect.setAttribute("onchange", "showcardlist(this.value)")
-    askform.appendChild(suitselect);
-
-    suitselect = document.getElementById("asksuit");
-
-    for(i=0; i<my_suits.length; i++){
-        var option = document.createElement("option");
-        option.setAttribute("value", my_suits[i]);
-        option.innerHTML = suitlist[my_suits[i]];
-        suitselect.appendChild(option);
-    }
-
-
-    suitselect.selectedIndex = -1;
-
-    var head3 = document.createElement("label");
-    head3.innerHTML = "Select card"+"<br>";
-    head3.setAttribute("style", "display : block")
-    askform.appendChild(head3);
-
-
-    askform.addEventListener("submit", handleFormSubmit);
-
-}
-
-// This function returns what are the suits in a string of card number given in
-// an array.
+// Helper: Extract suits from player's card list
 function findmysuits(my_cards){
     if (my_cards.length != 0) { my_cards = my_cards.substring(0,my_cards.length-1);}
     my_cards = my_cards.split(',');
@@ -308,64 +606,9 @@ function findmysuits(my_cards){
     }
 
     return my_suits;
-
 }
 
-// This function selectively creates the list of cards for asking
-// according to the suit selected for asking.
-function showcardlist(value){
-
-    var askform = askbox.getElementsByClassName("askform")[0];
-    var askcardlist = askform.getElementsByClassName("askcardlist");
-
-    // console.log(askcardlist);
-
-    if(askcardlist.length != 0){
-        lmax = askcardlist.length;
-        for(l=0; l<lmax; l++){
-            askcardlist[0].remove();
-        }
-    }
-
-
-
-    for(j=1; j<7; j++){
-            var card = document.createElement("input");
-            card.setAttribute("type", "radio");
-            card.setAttribute("name", "askcard");
-            card.setAttribute("value", value+String(j));
-            card.setAttribute("onchange", "showask()");
-            card.setAttribute("class", "askcardlist");
-            askform.appendChild(card);
-
-            var label = document.createElement("label");
-            label.setAttribute("for", value+String(j));
-            label.setAttribute("class", "askcardlist");
-            label.innerHTML = cardlist[value+String(j)];
-            askform.appendChild(label);
-    }
-}
-
-// This function shows the ask button after card is selected.
-function showask(){
-
-    var askform = askbox.getElementsByClassName("askform")[0];
-    var asksubmit = askform.getElementsByClassName("asksubmit");
-
-    if(asksubmit.length != 0){
-        asksubmit[0].remove();
-    }
-
-
-    var submit = document.createElement("input");
-    submit.setAttribute("type", "submit");
-    submit.setAttribute("value", "ask");
-    submit.setAttribute("name", "action")
-    submit.setAttribute("class", "asksubmit");
-    submit.setAttribute("style", "display : block");
-    askform.appendChild(submit);
-}
-
+// Suit and card mappings
 var suitlist = {
     "1": "8 and J",
     "2": "High ♠",
@@ -409,212 +652,4 @@ function makecardlist(){
     }
 
     return cardlist;
-}
-
-// This function converts the form to JSON
-const formtoJSON = elements => [].reduce.call(elements, (data, element) => {
-
-    if(isValidValue(element)){
-        data[element.name] = element.value;
-    }
-    return data;
-
-},{});
-
-// This function prevents the default action of form submit button and
-// instead makes the contents of the form into a JSON
-const handleFormSubmit = event => {
-
-    askform = document.getElementsByClassName("askform")[0];
-    event.preventDefault();
-    data = formtoJSON(askform.elements);
-    console.log(data);
-    send_data = JSON.stringify(data);
-    valet(send_data);
-    askform.remove();
-    askbox.style.display = "none";
-}
-
-// THis function makes sure that only the checked radio buttons'
-// value appear in the final JSON.
-const isValidValue = element => {
-    return (!['checkbox', 'radio'].includes(element.type) || element.checked);
-}
-
-//  The follwing function is triggered upon clinking the ask button and
-// it creates a JSON in a global varibale called send_data which can be
-// sent to server.
-function declare() {
-    var game_status = JSON.parse(game_status_json);
-    var game_info = JSON.parse(game_info_json);
-    var formbox = declbox.getElementsByClassName("formbox")[0];
-    var declform = formbox.getElementsByClassName("declform");
-
-    if(declform.length != 0){
-        declform[0].remove();
-    }
-
-
-    var declsuits = game_status["te"][0]+game_status["te"][1]
-        if (declsuits.length != 0) { declsuits = declsuits.substring(0, declsuits.length - 1); }
-        declsuits = declsuits.split('<br>').filter(Boolean);
-    allsuits = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    declsuits = _.difference(allsuits, declsuits)
-
-    var declform = document.createElement("form");
-    declform.setAttribute("class", "declform");
-    formbox.appendChild(declform);
-
-    var declform = formbox.getElementsByClassName("declform")[0];
-
-    var head1 = document.createElement("label");
-    head1.innerHTML = "Select the team to declare the suit for "+"<br>";
-    declform.appendChild(head1);
-
-    for(i=1; i<3; i++){
-        var input = document.createElement("input");
-        input.setAttribute("type", "radio");
-        input.setAttribute("id", "team"+String(i));
-        input.setAttribute("name", "for team");
-        input.setAttribute("value", "team"+String(i));
-        input.setAttribute("onchange", "finddeclteam()")
-        declform.appendChild(input);
-
-        var label = document.createElement("label");
-        label.setAttribute("for", "team"+String(i));
-        label.innerHTML = "Team "+String(i);
-        declform.appendChild(label);
-    }
-
-    var head2 = document.createElement("label");
-    head2.innerHTML = "Select suit"+"<br>";
-    head2.setAttribute("style", "display : block")
-    head2.setAttribute("for", "suit");
-    declform.appendChild(head2);
-
-    var suitselect = document.createElement("select");
-    suitselect.setAttribute("id", "declsuit");
-    suitselect.setAttribute("name", "suit");
-    suitselect.setAttribute("onchange", "showcardlist_decl(this.value)")
-    declform.appendChild(suitselect);
-
-    suitselect = document.getElementById("declsuit");
-
-    // var option = document.createElement("option");
-    // option.setAttribute("value", declsuits[i]);
-    // option.innerHTML = suitlist[declsuits[i]];
-    // suitselect.appendChild(option);
-
-    for(i=0; i<declsuits.length; i++){
-        var option = document.createElement("option");
-        option.setAttribute("value", declsuits[i]);
-        option.innerHTML = suitlist[declsuits[i]];
-        suitselect.appendChild(option);
-    }
-
-    suitselect.selectedIndex = -1;
-
-    // var head3 = document.createElement("label");
-    // head3.innerHTML = "Select card"+"<br>";
-    // head3.setAttribute("style", "display : block")
-    // askform.appendChild(head3);
-
-
-    declform.addEventListener("submit", handleFormSubmit_decl);
-
-}
-
-var declteam = ""
-
-function finddeclteam(){
-    radio = document.getElementsByName("for team");
-    for(i=0; i<radio.length; i++){
-        if(radio[i].checked){
-            declteam = radio[i].value;
-        }
-    }
-    suitselect = document.getElementById("declsuit")
-    if (suitselect.value){
-        showcardlist_decl(suitselect.value);
-    }
-}
-
-
-function showcardlist_decl(value){
-    var game_info = JSON.parse(game_info_json);
-    var declform = declbox.getElementsByClassName("declform")[0];
-    var declcardlist = declform.getElementsByClassName("declcardlist");
-
-    // console.log(askcardlist);
-
-    if(declcardlist.length != 0){
-        lmax = declcardlist.length;
-        for(l=0; l<lmax; l++){
-            declcardlist[0].remove();
-        }
-    }
-
-    pl = game_info["pl"];
-    team1 = [pl[0], pl[2], pl[4]];
-    team2 = [pl[1], pl[3], pl[5]];
-
-    if(declteam == "team1") {team = team1;}
-    if(declteam == "team2") {team = team2;}
-
-    for(j=1; j<7; j++){
-        var head3 = document.createElement("label");
-        head3.innerHTML = cardlist[value+String(j)]+"<br>";
-        head3.setAttribute("style", "display : block");
-        head3.setAttribute("class", "declcardlist");
-        declform.appendChild(head3);
-
-        for(k=0; k<3; k++){
-            var card = document.createElement("input");
-            card.setAttribute("type", "radio");
-            card.setAttribute("name", "card"+String(j));
-            card.setAttribute("value", team[k]);
-            card.setAttribute("onchange", "showdecl()");
-            card.setAttribute("class", "declcardlist");
-            card.setAttribute("required", "required")
-            declform.appendChild(card);
-
-            var label = document.createElement("label");
-            label.setAttribute("for", team[k]);
-            label.setAttribute("class", "declcardlist");
-            label.innerHTML = team[k];
-            declform.appendChild(label);
-        }
-    }
-}
-
-
-function showdecl(){
-
-    var declform = declbox.getElementsByClassName("declform")[0];
-    var declsubmit = declform.getElementsByClassName("declsubmit");
-
-    if(declsubmit.length != 0){
-        declsubmit[0].remove();
-    }
-
-
-    var submit = document.createElement("input");
-    submit.setAttribute("type", "submit");
-    submit.setAttribute("value", "declare");
-    submit.setAttribute("name", "action")
-    submit.setAttribute("class", "declsubmit");
-    submit.setAttribute("style", "display : block");
-    declform.appendChild(submit);
-}
-
-const handleFormSubmit_decl = event => {
-
-    declform = document.getElementsByClassName("declform")[0];
-    event.preventDefault();
-    data = formtoJSON(declform.elements);
-    console.log(data);
-    send_data = JSON.stringify(data);
-    valet(send_data);
-    declform.remove();
-    declbox.style.display = "none";
 }

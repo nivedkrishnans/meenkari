@@ -72,13 +72,13 @@ The server will start on `http://127.0.0.1:8000`
 
 ## Recent Improvements
 
-✓ Settings now work without requiring `secret_settings.py`  
-✓ Fixed game ID uniqueness check (was comparing strings to querysets)  
-✓ Pinned dependencies to stable versions  
-✓ Removed `eval()` call in JavaScript (security improvement)  
-✓ Added regression tests for game helpers  
-✓ Improved exception handling in backend  
-✓ Database migrations working cleanly  
+✓ Settings now work without requiring `secret_settings.py`
+✓ Fixed game ID uniqueness check (was comparing strings to querysets)
+✓ Pinned dependencies to stable versions
+✓ Removed `eval()` call in JavaScript (security improvement)
+✓ Added regression tests for game helpers
+✓ Improved exception handling in backend
+✓ Database migrations working cleanly
 
 ## Known Limitations
 

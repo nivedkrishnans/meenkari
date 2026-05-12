@@ -531,74 +531,222 @@ body{
         margin-bottom: 12px;
     }
 
-    .askbox,
-    .declbox {
+    /* Action Panel - Left Bottom Modern UI */
+    .actionPanel {
         display: none;
         position: fixed;
-        top: 50%;
-        left: 50%;
+        bottom: 20px;
+        left: 20px;
         z-index: 10;
-        width: min(760px, calc(100vw - 28px));
-        max-height: min(84vh, 860px);
-        padding: 28px;
-        overflow: auto;
-        color: var(--text);
-        background: linear-gradient(180deg, rgba(24, 24, 26, 0.97), rgba(13, 13, 15, 0.98));
-        border: 1px solid var(--line-strong);
-        border-radius: 28px;
-        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.72);
-        transform: translate(-50%, -50%);
-        backdrop-filter: blur(22px);
+        max-width: 420px;
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
     }
 
-    .askboxh {
-        position: relative;
+    .actionPanelContent {
+        background: linear-gradient(180deg, rgba(24, 24, 26, 0.96), rgba(13, 13, 15, 0.98));
+        border: 1px solid var(--line-strong);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(18px);
+        overflow: hidden;
+    }
+
+    .actionPanelHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .actionTitle {
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        color: var(--text);
+    }
+
+    .actionClose {
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 24px;
+        cursor: pointer;
+        padding: 0;
+        width: 24px;
+        height: 24px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 18px;
-        padding-bottom: 12px;
+        transition: color 160ms ease, transform 160ms ease;
+    }
+
+    .actionClose:hover {
+        color: var(--text);
+        transform: scale(1.1);
+    }
+
+    .actionBody {
+        padding: 20px;
+        color: var(--text);
+    }
+
+    .actionForm {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .formSection {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .formSectionLabel {
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 600;
+    }
+
+    .chipGroup {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 16px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        color: var(--text);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 160ms ease;
+        font-weight: 500;
+        min-height: 40px;
+    }
+
+    .chip:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--line-strong);
+        transform: translateY(-2px);
+    }
+
+    .chip.selected {
+        background: rgba(215, 180, 106, 0.16);
+        border-color: var(--accent);
+        box-shadow: 0 8px 16px rgba(215, 180, 106, 0.12);
+        color: #f0e6d2;
+    }
+
+    .suitSelect,
+    .selectInput {
+        width: 100%;
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        color: var(--text);
+        font-size: 0.9rem;
+        outline: none;
+        transition: all 160ms ease;
+    }
+
+    .suitSelect:hover,
+    .selectInput:hover {
+        border-color: var(--line-strong);
+        background: rgba(255, 255, 255, 0.07);
+    }
+
+    .suitSelect:focus,
+    .selectInput:focus {
+        border-color: var(--accent);
+        background: rgba(215, 180, 106, 0.05);
+        box-shadow: 0 0 0 3px rgba(215, 180, 106, 0.08);
+    }
+
+    .cardGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+        gap: 8px;
+    }
+
+    .cardButton {
+        aspect-ratio: 0.65 / 1;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--text);
+        font-size: 0.65rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 160ms ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         text-align: center;
-        border-bottom: 1px solid var(--line-strong);
+        padding: 4px;
+        line-height: 1.2;
+    }
+
+    .cardButton:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--line-strong);
+        transform: translateY(-2px);
+    }
+
+    .cardButton.selected {
+        background: rgba(215, 180, 106, 0.16);
+        border-color: var(--accent);
+        box-shadow: 0 8px 16px rgba(215, 180, 106, 0.12);
+        color: #f0e6d2;
+    }
+
+    .actionSubmit {
+        width: 100%;
+        padding: 12px 16px;
+        background: linear-gradient(180deg, #d7b46a, #ae8642);
+        border: none;
+        border-radius: 12px;
+        color: #1a1a1a;
         font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 160ms ease;
+        box-shadow: 0 12px 26px rgba(215, 180, 106, 0.18);
+        margin-top: 8px;
     }
 
-    .formbox {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
+    .actionSubmit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 36px rgba(215, 180, 106, 0.25);
     }
 
-    .askform,
-    .declform {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 12px;
-        align-items: center;
+    .actionSubmit:active {
+        transform: translateY(0);
     }
 
-    .askform > label,
-    .declform > label {
-        grid-column: 1 / -1;
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: 0.82rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+    .actionSubmit:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 
-    .askform select,
-    .declform select {
-        grid-column: 1 / -1;
-        width: 100%;
-        padding: 12px 14px;
-        color: var(--text);
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        outline: none;
+    /* Hidden old modals */
+    .askbox,
+    .declbox {
+        display: none !important;
     }
 
     .askform input[type='radio'],
@@ -610,32 +758,7 @@ body{
 
     .askform input[type='radio'] + label,
     .declform input[type='radio'] + label {
-        grid-column: auto;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 44px;
-        margin: 0;
-        padding: 10px 12px;
-        color: var(--text);
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        text-transform: none;
-        letter-spacing: 0;
-        transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-    }
-
-    .askform input[type='radio']:checked + label,
-    .declform input[type='radio']:checked + label {
-        background: rgba(215, 180, 106, 0.14);
-        border-color: rgba(215, 180, 106, 0.46);
-        box-shadow: 0 12px 26px rgba(215, 180, 106, 0.12);
-    }
-
-    .askform input[type='radio'] + label:hover,
-    .declform input[type='radio'] + label:hover {
-        transform: translateY(-1px);
+        display: none;
     }
 
     .askcardlist,
@@ -645,33 +768,7 @@ body{
 
     .asksubmit,
     .declsubmit {
-        grid-column: 1 / -1;
-        width: 100%;
-        margin-top: 10px;
-        background: linear-gradient(180deg, #d7b46a, #ae8642);
-        box-shadow: 0 14px 30px rgba(215, 180, 106, 0.22);
-    }
-
-    .close {
-        position: absolute;
-        top: 0;
-        right: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 28px;
-        height: 28px;
-        color: #000;
-        font-size: 16px;
-        background: #f1ece1;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: transform 160ms ease, background 160ms ease;
-    }
-
-    .close:hover {
-        transform: scale(1.05);
-        background: #fff;
+        display: none;
     }
 
     @media (max-width: 1180px) {
@@ -691,6 +788,10 @@ body{
 
         .gamecircleWrapper {
             min-height: 540px;
+        }
+
+        .actionPanel {
+            max-width: calc(100vw - 40px);
         }
     }
 

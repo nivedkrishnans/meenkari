@@ -1,0 +1,56 @@
+.hero_text {
+    margin-top: 50vh;
+    margin-left: 50vw;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    color: white;
+    font-family: 'Francois One', sans-serif;
+    font-size: 100px;
+    z-index: 100;
+    text-shadow:
+        0 0 20px rgba(255, 255, 255, 0.6),
+        0 0 40px rgba(200, 200, 200, 0.4),
+        10px 10px 30px rgba(0, 0, 0, 0.8);
+    letter-spacing: 2px;
+    animation: glow 3s ease-in-out infinite alternate;
+    font-weight: 900;
+}
+
+@keyframes glow {
+    from {
+        text-shadow:
+            0 0 20px rgba(255, 255, 255, 0.6),
+            0 0 40px rgba(200, 200, 200, 0.4),
+            10px 10px 30px rgba(0, 0, 0, 0.8);
+    }
+    to {
+        text-shadow:
+            0 0 30px rgba(255, 255, 255, 0.8),
+            0 0 60px rgba(200, 200, 200, 0.6),
+            10px 10px 30px rgba(0, 0, 0, 0.8);
+    }
+}
+
+/* for mobile devices*/
+@media only screen and (max-width: 600px) {
+
+    .hero_text{
+        font-size:48px;
+    }
+}
+
+/* for 1440p or similar resolution monitors*/
+@media only screen and (min-width: 2000px){
+
+  .hero_text{
+    font-size:150px;
+  }
+}
+
+/* for 4k or similar resolution monitors*/
+@media only screen and (min-width: 3000px){
+
+  .hero_text{
+    font-size:250px;
+  }
+}
