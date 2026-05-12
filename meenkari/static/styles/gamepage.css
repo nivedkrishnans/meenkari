@@ -528,6 +528,7 @@ body::before {
     display: flex;
     flex-direction: column;
     max-height: inherit;
+    color-scheme: dark;
     }
 
 .actionPanelHeader {
@@ -630,17 +631,29 @@ body::before {
 
 .suitSelect,
 .selectInput {
-        width: 100%;
-        padding: 12px 14px;
+    width: 100%;
+    padding: 12px 14px;
     background: rgba(255, 255, 255, 0.09);
     border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 12px;
-        color: var(--text);
-        font-size: 0.9rem;
-        outline: none;
-        transition: all 160ms ease;
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 160ms ease;
     appearance: none;
     }
+
+.suitSelect option,
+.selectInput option {
+    background: #151517;
+    color: var(--text);
+}
+
+.suitSelect optgroup,
+.selectInput optgroup {
+    background: #151517;
+    color: var(--text);
+}
 
 .suitSelect:hover,
 .selectInput:hover {

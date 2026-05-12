@@ -9,7 +9,7 @@
     </head>
 
     <body>
-        
+
         <div class="mainContainer">
             <div class="row mainrow">
                 <div class="col col1">
@@ -103,7 +103,7 @@
                         <button onclick="manual_refresh()" class="refresh">Refresh</button>
                         <a href="{% url 'home' %}"><button class="exit">Exit</button></a>
                     </div>
-                    
+
                     <div class="logbox">
                         <div class="logboxh">
                             Logs
@@ -205,7 +205,7 @@
                         game_status_json = JSON.parse(data);
                         console.log('game_status received from websocket: ', game_status_json);
                     }
-                    refresh_cards();                    
+                    refresh_cards();
                 } catch (error) {
                     console.log(error.message, "Received message: ", data);
                     return 0;
@@ -224,8 +224,8 @@
                 connectionStatus.style.backgroundColor = "red";
             };
 
-            
-                        
+
+
             function valet(json) {
                 pathname = (window.location.pathname);
                 var valet_url = '/valet' + pathname.substring(5); //the pathname is play/<id>, hence the substring method is used to extract just the url
@@ -286,7 +286,7 @@
                 });
             }
 
-            
+
 
 
         </script>
